@@ -1,0 +1,35 @@
+import 'package:flutter/material.dart';
+import 'package:pbl5/constants.dart';
+
+class RoundedButton extends StatelessWidget {
+  const RoundedButton({
+    Key? key,
+    required this.title,
+    required this.onClick,
+  }) : super(key: key);
+
+  final String title;
+  final VoidCallback onClick;
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return GestureDetector(
+      onTap: onClick,
+      child: Container(
+        width: size.width * 0.8,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: kPrimaryColor,
+        ),
+        padding: EdgeInsets.symmetric(vertical: 20),
+        alignment: Alignment.center,
+        child: Text(
+          title,
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Main",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "Development",
+      "program": "lib/main_development.dart",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--flavor",
+        "development",
+        "--target",
+        "lib/main_development.dart"
+      ]
+    },
+    {
+      "name": "Production",
+      "program": "lib/main_production.dart",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "production", "--target", "lib/main_production.dart"]
+    }
+  ]
+}

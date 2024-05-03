@@ -1,0 +1,277 @@
+{
+  "CommonAction": {
+    "Close": "Close",
+    "Confirm": "Confirm",
+    "Cancel": "Cancel",
+    "Skip": "Skip",
+    "Back": "Back",
+    "Continue": "Continue",
+    "Delete": "Delete",
+    "Edit": "Edit",
+    "Update": "Update",
+    "Resend": "Resend",
+    "Submit": "Submit",
+    "Copy": "Copy",
+    "Copied": "Copied",
+    "CopyLink": "Copy Link",
+    "Search": "Search",
+    "Sending": "Sending",
+    "EnterText": "Enter Text",
+    "Dismiss": "Dismiss",
+    "ViewDetail": "View Detail",
+    "Add": "Add",
+    "Download": "Download",
+    "Login": "Login",
+    "Register": "Register",
+    "Logout": "Logout",
+    "ShowMore": "Show More",
+    "ShowLess": "Show Less"
+  },
+
+  "CommonData": {
+    "Menu": "Menu",
+    "Account": "Account",
+    "Setting": "Settings",
+    "Email": "Email Address",
+    "Password": "Password",
+    "NotUpdate": "Not Updated",
+    "Today": "Today",
+    "Yesterday": "Yesterday",
+    "Now": "Now",
+    "Minute": "{} minutes",
+    "Hour": "{} hours",
+    "Day": "{} days",
+    "Week": "{} weeks",
+    "Month": "{} months",
+    "Year": "{} years",
+    "TimeToday": "{} today",
+    "TimeYesterday": "{} yesterday",
+    "To": "To: {}",
+    "Error": "Error",
+    "UploadAFile": "Upload a File",
+    "SelectImageOrVideo": "Select Image or Video",
+    "TakeAPhoto": "Take a Photo",
+    "UploadFrom": "Upload From",
+    "LoadingMore": "Loading More",
+    "JapanCurrency": "Yen",
+    "Gallery": "Gallery",
+    "GetBackWithoutSaveConfirm": "The current data is not saved. Do you want to continue?",
+    "ListDataIsEmpty": "List data is empty",
+    "HasErrorOccurr": "An error has occurred",
+    "CantLoadData": "Cannot load data",
+    "PleaseFillFullInfo": "Please fill in all information!",
+    "About": "About",
+    "FeaturePending": "This feature is under development",
+    "Currency": "VND",
+    "Male": "Male",
+    "Female": "Female",
+    "OtherGender": "Other Gender",
+    "File": "File",
+    "Photo": "Photo",
+    "Video": "Video",
+    "Location": "Location"
+  },
+
+  "CommonNotiAction": {
+    "Success": "Success",
+    "YourActionMakingSuccessfully": "Your action has been successfully executed!",
+    "Failed": "Failed",
+    "YourActionMakingFailed": "Your action was not successful!",
+    "DownloadFile": "Are you sure you want to download this file?",
+    "DownloadFileSuccessfully": "File downloaded successfully ({filename})"
+  },
+
+  "CommonValidation": {
+    "InvalidEmailFormat": "Invalid email format.",
+    "EmailAlreadyInUse": "This email address is already in use.",
+    "InvalidPasswordFormat": "Your password must contain at least 8 characters, 1 digit, 1 uppercase letter, 1 lowercase letter.",
+    "PasswordConfirmationNotMatch": "Password confirmation does not match.",
+    "NewPasswordConfirmationNotMatch": "New password confirmation does not match.",
+    "NewPasswordCanNotSameOldPassword": "New password must not be the same as the old password.",
+    "MaxLength": "{} cannot be more than {} characters.",
+    "MinLength": "{} must be at least {} characters.",
+    "MaxValue": "{} cannot exceed {}.",
+    "MinValue": "{} cannot be less than {}.",
+    "Required": "{} is required.",
+    "CommonRequired": "This field is required.",
+    "FieldInvalidate": "{} is not in the correct format.",
+    "OnlyNumberAllow": "{} can only contain numbers.",
+    "DateTimeFormatIsInvalid": "Input data is not in the correct date format.",
+    "PleaseChooseDifferenceImage": "Please do not choose duplicate images",
+    "FileSizeMustLessThan10MB": "File size must not exceed 10MB.",
+    "ListFileHasOneOrMoreFileSizeBiggerThan10MB": "The selected file list contains one or more files larger than 10MB, these files will be deleted.",
+    "ImageSizeMustLessThan10MB": "Image size must not exceed 10MB.",
+    "TotalFileSizeMustLessThan10MB": "Total file size must not exceed 10MB.",
+    "TotalImageSizeMustLessThan10MB": "Total image size must not exceed 10MB."
+  },
+
+  "Login": {
+    "AppName": "",
+    "Email": "Email Address",
+    "InputEmail": "Enter your email address",
+    "Password": "Password",
+    "InputPassword": "Enter password",
+    "KeepLogin": "Remember me",
+    "ForgotPassword": "Forgot Password?",
+    "Login": "Login",
+    "NotHaveAccount": "Don't have an account?",
+    "Register": "Register here",
+    "Contact": "Contact",
+    "EULA": "End User License Agreement",
+    "AccountNotActive": "Your account is not activated",
+    "ActiveAccountSuccessTitle": "Activation Successful",
+    "ActiveAccountSuccessContent": "Your account has been successfully activated. Please log in to continue using the system.",
+    "LoginByAdminAccount": "Your account is an Admin account and can only log in on the website.",
+    "LoginFailedTitle": "Login Failed",
+    "AccountAlreadyActivated": "Your account is already activated.",
+    "SessionTimeOutTitle": "Session Timeout",
+    "SessionTimeOutContent": "Your login session has expired. Please log in again to continue using the system or contact us if there is an issue.",
+    "LoginErrorTitle": "Error",
+    "LoginDescription": "Agree to our {privacy_policy} & {term_of_service}"
+  },
+
+  "Register": {
+    "Register": "Register",
+    "Submit": "Register",
+    "Name": "Full Name",
+    "NamePlaceHolder": "Please enter your full name",
+    "Email": "Email Address",
+    "EmailPlaceHolder": "Please enter your email address",
+    "Password": "Password",
+    "PasswordPlaceHolder": "Please enter a password",
+    "ConfirmPassword": "Confirm Password",
+    "ConfirmPasswordPlaceHolder": "Please confirm your password",
+    "DoYouHaveAccount": "Already have an account?",
+    "LoginHere": "Login here",
+    "CheckYourEmailTitle": "Check Your Email",
+    "CheckYourEmailContent": "A verification email has been sent to {email}. Please check your inbox and click the link to complete your account registration.",
+    "CheckSpamContent": "If you do not find the email, please check the spam folder or resend it.",
+    "Resend": "Resend",
+    "GoBack": "Go back to homepage",
+    "ResendAfter30Seconds": "Resend after 30s",
+    "RegisterSuccessTitle": "Success",
+    "RegisterSuccessContent": "Registration successful. Please check your inbox or spam email for account verification and start using the system."
+  },
+
+  "ResetPassword": {
+    "ForgotPassword": "Forgot Password",
+    "ResetPassword": "Reset Password",
+    "EmailAddress": "Email Address",
+    "EmailPlaceHolder": "Enter your email address",
+    "ResetPasswordSuccessTitle": "Success",
+    "ResetPasswordSuccessContent": "Please check your inbox or spam email for further instructions."
+  },
+
+  "ChangePassword": {
+    "ChangePassword": "Change Password",
+    "CurrentPassword": "Current Password",
+    "CurrentPasswordPlaceHolder": "Enter current password",
+    "NewPassword": "New Password",
+    "NewPasswordPlaceHolder": "Enter new password",
+    "NewConfirmPassword": "Confirm New Password",
+    "NewConfirmPasswordPlaceHolder": "Confirm new password",
+    "KeepLoginConfirmTitle": "Password Changed",
+    "KeepLoginConfirm": "Do you want to maintain login on other devices?",
+    "LogoutAllDevices": "Log out of all devices where you are currently logged in with this account.",
+    "KeepLogin": "Maintain login.",
+    "Submit": "Confirm",
+    "ChangePasswordSuccessTitle": "Password Changed",
+    "ChangePasswordSuccessContent": "You have successfully changed your password. Please log in to continue using the system."
+  },
+
+  "ConfirmForgotPassword": {
+    "ResetPassword": "Reset Password",
+    "NewPassword": "New Password",
+    "NewPasswordPlaceHolder": "Enter new password",
+    "NewConfirmPassword": "Confirm New Password",
+    "NewConfirmPasswordPlaceHolder": "Confirm new password",
+    "Update": "Confirm Changes",
+    "ResetPasswordSuccessTitle": "Success",
+    "ResetPasswordSuccessContent": "Password successfully changed. Please log in again to use the system.",
+    "ResetPasswordFailureTitle": "Error",
+    "ResetPasswordFailureContent": "Failed to reset password."
+  },
+
+  "ResendEmail": {
+    "EmailSentDescription1": "A confirmation email has been sent to {email}. Click the link to complete your account registration.",
+    "EmailSentDescription2": "If you do not receive the confirmation email or have lost it, please resend the email below.",
+    "EmailSent": "Email Sent for Confirmation",
+    "ResendEmail": "Resend Email",
+    "PleaseRequestAfter30Seconds": "Please resend after {time} seconds",
+    "GetBackHome": "Go back to homepage",
+    "ResendEmailFailed": "Resend email failed",
+    "ConfirmEmail": "Confirm Email",
+    "ResendEmailSuccessfully": "Email sent successfully"
+  },
+
+  "LandingPage": {
+    "LandingPage": "Landing Page"
+  },
+
+  "MainTab": {
+    "MainTab": "Main Tab"
+  },
+
+  "Notification": {
+    "Notification": "Notification"
+  },
+
+  "DeleteAccount": {
+    "DeleteAccount": "Delete Account"
+  },
+
+  "Placeholder": {
+    "InputFieldPlaceholder": "Enter {fieldName}",
+    "SelectFieldPlaceholder": "Select {fieldName}",
+    "DateTimeFieldPlaceholder": "Choose date",
+    "SearchPlaceHolder": "Search {fieldName}",
+    "UploadFilePlaceHolder": "Select file"
+  },
+
+  "Permission": {
+    "NotAnyVisibleCamera": "No visible cameras available",
+    "PleaseAcceptCameraPermission": "Please grant permission to access the device camera",
+    "CameraPermissionPurpose": "The app uses the device camera to capture photos",
+    "No": "No",
+    "Yes": "Yes",
+    "GalleryPermissionPurpose": "The app uses images from the gallery",
+    "CanNotAccessGalleryPermission": "Cannot access photo gallery due to denied permission",
+    "PleaseAccessGalleryPermission": "Please grant permission to access the photo gallery"
+  },
+
+  "LostConnection": {
+    "LostConnection": "Lost Connection",
+    "PleaseCheckConnection": "Please check your network connection or try again.",
+    "Retry": "Retry"
+  },
+
+  "TermOfService": {
+    "TermOfService": "Terms of Service"
+  },
+
+  "PrivacyPolicy": {
+    "PrivacyPolicy": "Privacy Policy"
+  },
+
+  "SystemError": {
+    "SystemErrorTitle": "Sorry",
+    "SystemErrorContent": "The system is undergoing maintenance."
+  },
+
+  "AppUpdate": {
+    "NewUpdateIsAvailable": "New update is available",
+    "ThisVerionIsNotSupported": "The current version of this app is no longer supported.",
+    "Update": "Update",
+    "UpdateDescription": "We have added new features and fixed some bugs to provide you with the smoothest experience possible.",
+    "Skip": "Skip"
+  },
+
+  "Error": {
+    "UnexpectedError": "An unexpected error has occurred.",
+    "SendTimeoutError": "Timeout error occurred while connecting to the API server.",
+    "ConnectionTimeoutError": "Connection to the API server timed out.",
+    "CancalledApiError": "The request to the API server has been canceled.",
+    "ConnectionError": "Failed to connect to the API server due to internet connection issues.",
+    "ReceiveTimeoutError": "Receive timeout error occurred when connecting to the API server."
+  }
+}

@@ -1,0 +1,394 @@
+import 'package:flutter/material.dart';
+import 'package:pbl5/locator_config.dart';
+import 'package:pbl5/models/app_data.dart';
+import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
+import 'package:pbl5/models/user/user.dart';
+import 'package:pbl5/models/user_awards/user_awards.dart';
+import 'package:pbl5/models/user_educations/user_educations.dart';
+import 'package:pbl5/models/user_experiences/user_experiences.dart';
+import 'package:pbl5/services/service_repositories/authentication_repository.dart';
+import 'package:pbl5/services/service_repositories/user_repository.dart';
+import 'package:pbl5/shared_customization/extensions/date_time_ext.dart';
+import 'package:pbl5/shared_customization/extensions/string_ext.dart';
+import 'package:pbl5/shared_customization/helpers/dialogs/dialog_helper.dart';
+import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
+import 'package:pbl5/view_models/base_view_model.dart';
+
+class ProfileViewModel extends BaseViewModel {
+  final AuthenticationRepositoty authRepositoty;
+  final UserRepository userRepository;
+  final CustomSharedPreferences customSharedPreferences;
+  User? user;
+  final emailController = TextEditingController()..text = '';
+  final passwordController = TextEditingController()..text = '';
+  final addressController = TextEditingController()..text = '';
+  final phoneController = TextEditingController()..text = '';
+  final firstNameController = TextEditingController()..text = '';
+  final lastNameController = TextEditingController()..text = '';
+  final dobController = TextEditingController()..text = '';
+  final summaryIntroductionController = TextEditingController()
+    ..text = 'I am a developer';
+  bool gender = true;
+  List<String> socialMediaLinks = [];
+
+  //for education
+  final List<TextEditingController> eduIdControllers = [];
+  final List<TextEditingController> studyPlaceControllers = [];
+  final List<TextEditingController> studyStartTimeControllers = [];
+  final List<TextEditingController> studyEndTimeControllers = [];
+  final List<TextEditingController> majorityControllers = [];
+  final List<TextEditingController> cpaControllers = [];
+  final List<TextEditingController> eduNoteControllers = [];
+
+  //for experience
+  List<SystemConstant>? systemConstants;
+  List<SystemConstant> selectedSystemConstants = [];
+  final List<TextEditingController> expIdControllers = [];
+  final List<TextEditingController> workPlaceControllers = [];
+  final List<TextEditingController> positionControllers = [];
+  final List<TextEditingController> expStartTimeControllers = [];
+  final List<TextEditingController> expEndTimeControllers = [];
+  final List<TextEditingController> expNoteControllers = [];
+
+  //for award
+  final List<TextEditingController> awardIdControllers = [];
+  final List<TextEditingController> awardNameControllers = [];
+  final List<TextEditingController> awardTimeControllers = [];
+  final List<TextEditingController> awardNoteControllers = [];
+
+  ProfileViewModel({
+    required this.authRepositoty,
+    required this.userRepository,
+    required this.customSharedPreferences,
+  });
+
+  void updateSelectedSystemConstant(int index, SystemConstant value) {
+    selectedSystemConstants[index] = value;
+    updateUI();
+  }
+
+  Future<void> updateBasicInfo({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      debugPrint(User(
+        id: user?.id,
+        email: emailController.text,
+        firstName: firstNameController.text,
+        lastName: lastNameController.text,
+        phoneNumber: phoneController.text,
+        address: addressController.text,
+        dob: dobController.text.toDatetimeApi,
+        gender: gender,
+        accountStatus: user?.accountStatus,
+        summaryIntroduction: summaryIntroductionController.text,
+        socialMediaLink: socialMediaLinks,
+      ).toString());
+      user = (await userRepository.updateBasicInfo(
+        user: User(
+          id: user?.id,
+          email: emailController.text,
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          phoneNumber: phoneController.text,
+          address: addressController.text,
+          dob: dobController.text.toDatetimeApi,
+          gender: gender,
+          accountStatus: user?.accountStatus,
+          summaryIntroduction: summaryIntroductionController.text,
+          socialMediaLink: socialMediaLinks,
+        ),
+      ))
+          .data;
+
+      getIt.get<AppData>().updateUser(user);
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  Future<void> updateEducation({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      user = (await userRepository.updateEducation(
+        userEducations: eduIdControllers
+            .map((e) => UserEducations(
+                  id: e.text,
+                  studyPlace:
+                      studyPlaceControllers[eduIdControllers.indexOf(e)].text,
+                  studyStartTime:
+                      studyStartTimeControllers[eduIdControllers.indexOf(e)]
+                          .text
+                          .toDatetimeApi,
+                  studyEndTime:
+                      studyEndTimeControllers[eduIdControllers.indexOf(e)]
+                          .text
+                          .toDatetimeApi,
+                  majority:
+                      majorityControllers[eduIdControllers.indexOf(e)].text,
+                  cpa: double.tryParse(
+                          cpaControllers[eduIdControllers.indexOf(e)].text) ??
+                      0,
+                  note: eduNoteControllers[eduIdControllers.indexOf(e)].text,
+                ))
+            .toList(),
+      ))
+          .data;
+      getIt.get<AppData>().updateUser(user);
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  //update award
+  Future<void> updateAward({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      user = (await userRepository.updateAward(
+        userAwards: awardIdControllers
+            .map((e) => UserAwards(
+                  id: e.text,
+                  certificateName:
+                      awardNameControllers[awardIdControllers.indexOf(e)].text,
+                  certificateTime:
+                      awardTimeControllers[awardIdControllers.indexOf(e)]
+                          .text
+                          .toDatetimeApi,
+                  note:
+                      awardNoteControllers[awardIdControllers.indexOf(e)].text,
+                ))
+            .toList(),
+      ))
+          .data;
+      getIt.get<AppData>().updateUser(user);
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  //update experience
+  Future<void> updateExperience({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      user = (await userRepository.updateExperience(
+        userExperiences: expIdControllers
+            .map((e) => UserExperiences(
+                  id: e.text,
+                  workPlace:
+                      workPlaceControllers[expIdControllers.indexOf(e)].text,
+                  position:
+                      positionControllers[expIdControllers.indexOf(e)].text,
+                  experienceType: systemConstants?.first,
+                  experienceStartTime:
+                      expStartTimeControllers[expIdControllers.indexOf(e)]
+                          .text
+                          .toDatetimeApi,
+                  experienceEndTime:
+                      expEndTimeControllers[expIdControllers.indexOf(e)]
+                          .text
+                          .toDatetimeApi,
+                  note: expNoteControllers[expIdControllers.indexOf(e)].text,
+                ))
+            .toList(),
+      ))
+          .data;
+      getIt.get<AppData>().updateUser(user);
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  Future<void> deleteExperience({
+    VoidCallback? onSuccess,
+    required int index,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      await userRepository.deleteExperience(
+        ids: [expIdControllers[index].text],
+      );
+      getProfile();
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  Future<void> deleteEducation({
+    VoidCallback? onSuccess,
+    required int index,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      await userRepository.deleteEducation(
+        ids: [eduIdControllers[index].text],
+      );
+      getProfile();
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  Future<void> deleteAward({
+    VoidCallback? onSuccess,
+    required int index,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      await userRepository.deleteAward(
+        ids: [awardIdControllers[index].text],
+      );
+      getProfile();
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  Future<void> fetchSystemConstants({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    final cancel = showLoading();
+    try {
+      systemConstants = (await userRepository.getConstantType()).data;
+      onSuccess?.call();
+      updateUI();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    } finally {
+      cancel();
+    }
+  }
+
+  Future<void> getProfile({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+    bool isShowLoading = true,
+  }) async {
+    final cancel = showLoading();
+    try {
+      user = (await userRepository.getProfile()).data;
+      //basic profile
+      getIt.get<AppData>().updateUser(user);
+      emailController.text = user?.email ?? '';
+      firstNameController.text = user?.firstName ?? '';
+      lastNameController.text = user?.lastName ?? '';
+      phoneController.text = user?.phoneNumber ?? '';
+      addressController.text = user?.address ?? '';
+      dobController.text = user?.dob.toDateTime.toDayMonthYear() ?? '';
+      summaryIntroductionController.text = user?.summaryIntroduction ?? '';
+      socialMediaLinks = user?.socialMediaLink ?? [];
+      //education
+      eduIdControllers.clear();
+      studyPlaceControllers.clear();
+      studyStartTimeControllers.clear();
+      studyEndTimeControllers.clear();
+      majorityControllers.clear();
+      cpaControllers.clear();
+      eduNoteControllers.clear();
+      //experience
+      expIdControllers.clear();
+      workPlaceControllers.clear();
+      positionControllers.clear();
+      expStartTimeControllers.clear();
+      expEndTimeControllers.clear();
+      expNoteControllers.clear();
+      selectedSystemConstants.clear();
+
+      //award
+      awardIdControllers.clear();
+      awardNameControllers.clear();
+      awardTimeControllers.clear();
+      awardNoteControllers.clear();
+
+      // create Controller for each education
+      user?.educations.forEach((education) {
+        eduIdControllers.add(TextEditingController(text: education.id));
+        studyPlaceControllers
+            .add(TextEditingController(text: education.studyPlace));
+        studyStartTimeControllers.add(TextEditingController(
+            text: education.studyStartTime.toDateTime.toDayMonthYear()));
+        studyEndTimeControllers.add(TextEditingController(
+            text: education.studyEndTime.toDateTime.toDayMonthYear()));
+        majorityControllers
+            .add(TextEditingController(text: education.majority));
+        cpaControllers
+            .add(TextEditingController(text: education.cpa.toString()));
+        eduNoteControllers.add(TextEditingController(text: education.note));
+      });
+
+      //create Controller for each experience
+      user?.experiences.forEach((experience) {
+        expIdControllers.add(TextEditingController(text: experience.id));
+        workPlaceControllers
+            .add(TextEditingController(text: experience.workPlace));
+        positionControllers
+            .add(TextEditingController(text: experience.position));
+        expStartTimeControllers.add(TextEditingController(
+            text: experience.experienceStartTime.toDateTime.toDayMonthYear()));
+        expEndTimeControllers.add(TextEditingController(
+            text: experience.experienceEndTime.toDateTime.toDayMonthYear()));
+        expNoteControllers.add(TextEditingController(text: experience.note));
+        selectedSystemConstants
+            .add(experience.experienceType ?? systemConstants!.first);
+      });
+      //create Controller for each award
+
+      user?.awards.forEach((award) {
+        awardIdControllers.add(TextEditingController(text: award.id));
+        awardNameControllers
+            .add(TextEditingController(text: award.certificateName));
+        awardTimeControllers.add(TextEditingController(
+            text: award.certificateTime.toDateTime.toDayMonthYear()));
+        awardNoteControllers.add(TextEditingController(text: award.note));
+      });
+
+      onSuccess?.call();
+      updateUI();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    } finally {
+      if (isShowLoading) {
+        cancel();
+      }
+    }
+  }
+
+  Future<void> logOut({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    final cancel = showLoading();
+    try {
+      await authRepositoty.logOut();
+      customSharedPreferences.clear();
+      getIt.get<AppData>().clear();
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    } finally {
+      cancel();
+    }
+  }
+}
