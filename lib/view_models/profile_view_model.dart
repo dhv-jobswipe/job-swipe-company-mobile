@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/models/app_data.dart';
+import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/models/user/user.dart';
@@ -10,17 +11,20 @@ import 'package:pbl5/models/user_awards/user_awards.dart';
 import 'package:pbl5/models/user_educations/user_educations.dart';
 import 'package:pbl5/models/user_experiences/user_experiences.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
+import 'package:pbl5/services/service_repositories/company_repository.dart';
 import 'package:pbl5/services/service_repositories/system_constant_repository.dart';
 import 'package:pbl5/services/service_repositories/user_repository.dart';
 import 'package:pbl5/shared_customization/extensions/date_time_ext.dart';
 import 'package:pbl5/shared_customization/extensions/string_ext.dart';
 import 'package:pbl5/shared_customization/helpers/dialogs/dialog_helper.dart';
+import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
 
 class ProfileViewModel extends BaseViewModel {
   final AuthenticationRepositoty authRepositoty;
   final UserRepository userRepository;
+  final CompanyRepository companyRepository;
   final SystemConstantRepository systemConstantRepository;
   final CustomSharedPreferences customSharedPreferences;
   User? user;
@@ -98,6 +102,7 @@ class ProfileViewModel extends BaseViewModel {
     required this.userRepository,
     required this.customSharedPreferences,
     required this.systemConstantRepository,
+    required this.companyRepository,
   });
 
   Future<void> updateBasicInfo({
@@ -499,6 +504,21 @@ class ProfileViewModel extends BaseViewModel {
       onSuccess?.call();
     } on Exception catch (error) {
       onFailure?.call(error.toString());
+    }
+  }
+
+  Future<void> getCompanyProfile({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    final cancel = showLoading();
+    try {
+      var company = (await companyRepository.getCompanyProfile()).data;
+      getIt.get<AppData>().company = company;
+    } catch (e) {
+      onFailure?.call(parseError(e));
+    } finally {
+      cancel();
     }
   }
 

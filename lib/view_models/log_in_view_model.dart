@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pbl5/models/credential/credential.dart';
-import 'package:pbl5/services/api_models/api_response/api_response.dart';
+import 'package:pbl5/app_common_data/enums/system_constant_prefix.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
@@ -27,21 +26,23 @@ class LogInViewModel extends BaseViewModel {
         emailController.text,
         passwordController.text,
       );
-      onSuccessLogin(entity, onSuccess);
+      await customSharedPreferences.setToken(
+          entity.data?.accessToken ?? '', entity.data?.refreshToken ?? '');
+
+      debugPrint('Access Token: ${customSharedPreferences.accessToken}');
+      debugPrint('Refresh Token: ${customSharedPreferences.refreshToken}');
+
+      // Check account
+      var account = (await authenticationRepositoty.getAccount()).data!;
+      if (SystemRole.fromValue(account.role?.constantType ?? '') !=
+          SystemRole.COMPANY) {
+        onFailure?.call('Please login with company account.');
+        return;
+      }
+
+      onSuccess?.call();
     } on Exception catch (error) {
       onFailure?.call(error.toString());
     }
-  }
-
-  Future<void> onSuccessLogin(
-    ApiResponse<Credential> entity,
-    VoidCallback? onSuccess,
-  ) async {
-    await customSharedPreferences.setToken(
-        entity.data?.accessToken ?? '', entity.data?.refreshToken ?? '');
-
-    debugPrint('Access Token: ${customSharedPreferences.accessToken}');
-    debugPrint('Refresh Token: ${customSharedPreferences.refreshToken}');
-    onSuccess?.call();
   }
 }

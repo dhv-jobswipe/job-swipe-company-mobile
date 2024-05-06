@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:pbl5/models/account/account.dart';
-import 'package:pbl5/models/application_position/application_position.dart';
 import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/conversation/conversation.dart';
 import 'package:pbl5/models/language/language.dart';
@@ -46,7 +45,7 @@ abstract class ApiClient {
   Future<ApiResponse> resetPassword(@Body() Map<String, dynamic> body);
 
   @GET('/auth/account')
-  Future<ApiResponse<User>> getAccount();
+  Future<ApiResponse<Account>> getAccount();
 
   @GET('/auth/account/{account_id}')
   Future<ApiResponse<Account>> getAccountById(@Path("account_id") String id);
@@ -108,6 +107,19 @@ abstract class ApiClient {
     @Query('constant_type') String constantType,
     @Query('is_prefix') bool isPrefix,
   );
+
+  ///
+  /// Company
+  ///
+  @GET('/profile/company')
+  Future<ApiResponse<Company>> getCompanyProfile();
+
+  @PATCH('/profile/company/avatar')
+  Future<ApiResponse> updateCompanyAvatar(@Body() FormData body);
+
+  @PATCH('/profile/company')
+  Future<ApiResponse<Company>> updateCompanyBasicInfo(
+      @Body() Map<String, dynamic> body);
 
   ///
   /// System constant

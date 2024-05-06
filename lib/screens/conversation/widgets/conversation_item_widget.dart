@@ -33,7 +33,7 @@ class ConversationItemWidget extends StatelessWidget {
             CustomImage.avatar(
               size: 60,
               borderRadius: BorderRadius.circular(1000),
-              url: conversation.company?.avatar,
+              url: conversation.user?.avatar,
             ),
             const SizedBox(width: 8),
             Expanded(
@@ -41,7 +41,7 @@ class ConversationItemWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    conversation.company?.companyName,
+                    "${conversation.user?.lastName} ${conversation.user?.firstName}",
                     fontWeight: FontWeight.w600,
                     size: 16,
                     maxLines: 1,

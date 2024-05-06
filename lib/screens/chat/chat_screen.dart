@@ -74,13 +74,13 @@ class _ChatScreenState extends State<ChatScreen> {
               title: CustomListTile(
                 contentPadding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
                 leading: CustomImage.avatar(
-                  url: conversation?.company?.avatar,
+                  url: conversation?.user?.avatar,
                   borderRadius: BorderRadius.circular(100),
                   size: 45,
                 ),
                 onTap: () {},
                 titleWidget: CustomText(
-                  conversation?.company?.companyName,
+                  "${conversation?.user?.lastName} ${conversation?.user?.firstName}",
                   style: AppTextStyle.titleText,
                   color: Colors.pink,
                 ),

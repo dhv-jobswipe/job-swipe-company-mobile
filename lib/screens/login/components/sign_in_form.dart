@@ -7,6 +7,7 @@ import 'package:pbl5/constants.dart';
 import 'package:pbl5/routes.dart';
 import 'package:pbl5/screens/main/main_screen.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
+import 'package:pbl5/shared_customization/helpers/dialogs/dialog_helper.dart';
 import 'package:pbl5/view_models/log_in_view_model.dart';
 import 'package:rive/rive.dart';
 
@@ -66,9 +67,9 @@ class _SignInFormState extends State<SignInForm> {
             );
           },
           onFailure: (e) {
-            debugPrint("Failed to login: $e");
             error.fire();
             Future.delayed(Duration(seconds: 2), () {
+              showErrorDialog(context, content: e);
               setState(() {
                 isShowLoading = false;
               });

@@ -6,6 +6,7 @@ import 'package:pbl5/services/apis/api_client.dart';
 import 'package:pbl5/services/app_dio.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
 import 'package:pbl5/services/service_repositories/chat_repository.dart';
+import 'package:pbl5/services/service_repositories/company_repository.dart';
 import 'package:pbl5/services/service_repositories/notification_repository.dart';
 import 'package:pbl5/services/service_repositories/recommendation_predict_repository.dart';
 import 'package:pbl5/services/service_repositories/system_constant_repository.dart';
@@ -63,6 +64,9 @@ Future<void> setupLocator() async {
   var systemConstantRepo = getIt.registerSingleton<SystemConstantRepository>(
       SystemConstantRepository(apis: apis));
 
+  var companyRepo =
+      getIt.registerSingleton<CompanyRepository>(CompanyRepository(apis: apis));
+
   ///
   /// View models
   ///
@@ -81,10 +85,12 @@ Future<void> setupLocator() async {
       () => IntegratedAuthViewModel(authenticationRepositoty: authRepo));
 
   getIt.registerLazySingleton<ProfileViewModel>(() => ProfileViewModel(
-      authRepositoty: authRepo,
-      userRepository: userRepo,
-      systemConstantRepository: systemConstantRepo,
-      customSharedPreferences: storage));
+        authRepositoty: authRepo,
+        userRepository: userRepo,
+        systemConstantRepository: systemConstantRepo,
+        customSharedPreferences: storage,
+        companyRepository: companyRepo,
+      ));
 
   getIt.registerLazySingleton<NotificationViewModel>(
       () => NotificationViewModel(notificationRepository: notiRepo));

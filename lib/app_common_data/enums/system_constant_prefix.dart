@@ -9,3 +9,21 @@ enum SystemConstantPrefix {
   final String prefix;
   const SystemConstantPrefix._(this.prefix);
 }
+
+enum SystemRole {
+  ADMIN._("10000"),
+  USER._("11001"),
+  COMPANY._("11002");
+
+  final String value;
+  const SystemRole._(this.value);
+
+  static SystemRole fromValue(String systemRole) {
+    String value =
+        systemRole.substring(SystemConstantPrefix.SYSTEM_ROLE.prefix.length);
+    for (var type in SystemRole.values) {
+      if (type.value == value) return type;
+    }
+    throw Exception("Invalid system role");
+  }
+}

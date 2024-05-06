@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbl5/generated/assets.gen.dart';
 import 'package:pbl5/locator_config.dart';
-import 'package:pbl5/models/user/user.dart';
+import 'package:pbl5/models/account/account.dart';
 import 'package:pbl5/screens/login/integrated_auth_screen.dart';
 import 'package:pbl5/screens/main/main_screen.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
@@ -21,20 +21,20 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      /// Get user
+      /// Get account
       var sp = getIt.get<CustomSharedPreferences>();
-      User? user;
+      Account? account;
       if (sp.accessToken.isNotEmptyOrNull) {
         try {
-          user =
+          account =
               (await getIt.get<AuthenticationRepositoty>().getAccount()).data;
         } catch (e) {
-          user = null;
+          account = null;
         }
       }
-      debugPrint("Starting app with user: ${user?.toJson()}".debug);
+      debugPrint("Starting app with account: ${account?.toJson()}".debug);
       context.pushRoute(
-          (context) => user != null ? MainScreen() : IntegratedAuthScreen());
+          (context) => account != null ? MainScreen() : IntegratedAuthScreen());
     });
   }
 
