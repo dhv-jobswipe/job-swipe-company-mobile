@@ -17,6 +17,7 @@ import 'package:pbl5/view_models/conversation_view_model.dart';
 import 'package:pbl5/view_models/main_view_model.dart';
 import 'package:pbl5/view_models/notification_view_model.dart';
 import 'package:pbl5/view_models/profile_view_model.dart';
+import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -67,11 +68,8 @@ class _MainScreenState extends State<MainScreen> {
     GetIt.instance.get<ConversationViewModel>().getConversation();
     // Get profile
     GetIt.instance.get<ProfileViewModel>().getProfile();
-    //fetch system constant
-    GetIt.instance.get<ProfileViewModel>().fetchSystemConstants(onSuccess: () {
-      debugPrint("DONE SYSTEM CONSTANT" +
-          GetIt.instance.get<ProfileViewModel>().systemConstants.toString());
-    });
+    //Get list companies
+    GetIt.instance.get<SwipeSelectionViewModel>().getRecommendedCompanies();
     super.initState();
   }
 

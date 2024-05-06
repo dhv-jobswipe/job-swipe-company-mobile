@@ -9,6 +9,7 @@ import 'package:pbl5/app_common_data/themes/app_theme.dart';
 import 'package:pbl5/app_common_data/themes/versions/app_theme_data_v1.dart';
 import 'package:pbl5/flavor_config.dart';
 import 'package:pbl5/locator_config.dart';
+import 'package:pbl5/models/app_data.dart';
 import 'package:pbl5/screens/splash/splash_screen.dart';
 
 void main() async {
@@ -19,6 +20,9 @@ void main() async {
       baseApiUrl: "https://3qm04f8c-8080.asse.devtunnels.ms/",
       flavor: Flavor.production,
       versionAPI: 'api/');
+
+  // Get system constants
+  await getIt.get<AppData>().fetchAllSystemConstants();
 
   runApp(
     AppTheme(
@@ -32,7 +36,7 @@ void main() async {
         saveLocale: true,
         child: Builder(builder: (context) {
           return MaterialApp(
-            title: 'Job Swipe',
+            title: 'Job Swipe Company',
             debugShowCheckedModeBanner: false,
             builder: BotToastInit(),
             navigatorObservers: [BotToastNavigatorObserver()],

@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pbl5/app_common_data/enums/system_constant_prefix.dart';
 import 'package:pbl5/constants.dart';
 import 'package:pbl5/locator_config.dart';
+import 'package:pbl5/models/app_data.dart';
+import 'package:pbl5/models/application_position/application_position.dart';
+import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/user_awards/user_awards.dart';
 import 'package:pbl5/models/user_educations/user_educations.dart';
 import 'package:pbl5/models/user_experiences/user_experiences.dart';
@@ -15,14 +20,15 @@ import 'package:pbl5/screens/edit_profile/edit_award_screen.dart';
 import 'package:pbl5/screens/edit_profile/edit_basic_profile_screen.dart';
 import 'package:pbl5/screens/edit_profile/edit_education_screen.dart';
 import 'package:pbl5/screens/edit_profile/edit_experience_screen.dart';
+import 'package:pbl5/screens/edit_profile/edit_language.dart';
 import 'package:pbl5/screens/profile/edit_email.dart';
-import 'package:pbl5/screens/profile/edit_image.dart';
 import 'package:pbl5/screens/profile/edit_name.dart';
 import 'package:pbl5/screens/profile/edit_phone.dart';
 import 'package:pbl5/screens/profile/widgets/display_image_widget.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
 import 'package:pbl5/shared_customization/extensions/date_time_ext.dart';
 import 'package:pbl5/shared_customization/extensions/string_ext.dart';
+import 'package:pbl5/shared_customization/helpers/image_helper.dart';
 import 'package:pbl5/view_models/profile_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -78,8 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Expanded(
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(
-                        top: 30.h, bottom: 80.h, left: 15.w, right: 15.w),
+                    padding:
+                        EdgeInsets.only(top: 30.h, left: 15.w, right: 15.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -126,7 +132,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           _buildCustomRoundedContainer(
-                            onAddPressed: () {},
+                            onEditPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditEducationScreen(
+                                    viewModel: viewModel,
+                                  ),
+                                ),
+                              ).then((value) {
+                                if (value == 'updateEducation') {
+                                  viewModel.getProfile();
+                                }
+                              });
+                            },
+                            child: buildApplicationPositions(),
+                          ),
+                          _buildCustomRoundedContainer(
+                            onEditPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditLanguageScreen(
+                                    viewModel: viewModel,
+                                  ),
+                                ),
+                              ).then((value) {
+                                if (value == 'updateLanguage') {
+                                  viewModel.getProfile();
+                                }
+                              });
+                            },
+                            child: buildLanguage(),
+                          ),
+                          _buildCustomRoundedContainer(
                             onEditPressed: () {
                               Navigator.push(
                                 context,
@@ -144,7 +183,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: buildEducation(),
                           ),
                           _buildCustomRoundedContainer(
-                            onAddPressed: () {},
                             onEditPressed: () {
                               Navigator.push(
                                 context,
@@ -162,7 +200,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: buildAward(),
                           ),
                           _buildCustomRoundedContainer(
-                            onAddPressed: () {},
                             onEditPressed: () {
                               Navigator.push(
                                 context,
@@ -244,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 40.h,
+                            height: 100.h,
                           ),
                         ],
                       ),
@@ -262,7 +299,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildCustomRoundedContainer({
     required Widget child,
     VoidCallback? onEditPressed,
-    VoidCallback? onAddPressed,
   }) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -273,9 +309,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(15)),
         gradient: LinearGradient(
-          end: Alignment.topCenter,
-          begin: Alignment.bottomCenter,
-          stops: [0.0, 1.3],
+          end: Alignment.topLeft,
+          begin: Alignment.bottomRight,
+          stops: [-0.5, 1.3],
           colors: [
             Color(0xFFFFEBB2),
             Colors.white,
@@ -301,20 +337,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: child,
           ),
-          onAddPressed != null
-              ? Positioned(
-                  top: 0,
-                  right: 46,
-                  child: IconButton(
-                    onPressed: onAddPressed,
-                    icon: Icon(
-                      Icons.add,
-                      color: Colors.black,
-                      size: 27,
-                    ),
-                  ),
-                )
-              : const SizedBox.shrink(),
           onEditPressed != null
               ? Positioned(
                   top: 0,
@@ -381,11 +403,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         final gender =
             context.select<ProfileViewModel, bool?>((vm) => vm.user?.gender);
         return InkWell(
-          onTap: () {
-            navigateSecondPage(
-              editForm: const EditImagePage(),
-              detailContent: const Text("CONTENT"),
-            );
+          onTap: () async {
+            final List<File> file = await ImagePickerHelper.showImagePicker(
+                context: context,
+                multiSelection: false,
+                withCameraOption: true);
+            viewModel.updateAvatar(file: file.first);
           },
           child: DisplayImage(
             urlPath: userImage,
@@ -626,6 +649,112 @@ class _ProfileScreenState extends State<ProfileScreen> {
         dialogTitle: const Text('Name'),
       );
     });
+  }
+
+  Builder buildApplicationPositions() {
+    return Builder(
+      builder: (context) {
+        final applicationPositions =
+            context.select<ProfileViewModel, List<ApplicationPosition>?>(
+                (vm) => vm.user?.applicationPositions);
+        final allApplicationPositionName = applicationPositions
+            ?.map((e) => e.applyPosition?.constantName ?? '')
+            .join(', ');
+
+        final applicationCards =
+            applicationPositions?.map((applicationPosition) {
+                  final positionSkills = applicationPosition.skills;
+                  return Card(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 8,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              'Position: ${applicationPosition.applyPosition?.constantName}'),
+                          Row(
+                            children: [
+                              Text('Skills: '),
+                              Expanded(
+                                child: Wrap(
+                                  children: positionSkills == null
+                                      ? []
+                                      : positionSkills.map((skill) {
+                                          return Card(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Text(
+                                                  '${skill.skill?.constantName}'),
+                                            ),
+                                          );
+                                        }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList() ??
+                [];
+        return buildUserInfoDisplay(
+          getValue: allApplicationPositionName ?? '',
+          title: 'Application Position',
+          editPage: const EditPhoneFormPage(),
+          dialogTitle: Text("Application Position"),
+          detailContent: Column(children: applicationCards),
+        );
+      },
+    );
+  }
+
+  Builder buildLanguage() {
+    return Builder(
+      builder: (context) {
+        final listLanguages = context.select<ProfileViewModel, List<Language>?>(
+            (vm) => vm.user?.languages);
+        final allLanguageNames = listLanguages
+            ?.map((e) => e.languageConstant?.constantName ?? '')
+            .join(', ');
+
+        final allLanguageDetail = listLanguages
+            ?.map(
+              (e) => Card(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 8,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildRichKeyValue(context, 'Language: ',
+                          e.languageConstant?.constantName ?? ''),
+                      buildRichKeyValue(context, 'Score: ', e.score.toString()),
+                      buildRichKeyValue(context, 'Certificate Date: ',
+                          e.certificateDate.toDateTime.toDayMonthYear() ?? ''),
+                    ],
+                  ),
+                ),
+              ),
+            )
+            .toList();
+        return buildUserInfoDisplay(
+          getValue: allLanguageNames ?? '',
+          title: 'Languages',
+          editPage: const EditPhoneFormPage(),
+          detailContent: Column(
+            children: allLanguageDetail ?? [],
+          ),
+          dialogTitle: const Text('Languages'),
+        );
+      },
+    );
   }
 
   Builder buildEducation() {

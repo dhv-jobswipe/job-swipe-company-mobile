@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +8,9 @@ import 'package:pbl5/app_common_data/enums/system_constant_prefix.dart';
 import 'package:pbl5/constants.dart';
 import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/models/app_data.dart';
-import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/screens/base/base_view.dart';
-import 'package:pbl5/screens/insert_profile/insert_experience_screen.dart';
+import 'package:pbl5/screens/insert_profile/insert_award_screen.dart';
+import 'package:pbl5/screens/insert_profile/insert_language_screen.dart';
 import 'package:pbl5/screens/login/components/sign_in_form.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
 import 'package:pbl5/shared_customization/extensions/string_ext.dart';
@@ -19,16 +21,16 @@ import 'package:pbl5/view_models/profile_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 
-class EditExperienceScreen extends StatefulWidget {
+class EditLanguageScreen extends StatefulWidget {
   final ProfileViewModel viewModel;
 
-  EditExperienceScreen({super.key, required this.viewModel});
+  EditLanguageScreen({super.key, required this.viewModel});
 
   @override
-  State<EditExperienceScreen> createState() => _EditExperienceScreenState();
+  State<EditLanguageScreen> createState() => _EditLanguageScreenState();
 }
 
-class _EditExperienceScreenState extends State<EditExperienceScreen> {
+class _EditLanguageScreenState extends State<EditLanguageScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isShowLoading = false;
   bool isShowConfetti = false;
@@ -38,14 +40,14 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
 
   late SMITrigger confetti;
 
-  void onUpdateExperience(BuildContext context) {
+  void onUpdateLanguage(BuildContext context) {
     setState(() {
       isShowLoading = true;
       isShowConfetti = true;
     });
     Future.delayed(Duration(seconds: 1), () async {
       if (_formKey.currentState!.validate()) {
-        await widget.viewModel.updateExperience(
+        await widget.viewModel.updateLanguage(
           onSuccess: () {
             check.fire();
             Future.delayed(Duration(seconds: 2), () {
@@ -85,14 +87,14 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
     });
   }
 
-  void onDeleteExperience(BuildContext context, {required int index}) {
+  void onDeleteLanguage(BuildContext context, {required int index}) {
     setState(() {
       isShowLoading = true;
       isShowConfetti = true;
     });
     Future.delayed(Duration(seconds: 1), () async {
       if (_formKey.currentState!.validate()) {
-        await widget.viewModel.deleteExperience(
+        await widget.viewModel.deleteLanguage(
           index: index,
           onSuccess: () {
             check.fire();
@@ -104,7 +106,7 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
             }).then(
               (e) => Future.delayed(
                 Duration(seconds: 1),
-                () => {},
+                () => context.pop(),
               ),
             );
           },
@@ -149,7 +151,7 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(
-          'Edit Experience',
+          'Edit Language',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontFamily: 'Poppins',
@@ -176,23 +178,31 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => InsertExperienceScreen(
+                  builder: (context) => InsertLanguageScreen(
                     viewModel: widget.viewModel,
                   ),
                 ),
-              ).then((value) {
-                if (value == 'addExperience') {
-                  setState(() {
-                    widget.viewModel.getProfile();
-                  });
-                }
-              });
+              ).then(
+                (value) {
+                  if (value == 'addLanguage') {
+                    setState(() {
+                      widget.viewModel.getProfile();
+                    });
+                  }
+                },
+              );
             },
           ),
         ],
       ),
       mobileBuilder: (context) {
-        debugPrint(widget.viewModel.studyEndTimeControllers.toString() ?? '');
+        debugPrint("LANGUAGE CONSTANT: " +
+            getIt
+                .get<AppData>()
+                .systemConstants[SystemConstantPrefix.LANGUAGE]!
+                .toString());
+        debugPrint(
+            "USER LANGUAGES: " + widget.viewModel.user!.languages.toString());
         return Stack(
           children: [
             Form(
@@ -203,24 +213,24 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
                 ),
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
-                  child: widget.viewModel.user?.experiences == []
+                  child: widget.viewModel.user?.languages == []
                       ? const SizedBox.shrink()
                       : Column(
                           children: [
                             ...List.generate(
-                              widget.viewModel.user?.experiences.length ?? 0,
+                              widget.viewModel.user?.languages.length ?? 0,
                               (index) => CustomizedRoundedContainer(
                                 child: Column(
                                   children: [
                                     SizedBox(
-                                      height: 30.h,
+                                      height: 20,
                                     ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Experience " +
+                                          "Language " +
                                               (index + 1).toString() +
                                               ": ",
                                           style: TextStyle(
@@ -238,13 +248,12 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
                                                 context: context,
                                                 builder: (context) {
                                                   return ConfirmDialogAlert(
-                                                    title: 'Delete Experience',
+                                                    title: 'Delete language',
                                                     content:
-                                                        "Are you sure you want to delete this experience?",
+                                                        "Are you sure you want to delete this language?",
                                                     confirmText: 'Delete',
                                                     onConfirm: () {
-                                                      onDeleteExperience(
-                                                          context,
+                                                      onDeleteLanguage(context,
                                                           index: index);
                                                     },
                                                   );
@@ -253,71 +262,11 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 20),
-                                    TextFormField(
-                                      controller: widget.viewModel
-                                          .expStartTimeControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'Experience Start Time',
-                                      ),
-                                      onTap: () async {
-                                        final DateTime? picked =
-                                            await showDatePicker(
-                                          context: context,
-                                          initialDate: widget
-                                              .viewModel
-                                              .expStartTimeControllers[index]
-                                              .text
-                                              .toInitialDateTime,
-                                          firstDate: DateTime(1900, 1),
-                                          lastDate: DateTime.now(),
-                                        );
-                                        if (picked != null)
-                                          widget
-                                              .viewModel
-                                              .expStartTimeControllers[index]
-                                              .text = DateFormat(
-                                                  'dd-MM-yyyy')
-                                              .format(picked);
-                                      },
-                                      readOnly: true,
-                                    ),
-                                    TextFormField(
-                                      controller: widget.viewModel
-                                          .expEndTimeControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'Experience End Time',
-                                      ),
-                                      onTap: () async {
-                                        final DateTime? picked =
-                                            await showDatePicker(
-                                          context: context,
-                                          initialDate: widget
-                                              .viewModel
-                                              .expEndTimeControllers[index]
-                                              .text
-                                              .toInitialDateTime,
-                                          firstDate: DateTime(1900, 1),
-                                          lastDate: DateTime.now(),
-                                        );
-                                        if (picked != null)
-                                          widget
-                                                  .viewModel
-                                                  .expEndTimeControllers[index]
-                                                  .text =
-                                              DateFormat('dd-MM-yyyy')
-                                                  .format(picked);
-                                      },
-                                      readOnly: true,
-                                    ),
-                                    SizedBox(
-                                      height: 2.h,
-                                    ),
                                     Builder(
                                       builder: (context) {
                                         final value = context.select(
                                             (ProfileViewModel vm) =>
-                                                vm.selectedSystemConstants[
+                                                vm.updateLanguageSystemConstant[
                                                     index]);
                                         return CustomDropdownButton(
                                           label: "Experience Type",
@@ -325,7 +274,7 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
                                           onChanged: (value) {
                                             if (value != null) {
                                               widget.viewModel
-                                                      .selectedSystemConstants[
+                                                      .updateLanguageSystemConstant[
                                                   index] = value;
                                               widget.viewModel.updateUI();
                                             }
@@ -335,7 +284,7 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
                                               .get<AppData>()
                                               .systemConstants[
                                                   SystemConstantPrefix
-                                                      .EXPERIENCE_TYPE]!
+                                                      .LANGUAGE]!
                                               .map((e) => DropdownItemModel(
                                                   label: e.constantName!,
                                                   value: e))
@@ -350,34 +299,53 @@ class _EditExperienceScreenState extends State<EditExperienceScreen> {
                                     ),
                                     TextFormField(
                                       controller: widget.viewModel
-                                          .workPlaceControllers[index],
+                                              .updateCertifiedDateControllers[
+                                          index],
                                       decoration: InputDecoration(
-                                        labelText: 'Work Place',
+                                        labelText: 'Certified Date',
                                       ),
+                                      onTap: () async {
+                                        final DateTime? picked =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: widget
+                                              .viewModel
+                                              .updateCertifiedDateControllers[
+                                                  index]
+                                              .text
+                                              .toInitialDateTime,
+                                          firstDate: DateTime(1900, 1),
+                                          lastDate: DateTime.now(),
+                                        );
+                                        if (picked != null)
+                                          widget
+                                              .viewModel
+                                              .updateCertifiedDateControllers[
+                                                  index]
+                                              .text = DateFormat(
+                                                  'dd-MM-yyyy')
+                                              .format(picked);
+                                      },
+                                      readOnly: true,
                                     ),
                                     TextFormField(
-                                      controller: widget
-                                          .viewModel.positionControllers[index],
+                                      controller: widget.viewModel
+                                              .updateLanguageScoreControllers[
+                                          index],
                                       decoration: InputDecoration(
-                                        labelText: 'Position',
+                                        labelText: 'Score',
                                       ),
-                                    ),
-                                    TextFormField(
-                                      controller: widget
-                                          .viewModel.expNoteControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'Note',
-                                      ),
+                                      keyboardType: TextInputType.number,
                                     ),
                                     SizedBox(
-                                      height: 40.h,
+                                      height: 20,
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                             buildSaveButton(context, onPressed: () {
-                              onUpdateExperience(context);
+                              onUpdateLanguage(context);
                             }),
                             SizedBox(
                               height: 60.h,

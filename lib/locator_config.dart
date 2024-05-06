@@ -1,11 +1,14 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pbl5/models/app_data.dart';
+import 'package:pbl5/services/apiAI/api_ai.dart';
 import 'package:pbl5/services/apis/api_client.dart';
 import 'package:pbl5/services/app_dio.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
 import 'package:pbl5/services/service_repositories/chat_repository.dart';
 import 'package:pbl5/services/service_repositories/notification_repository.dart';
+import 'package:pbl5/services/service_repositories/recommendation_predict_repository.dart';
+import 'package:pbl5/services/service_repositories/system_constant_repository.dart';
 import 'package:pbl5/services/service_repositories/user_repository.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
 import 'package:pbl5/view_models/app_notification_view_model.dart';
@@ -34,6 +37,9 @@ Future<void> setupLocator() async {
   var apis = getIt.registerSingleton<ApiClient>(
       ApiClient(AppDio(), baseUrl: dotenv.env["BASE_URL"]!));
 
+  var apiAI = getIt.registerSingleton<ApiAI>(
+      ApiAI(AppDio(), baseUrl: dotenv.env["AI_URL"]!));
+
   getIt.registerLazySingleton<AppData>(() => AppData());
 
   ///
@@ -45,11 +51,17 @@ Future<void> setupLocator() async {
   var userRepo =
       getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
 
+  var recPredictRepo = getIt.registerSingleton<RecommendationPredictRepository>(
+      RecommendationPredictRepository(apiAI: apiAI));
+
   var notiRepo = getIt.registerSingleton<NotificationRepository>(
       NotificationRepository(apis: apis));
 
   var chatRepo =
       getIt.registerSingleton<ChatRepository>(ChatRepository(apis: apis));
+
+  var systemConstantRepo = getIt.registerSingleton<SystemConstantRepository>(
+      SystemConstantRepository(apis: apis));
 
   ///
   /// View models
@@ -61,7 +73,7 @@ Future<void> setupLocator() async {
       () => RegisterViewModel(authenticationRepositoty: authRepo));
 
   getIt.registerLazySingleton<SwipeSelectionViewModel>(
-      () => SwipeSelectionViewModel());
+      () => SwipeSelectionViewModel(recPredictRepo: recPredictRepo));
 
   getIt.registerLazySingleton<MainViewModel>(() => MainViewModel());
 
@@ -71,6 +83,7 @@ Future<void> setupLocator() async {
   getIt.registerLazySingleton<ProfileViewModel>(() => ProfileViewModel(
       authRepositoty: authRepo,
       userRepository: userRepo,
+      systemConstantRepository: systemConstantRepo,
       customSharedPreferences: storage));
 
   getIt.registerLazySingleton<NotificationViewModel>(

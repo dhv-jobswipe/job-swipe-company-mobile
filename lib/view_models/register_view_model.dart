@@ -40,6 +40,7 @@ class RegisterViewModel extends BaseViewModel {
           systemRole: SystemConstant(constantId: systemRoleId),
         ),
       );
+      onSuccess?.call();
     } on Exception catch (error) {
       onFailure?.call(error.toString());
     }

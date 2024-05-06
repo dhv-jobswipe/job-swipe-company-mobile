@@ -14,6 +14,7 @@ class CustomField extends StatelessWidget {
   final String? label;
   final bool isRequired;
   final Widget child;
+  final bool isShowError;
 
   const CustomField({
     super.key,
@@ -21,6 +22,7 @@ class CustomField extends StatelessWidget {
     required this.label,
     required this.isRequired,
     required this.child,
+    this.isShowError = true,
   });
 
   @override
@@ -30,12 +32,10 @@ class CustomField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         (label != null && label.isNotEmptyOrNull)
-            ? CustomRequiredText(label!,
-                isRequired: isRequired,
-                padding: const EdgeInsets.only(bottom: 6))
+            ? Text(label!, style: TextStyle(fontSize: 12))
             : const SizedBox.shrink(),
         child,
-        if (errorLabel.isNotEmptyOrNull)
+        if (errorLabel.isNotEmptyOrNull && isShowError)
           ...([
             const SizedBox(height: 4),
             RichText(

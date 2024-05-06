@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:pbl5/models/account/account.dart';
+import 'package:pbl5/models/application_position/application_position.dart';
+import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/conversation/conversation.dart';
+import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/message/message.dart';
 import 'package:pbl5/models/notification_data/notification_data.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
@@ -25,9 +28,6 @@ abstract class ApiClient {
   ///
   @POST('/auth/login')
   Future<ApiResponse<Credential>> login(@Body() Map<String, dynamic> body);
-
-  @GET('/constants/system-roles')
-  Future<SystemRolesResponse> getSystemRoles();
 
   @POST('/auth/user-register')
   Future<ApiResponse<User>> register(@Body() Map<String, dynamic> body);
@@ -57,11 +57,17 @@ abstract class ApiClient {
   @GET('/profile/user')
   Future<ApiResponse<User>> getProfile();
 
+  @PATCH('/profile/user/avatar')
+  Future<ApiResponse> updateAvatar(@Body() FormData body);
+
   @PATCH('/profile/user?type=basic_info')
   Future<ApiResponse<User>> updateBasicInfo(@Body() Map<String, dynamic> body);
 
   @PATCH('/profile/user?type=education')
   Future<ApiResponse<User>> updateEducation(@Body() List<UserEducations> body);
+
+  @POST('/profile/user?type=education')
+  Future<ApiResponse<User>> insertEducation(@Body() List<UserEducations> body);
 
   @DELETE('/profile/user?type=education')
   Future<ApiResponse> deleteEducation(@Body() List<String> body);
@@ -70,20 +76,59 @@ abstract class ApiClient {
   Future<ApiResponse<User>> updateExperience(
       @Body() List<UserExperiences> body);
 
+  @POST('/profile/user?type=experience')
+  Future<ApiResponse<User>> insertExperience(
+      @Body() List<UserExperiences> body);
+
   @DELETE('/profile/user?type=experience')
   Future<ApiResponse> deleteExperience(@Body() List<String> body);
 
   @PATCH('/profile/user?type=award')
   Future<ApiResponse<User>> updateAward(@Body() List<UserAwards> body);
 
+  @POST('/profile/user?type=award')
+  Future<ApiResponse<User>> insertAward(@Body() List<UserAwards> body);
+
   @DELETE('/profile/user?type=award')
   Future<ApiResponse> deleteAward(@Body() List<String> body);
+
+  @PATCH('/account/languages')
+  Future<ApiResponse<List<Language>>> updateLanguages(
+      @Body() List<Language> body);
+
+  @DELETE('/account/languages')
+  Future<ApiResponse> deleteLanguage(@Body() List<String> body);
+
+  @POST('/account/languages')
+  Future<ApiResponse<List<Language>>> insertLanguages(
+      @Body() List<Language> body);
 
   @GET('/constants')
   Future<ApiResponse<List<SystemConstant>>> getConstantType(
     @Query('constant_type') String constantType,
     @Query('is_prefix') bool isPrefix,
   );
+
+  ///
+  /// System constant
+  ///
+  @GET('/constants/system-roles')
+  Future<SystemRolesResponse> getSystemRoles();
+
+  @GET('/constants?is_prefix=true')
+  Future<ApiResponse<List<SystemConstant>>> getSystemConstantsByPrefix(
+      @Query("constant_type") String prefix);
+
+  @GET('/constants')
+  Future<ApiResponse<SystemConstant>> getSystemConstantByType(
+      @Query("constant_type") String type);
+
+  @GET('/constants/types')
+  Future<ApiResponse<List<String>>> getAllSystemTypes();
+
+  @GET('/constants/{id}')
+  Future<ApiResponse<SystemConstant>> getSystemConstantById(
+      @Path("id") String id);
 
   ///
   /// Notification

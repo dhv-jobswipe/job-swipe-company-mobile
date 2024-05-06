@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pbl5/models/application_position/application_position.dart';
+import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/models/user_awards/user_awards.dart';
 import 'package:pbl5/models/user_educations/user_educations.dart';
@@ -25,6 +27,10 @@ class User with _$User {
     @JsonKey(name: 'date_of_birth') String? dob,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'updated_at') String? updatedAt,
+    @JsonKey(name: 'application_positions')
+    @Default([])
+    List<ApplicationPosition> applicationPositions,
+    @Default([]) List<Language> languages,
     @JsonKey(name: 'summary_introduction') String? summaryIntroduction,
     @Default([])
     @JsonKey(name: 'social_media_link')

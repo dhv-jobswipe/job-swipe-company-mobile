@@ -40,6 +40,16 @@ extension StringExt on String? {
     }
   }
 
+  DateTime get toInitialDateTime {
+    if (this.isEmptyOrNull) return DateTime.now();
+    try {
+      var date = DateFormat("dd-MM-yyyy").parse(this!, true);
+      return date;
+    } catch (err) {
+      return DateTime.now();
+    }
+  }
+
   int? get toTimeStamp {
     if (this.isEmptyOrNull) return null;
     try {

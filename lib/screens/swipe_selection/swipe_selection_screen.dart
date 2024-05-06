@@ -5,7 +5,6 @@ import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/screens/base/base_view.dart';
 import 'package:pbl5/screens/swipe_selection/card/candidate_model.dart';
 import 'package:pbl5/screens/swipe_selection/card/card.dart';
-import 'package:pbl5/view_models/profile_view_model.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 
 class SwipeSelectionScreen extends StatefulWidget {
@@ -21,9 +20,22 @@ class _SwipeSelectionScreenState extends State<SwipeSelectionScreen> {
 
   final cards = candidates.map(ExampleCard.new).toList();
 
+  // List<Widget> cards = [];
+
   @override
   void initState() {
     viewModel = getIt.get<SwipeSelectionViewModel>();
+    // viewModel.getRecommendedCompanies().then((_) {
+    //   if (viewModel.companies != null) {
+    //     setState(() {
+    //       cards = viewModel.companies!
+    //           .map((company) => CompanyCard(company))
+    //           .toList();
+    //     });
+    //   } else {
+    //     cards = exampleCards;
+    //   }
+    // });
     super.initState();
   }
 
@@ -70,10 +82,26 @@ class _SwipeSelectionScreenState extends State<SwipeSelectionScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.only(bottom: 80.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        viewModel.getRecommendedCompanies().then((_) {
+                          if (viewModel.companies != null) {
+                            debugPrint(
+                                'Companies k null: ${viewModel.companies}');
+                            setState(() {
+                              // cards = viewModel.companies!
+                              //     .map((company) => CompanyCard(company))
+                              //     .toList();
+                            });
+                          }
+                        });
+                      },
+                      child: const Icon(Icons.ac_unit),
+                    ),
                     ElevatedButton(
                       onPressed: controller.undo,
                       child: const Icon(Icons.rotate_left),

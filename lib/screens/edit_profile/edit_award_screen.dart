@@ -7,8 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pbl5/constants.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/screens/base/base_view.dart';
+import 'package:pbl5/screens/insert_profile/insert_award_screen.dart';
 import 'package:pbl5/screens/login/components/sign_in_form.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
+import 'package:pbl5/shared_customization/extensions/string_ext.dart';
 import 'package:pbl5/shared_customization/widgets/confirm_dialog_alert.dart';
 import 'package:pbl5/shared_customization/widgets/custom_rounded_container.dart';
 import 'package:pbl5/view_models/profile_view_model.dart';
@@ -162,6 +164,32 @@ class _EditAwardScreenState extends State<EditAwardScreen> {
             context.pop('updateProfile');
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.add,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => InsertAwardScreen(
+                    viewModel: widget.viewModel,
+                  ),
+                ),
+              ).then(
+                (value) {
+                  if (value == 'addAward') {
+                    setState(() {
+                      widget.viewModel.getProfile();
+                    });
+                  }
+                },
+              );
+            },
+          ),
+        ],
       ),
       mobileBuilder: (context) {
         debugPrint(widget.viewModel.studyEndTimeControllers.toString() ?? '');
@@ -241,7 +269,11 @@ class _EditAwardScreenState extends State<EditAwardScreen> {
                                         final DateTime? picked =
                                             await showDatePicker(
                                           context: context,
-                                          initialDate: DateTime.now(),
+                                          initialDate: widget
+                                              .viewModel
+                                              .awardTimeControllers[index]
+                                              .text
+                                              .toInitialDateTime,
                                           firstDate: DateTime(1900, 1),
                                           lastDate: DateTime.now(),
                                         );

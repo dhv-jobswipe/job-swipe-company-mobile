@@ -3,6 +3,7 @@ import 'package:pbl5/models/other_description/other_description.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 
 part 'company.g.dart';
+
 part 'company.freezed.dart';
 
 @freezed

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pbl5/constants.dart';
 import 'package:pbl5/screens/base/base_view.dart';
+import 'package:pbl5/screens/insert_profile/insert_education_screen.dart';
 import 'package:pbl5/screens/login/components/sign_in_form.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
 import 'package:pbl5/shared_customization/widgets/confirm_dialog_alert.dart';
@@ -98,7 +99,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
             }).then(
               (e) => Future.delayed(
                 Duration(seconds: 1),
-                () => context.pop(),
+                () {},
               ),
             );
           },
@@ -160,9 +161,33 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
             context.pop('updateProfile');
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.add,
+              size: 30,
+            ),
+            onPressed: () {
+              widget.viewModel.clearAddEducationController();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => InsertEducationScreen(
+                    viewModel: widget.viewModel,
+                  ),
+                ),
+              ).then((value) {
+                if (value == 'addEducation') {
+                  setState(() {
+                    widget.viewModel.getProfile();
+                  });
+                }
+              });
+            },
+          ),
+        ],
       ),
       mobileBuilder: (context) {
-        debugPrint(widget.viewModel.studyEndTimeControllers.toString() ?? '');
         return Stack(
           children: [
             Form(
@@ -171,149 +196,154 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                 padding: EdgeInsets.symmetric(
                   horizontal: 16.h,
                 ),
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: widget.viewModel.user?.educations == []
-                      ? const SizedBox.shrink()
-                      : Column(
-                          children: [
-                            ...List.generate(
-                              widget.viewModel.user?.educations.length ?? 0,
-                              (index) => CustomizedRoundedContainer(
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Education " +
-                                              (index + 1).toString() +
-                                              ": ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
+                child: Builder(builder: (context) {
+                  return SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: widget.viewModel.user?.educations == []
+                        ? const SizedBox.shrink()
+                        : Column(
+                            children: [
+                              ...List.generate(
+                                widget.viewModel.user?.educations.length ?? 0,
+                                (index) => CustomizedRoundedContainer(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Education " +
+                                                (index + 1).toString() +
+                                                ": ",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: () {
+                                              showCupertinoDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return ConfirmDialogAlert(
+                                                      title:
+                                                          'Delete Experience',
+                                                      content:
+                                                          "Are you sure you want to delete this experience?",
+                                                      confirmText: 'Delete',
+                                                      onConfirm: () {
+                                                        onDeleteEducation(
+                                                            context,
+                                                            index: index);
+                                                      },
+                                                    );
+                                                  });
+                                            },
                                           ),
-                                          onPressed: () {
-                                            showCupertinoDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return ConfirmDialogAlert(
-                                                    title: 'Delete Experience',
-                                                    content:
-                                                        "Are you sure you want to delete this experience?",
-                                                    confirmText: 'Delete',
-                                                    onConfirm: () {
-                                                      onDeleteEducation(context,
-                                                          index: index);
-                                                    },
-                                                  );
-                                                });
-                                          },
+                                        ],
+                                      ),
+                                      TextFormField(
+                                        controller: widget.viewModel
+                                            .studyPlaceControllers[index],
+                                        decoration: InputDecoration(
+                                          labelText: 'Study Place',
                                         ),
-                                      ],
-                                    ),
-                                    TextFormField(
-                                      controller: widget.viewModel
-                                          .studyPlaceControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'Study Place',
                                       ),
-                                    ),
-                                    TextFormField(
-                                      controller: widget.viewModel
-                                          .studyStartTimeControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'Study Start Time',
+                                      TextFormField(
+                                        controller: widget.viewModel
+                                            .studyStartTimeControllers[index],
+                                        decoration: InputDecoration(
+                                          labelText: 'Study Start Time',
+                                        ),
+                                        onTap: () async {
+                                          final DateTime? picked =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1900, 1),
+                                            lastDate: DateTime.now(),
+                                          );
+                                          if (picked != null)
+                                            widget
+                                                    .viewModel
+                                                    .studyStartTimeControllers[
+                                                        index]
+                                                    .text =
+                                                DateFormat('dd-MM-yyyy')
+                                                    .format(picked);
+                                        },
+                                        readOnly: true,
                                       ),
-                                      onTap: () async {
-                                        final DateTime? picked =
-                                            await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1900, 1),
-                                          lastDate: DateTime.now(),
-                                        );
-                                        if (picked != null)
-                                          widget
-                                              .viewModel
-                                              .studyStartTimeControllers[index]
-                                              .text = DateFormat(
-                                                  'dd-MM-yyyy')
-                                              .format(picked);
-                                      },
-                                      readOnly: true,
-                                    ),
-                                    TextFormField(
-                                      controller: widget.viewModel
-                                          .studyEndTimeControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'Study End Time',
+                                      TextFormField(
+                                        controller: widget.viewModel
+                                            .studyEndTimeControllers[index],
+                                        decoration: InputDecoration(
+                                          labelText: 'Study End Time',
+                                        ),
+                                        onTap: () async {
+                                          final DateTime? picked =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1900, 1),
+                                            lastDate: DateTime.now(),
+                                          );
+                                          if (picked != null)
+                                            widget
+                                                .viewModel
+                                                .studyEndTimeControllers[index]
+                                                .text = DateFormat(
+                                                    'dd-MM-yyyy')
+                                                .format(picked);
+                                        },
+                                        readOnly: true,
                                       ),
-                                      onTap: () async {
-                                        final DateTime? picked =
-                                            await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1900, 1),
-                                          lastDate: DateTime.now(),
-                                        );
-                                        if (picked != null)
-                                          widget
-                                              .viewModel
-                                              .studyEndTimeControllers[index]
-                                              .text = DateFormat(
-                                                  'dd-MM-yyyy')
-                                              .format(picked);
-                                      },
-                                      readOnly: true,
-                                    ),
-                                    TextFormField(
-                                      controller: widget
-                                          .viewModel.majorityControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'Majority',
+                                      TextFormField(
+                                        controller: widget.viewModel
+                                            .majorityControllers[index],
+                                        decoration: InputDecoration(
+                                          labelText: 'Majority',
+                                        ),
                                       ),
-                                    ),
-                                    TextFormField(
-                                      controller: widget
-                                          .viewModel.cpaControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'CPA',
+                                      TextFormField(
+                                        controller: widget
+                                            .viewModel.cpaControllers[index],
+                                        decoration: InputDecoration(
+                                          labelText: 'CPA',
+                                        ),
                                       ),
-                                    ),
-                                    TextFormField(
-                                      controller: widget
-                                          .viewModel.eduNoteControllers[index],
-                                      decoration: InputDecoration(
-                                        labelText: 'Note',
+                                      TextFormField(
+                                        controller: widget.viewModel
+                                            .eduNoteControllers[index],
+                                        decoration: InputDecoration(
+                                          labelText: 'Note',
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            buildSaveButton(context, onPressed: () {
-                              onUpdateEducation(context);
-                            }),
-                            SizedBox(
-                              height: 60.h,
-                            ),
-                          ],
-                        ),
-                ),
+                              buildSaveButton(context, onPressed: () {
+                                onUpdateEducation(context);
+                              }),
+                              SizedBox(
+                                height: 60.h,
+                              ),
+                            ],
+                          ),
+                  );
+                }),
               ),
             ),
             isShowLoading

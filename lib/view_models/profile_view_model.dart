@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/models/app_data.dart';
+import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/models/user_awards/user_awards.dart';
 import 'package:pbl5/models/user_educations/user_educations.dart';
 import 'package:pbl5/models/user_experiences/user_experiences.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
+import 'package:pbl5/services/service_repositories/system_constant_repository.dart';
 import 'package:pbl5/services/service_repositories/user_repository.dart';
 import 'package:pbl5/shared_customization/extensions/date_time_ext.dart';
 import 'package:pbl5/shared_customization/extensions/string_ext.dart';
@@ -17,6 +21,7 @@ import 'package:pbl5/view_models/base_view_model.dart';
 class ProfileViewModel extends BaseViewModel {
   final AuthenticationRepositoty authRepositoty;
   final UserRepository userRepository;
+  final SystemConstantRepository systemConstantRepository;
   final CustomSharedPreferences customSharedPreferences;
   User? user;
   final emailController = TextEditingController()..text = '';
@@ -30,6 +35,7 @@ class ProfileViewModel extends BaseViewModel {
     ..text = 'I am a developer';
   bool gender = true;
   List<String> socialMediaLinks = [];
+  File? avatar;
 
   //for education
   final List<TextEditingController> eduIdControllers = [];
@@ -40,8 +46,15 @@ class ProfileViewModel extends BaseViewModel {
   final List<TextEditingController> cpaControllers = [];
   final List<TextEditingController> eduNoteControllers = [];
 
+  //for add education
+  final addStudyPlaceController = TextEditingController();
+  final addStudyStartTimeController = TextEditingController();
+  final addStudyEndTimeController = TextEditingController();
+  final addMajorityController = TextEditingController();
+  final addCpaController = TextEditingController();
+  final addEduNoteController = TextEditingController();
+
   //for experience
-  List<SystemConstant>? systemConstants;
   List<SystemConstant> selectedSystemConstants = [];
   final List<TextEditingController> expIdControllers = [];
   final List<TextEditingController> workPlaceControllers = [];
@@ -50,22 +63,42 @@ class ProfileViewModel extends BaseViewModel {
   final List<TextEditingController> expEndTimeControllers = [];
   final List<TextEditingController> expNoteControllers = [];
 
+  //for add experience
+  SystemConstant? addSelectedSystemConstants;
+  final addWorkPlaceController = TextEditingController();
+  final addPositionController = TextEditingController();
+  final addExpStartTimeController = TextEditingController();
+  final addExpEndTimeController = TextEditingController();
+  final addExpNoteController = TextEditingController();
+
   //for award
   final List<TextEditingController> awardIdControllers = [];
   final List<TextEditingController> awardNameControllers = [];
   final List<TextEditingController> awardTimeControllers = [];
   final List<TextEditingController> awardNoteControllers = [];
 
+  //for add award
+  final addAwardNameController = TextEditingController();
+  final addAwardTimeController = TextEditingController();
+  final addAwardNoteController = TextEditingController();
+
+  //for update language
+  List<SystemConstant> updateLanguageSystemConstant = [];
+  final List<TextEditingController> languageIdControllers = [];
+  final List<TextEditingController> updateLanguageScoreControllers = [];
+  final List<TextEditingController> updateCertifiedDateControllers = [];
+
+  //for add language
+  SystemConstant? addSelectedLanguageSystemConstant;
+  final addLanguageScoreController = TextEditingController();
+  final addCertifiedDateController = TextEditingController();
+
   ProfileViewModel({
     required this.authRepositoty,
     required this.userRepository,
     required this.customSharedPreferences,
+    required this.systemConstantRepository,
   });
-
-  void updateSelectedSystemConstant(int index, SystemConstant value) {
-    selectedSystemConstants[index] = value;
-    updateUI();
-  }
 
   Future<void> updateBasicInfo({
     VoidCallback? onSuccess,
@@ -103,6 +136,23 @@ class ProfileViewModel extends BaseViewModel {
           .data;
 
       getIt.get<AppData>().updateUser(user);
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  Future<void> updateAvatar({
+    required File file,
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      await userRepository.updateAvatar(
+        avatar: await file,
+      );
+      getProfile();
       updateUI();
       onSuccess?.call();
     } on Exception catch (error) {
@@ -152,6 +202,7 @@ class ProfileViewModel extends BaseViewModel {
     VoidCallback? onSuccess,
     Function(String)? onFailure,
   }) async {
+    var cancel = showLoading();
     try {
       user = (await userRepository.updateAward(
         userAwards: awardIdControllers
@@ -174,6 +225,8 @@ class ProfileViewModel extends BaseViewModel {
       onSuccess?.call();
     } on Exception catch (error) {
       onFailure?.call(error.toString());
+    } finally {
+      cancel();
     }
   }
 
@@ -191,7 +244,8 @@ class ProfileViewModel extends BaseViewModel {
                       workPlaceControllers[expIdControllers.indexOf(e)].text,
                   position:
                       positionControllers[expIdControllers.indexOf(e)].text,
-                  experienceType: systemConstants?.first,
+                  experienceType:
+                      selectedSystemConstants[expIdControllers.indexOf(e)],
                   experienceStartTime:
                       expStartTimeControllers[expIdControllers.indexOf(e)]
                           .text
@@ -207,6 +261,173 @@ class ProfileViewModel extends BaseViewModel {
           .data;
       getIt.get<AppData>().updateUser(user);
       updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  Future<void> updateLanguage({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      var updatedLanguages = (await userRepository.updateLanguages(
+        languages: languageIdControllers
+            .map((e) => Language(
+                  id: e.text,
+                  languageConstant: updateLanguageSystemConstant[
+                      languageIdControllers.indexOf(e)],
+                  score: updateLanguageScoreControllers[
+                              languageIdControllers.indexOf(e)]
+                          .text ??
+                      "0",
+                  certificateDate: updateCertifiedDateControllers[
+                          languageIdControllers.indexOf(e)]
+                      .text
+                      .toDatetimeApi,
+                ))
+            .toList(),
+      ));
+
+      if (user != null) {
+        user!.copyWith(languages: updatedLanguages.data ?? user!.languages);
+        getIt.get<AppData>().updateUser(user);
+        updateUI();
+      }
+
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  // clear add Education controller
+  void clearAddEducationController() {
+    addStudyPlaceController.clear();
+    addStudyStartTimeController.clear();
+    addStudyEndTimeController.clear();
+    addMajorityController.clear();
+    addCpaController.clear();
+    addEduNoteController.clear();
+  }
+
+  //add education
+  Future<void> insertEducation({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      user = (await userRepository.insertEducation(
+        userEducations: [
+          UserEducations(
+            studyPlace: addStudyPlaceController.text,
+            studyStartTime: addStudyStartTimeController.text.toDatetimeApi,
+            studyEndTime: addStudyEndTimeController.text.toDatetimeApi,
+            majority: addMajorityController.text,
+            cpa: double.tryParse(addCpaController.text) ?? 0,
+            note: addEduNoteController.text,
+          )
+        ],
+      ))
+          .data;
+      getIt.get<AppData>().updateUser(user);
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  //clear add award controller
+  void clearAddAwardController() {
+    addAwardNameController.clear();
+    addAwardTimeController.clear();
+    addAwardNoteController.clear();
+  }
+
+  //add award
+  Future<void> insertAward({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      user = (await userRepository.insertAward(
+        userAwards: [
+          UserAwards(
+            certificateName: addAwardNameController.text,
+            certificateTime: addAwardTimeController.text.toDatetimeApi,
+            note: addAwardNoteController.text,
+          )
+        ],
+      ))
+          .data;
+      getIt.get<AppData>().updateUser(user);
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  //clear add experience controller
+  void clearAddExperienceController() {
+    addWorkPlaceController.clear();
+    addPositionController.clear();
+    addExpStartTimeController.clear();
+    addExpEndTimeController.clear();
+    addExpNoteController.clear();
+  }
+
+  //insert experience
+  Future<void> insertExperience({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      user = (await userRepository.insertExperience(
+        userExperiences: [
+          UserExperiences(
+            workPlace: addWorkPlaceController.text,
+            position: addPositionController.text,
+            experienceType: addSelectedSystemConstants,
+            experienceStartTime: addExpStartTimeController.text.toDatetimeApi,
+            experienceEndTime: addExpEndTimeController.text.toDatetimeApi,
+            note: addExpNoteController.text,
+          )
+        ],
+      ))
+          .data;
+      getIt.get<AppData>().updateUser(user);
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
+  // insert language
+  Future<void> insertLanguage({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      var insertedLanguages = (await userRepository.insertLanguages(
+        languages: [
+          Language(
+            languageConstant: addSelectedLanguageSystemConstant,
+            score: addLanguageScoreController.text,
+            certificateDate: addCertifiedDateController.text.toDatetimeApi,
+          )
+        ],
+      ));
+
+      if (user != null) {
+        user!.copyWith(languages: insertedLanguages.data ?? user!.languages);
+        getIt.get<AppData>().updateUser(user);
+        updateUI();
+      }
+
       onSuccess?.call();
     } on Exception catch (error) {
       onFailure?.call(error.toString());
@@ -247,6 +468,23 @@ class ProfileViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> deleteLanguage({
+    VoidCallback? onSuccess,
+    required int index,
+    Function(String)? onFailure,
+  }) async {
+    try {
+      await userRepository.deleteLanguage(
+        ids: [languageIdControllers[index].text],
+      );
+      getProfile();
+      updateUI();
+      onSuccess?.call();
+    } on Exception catch (error) {
+      onFailure?.call(error.toString());
+    }
+  }
+
   Future<void> deleteAward({
     VoidCallback? onSuccess,
     required int index,
@@ -261,22 +499,6 @@ class ProfileViewModel extends BaseViewModel {
       onSuccess?.call();
     } on Exception catch (error) {
       onFailure?.call(error.toString());
-    }
-  }
-
-  Future<void> fetchSystemConstants({
-    VoidCallback? onSuccess,
-    Function(String)? onFailure,
-  }) async {
-    final cancel = showLoading();
-    try {
-      systemConstants = (await userRepository.getConstantType()).data;
-      onSuccess?.call();
-      updateUI();
-    } on Exception catch (error) {
-      onFailure?.call(error.toString());
-    } finally {
-      cancel();
     }
   }
 
@@ -306,6 +528,14 @@ class ProfileViewModel extends BaseViewModel {
       majorityControllers.clear();
       cpaControllers.clear();
       eduNoteControllers.clear();
+      //add education
+      addStudyPlaceController.clear();
+      addStudyStartTimeController.clear();
+      addStudyEndTimeController.clear();
+      addMajorityController.clear();
+      addCpaController.clear();
+      addEduNoteController.clear();
+
       //experience
       expIdControllers.clear();
       workPlaceControllers.clear();
@@ -315,11 +545,32 @@ class ProfileViewModel extends BaseViewModel {
       expNoteControllers.clear();
       selectedSystemConstants.clear();
 
+      //add experience
+      addWorkPlaceController.clear();
+      addPositionController.clear();
+      addExpStartTimeController.clear();
+      addExpEndTimeController.clear();
+      addExpNoteController.clear();
+
       //award
       awardIdControllers.clear();
       awardNameControllers.clear();
       awardTimeControllers.clear();
       awardNoteControllers.clear();
+
+      //add award
+      addAwardNameController.clear();
+      addAwardTimeController.clear();
+      addAwardNoteController.clear();
+
+      //update language
+      languageIdControllers.clear();
+      updateLanguageScoreControllers.clear();
+      updateCertifiedDateControllers.clear();
+
+      //add language
+      addLanguageScoreController.clear();
+      addCertifiedDateController.clear();
 
       // create Controller for each education
       user?.educations.forEach((education) {
@@ -350,7 +601,7 @@ class ProfileViewModel extends BaseViewModel {
             text: experience.experienceEndTime.toDateTime.toDayMonthYear()));
         expNoteControllers.add(TextEditingController(text: experience.note));
         selectedSystemConstants
-            .add(experience.experienceType ?? systemConstants!.first);
+            .add(experience.experienceType ?? selectedSystemConstants.first);
       });
       //create Controller for each award
 
@@ -361,6 +612,17 @@ class ProfileViewModel extends BaseViewModel {
         awardTimeControllers.add(TextEditingController(
             text: award.certificateTime.toDateTime.toDayMonthYear()));
         awardNoteControllers.add(TextEditingController(text: award.note));
+      });
+
+      //create Controller for each language
+      user?.languages.forEach((language) {
+        languageIdControllers.add(TextEditingController(text: language.id));
+        updateLanguageSystemConstant.add(
+            language.languageConstant ?? updateLanguageSystemConstant.first);
+        updateLanguageScoreControllers
+            .add(TextEditingController(text: language.score));
+        updateCertifiedDateControllers.add(TextEditingController(
+            text: language.certificateDate.toDateTime.toDayMonthYear()));
       });
 
       onSuccess?.call();

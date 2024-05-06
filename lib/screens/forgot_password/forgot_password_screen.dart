@@ -37,6 +37,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       viewModel: viewModel,
       mobileBuilder: (context) => CustomDismissKeyboard(
         child: CustomForm(
+          key: Key("forgot_password_form"),
           child: (formKey) => CustomLayout.scrollableView(
             showAppBar: false,
             onWillPop: () => Future.value(true),
@@ -65,7 +66,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   validations: [Validators.validateEmail],
                   onChanged: (value) {
                     viewModel.email = value;
-                    viewModel.updateUI();
                   },
                 ),
                 const SizedBox(height: 25),

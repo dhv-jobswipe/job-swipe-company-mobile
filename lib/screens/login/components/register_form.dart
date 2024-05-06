@@ -55,7 +55,7 @@ class _RegisterFormState extends State<RegisterForm> {
             }).then(
               (e) => Future.delayed(
                 Duration(seconds: 1),
-                () => Navigator.of(context).pop(),
+                () async => context.pop(),
               ),
             );
           },

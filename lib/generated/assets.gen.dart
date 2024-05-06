@@ -295,6 +295,10 @@ class $AssetsImagesGen {
   AssetGenImage get avatarPlaceholder =>
       const AssetGenImage('assets/images/avatar_placeholder.png');
 
+  /// File path: assets/images/company_placeholder.png
+  AssetGenImage get companyPlaceholder =>
+      const AssetGenImage('assets/images/company_placeholder.png');
+
   /// File path: assets/images/dash_404_not_found.png
   AssetGenImage get dash404NotFound =>
       const AssetGenImage('assets/images/dash_404_not_found.png');
@@ -332,6 +336,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<dynamic> get values => [
         avatarPlaceholder,
+        companyPlaceholder,
         dash404NotFound,
         errorBackground,
         femaleAva,

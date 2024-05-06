@@ -1,6 +1,7 @@
 // SHARED BETWEEN PROJECTS - DO NOT MODIFY BY HAND
 
 import 'package:flutter/material.dart';
+import 'package:pbl5/constants.dart';
 import '/app_common_data/themes/app_theme_data.dart';
 import '/shared_customization/extensions/build_context.ext.dart';
 import '/shared_customization/widgets/custom_container.dart';
@@ -12,6 +13,7 @@ class DropdownItemModel<T> {
   final T? value;
   final bool enable;
   final String label;
+
   DropdownItemModel({
     required this.value,
     required this.label,
@@ -69,80 +71,95 @@ class CustomDropdownButton<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppThemeData theme = context.appTheme.appThemeData;
-    return Container(
-      margin: margin,
-      padding: padding,
-      color: theme.transparent,
-      child: CustomField(
-        errorLabel: errorLabel,
-        label: label,
-        isRequired: isRequired,
-        child: CustomContainer(
-          padding: contentPadding ?? EdgeInsets.zero,
-          color: backgroundColor ?? theme.bg_field,
-          border: Border.all(
-              color: errorLabel != null
-                  ? theme.border_error
-                  : borderColor ?? theme.border_primary,
-              width: 1),
-          borderRadius: BorderRadius.circular(radius),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<T>(
-              icon: icon ??
-                  Icon(Icons.keyboard_arrow_down_rounded,
-                      size: 28, color: theme.icon_primary),
-              padding: EdgeInsets.zero,
-              value: value,
-              onChanged: onChanged,
-              hint: CustomText(placeholder,
-                  color: theme.text_placeholder, size: placeholderSize!),
-              items: [
-                DropdownMenuItem<T>(
-                  enabled: false,
-                  value: null,
-                  child: CustomText(placeholder, color: theme.text_placeholder),
+    return Column(
+      children: [
+        Container(
+          margin: margin,
+          padding: padding,
+          color: theme.transparent,
+          child: CustomField(
+            isShowError: false,
+            errorLabel: errorLabel,
+            label: label,
+            isRequired: isRequired,
+            child: CustomContainer(
+              padding: contentPadding ?? EdgeInsets.zero,
+              color: backgroundColor ?? theme.bg_field,
+              border: Border.all(
+                  color: errorLabel != null
+                      ? theme.border_error
+                      : borderColor ?? theme.border_primary,
+                  width: 1),
+              borderRadius: BorderRadius.circular(radius),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<T>(
+                  icon: icon ??
+                      Icon(Icons.keyboard_arrow_down_rounded,
+                          size: 28, color: Colors.black87),
+                  padding: EdgeInsets.zero,
+                  value: value,
+                  onChanged: onChanged,
+                  hint: CustomText(placeholder,
+                      color: orangePink, size: placeholderSize!),
+                  items: [
+                    DropdownMenuItem<T>(
+                      enabled: false,
+                      value: null,
+                      child: CustomText(placeholder,
+                          color: theme.text_placeholder),
+                    ),
+                    ...items.map((item) {
+                      if (item.value != null && selectedCondition(item.value)) {
+                        return DropdownMenuItem<T>(
+                          enabled: item.enable,
+                          value: item.value,
+                          child: selectedItemBuilder?.call(item.value) ??
+                              CustomText(
+                                item.label,
+                                color: orangePink,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        );
+                      }
+                      return DropdownMenuItem<T>(
+                        enabled: item.enable,
+                        value: item.value,
+                        child: itemDropdownBuilder?.call(item.value) ??
+                            CustomText(
+                              item.label,
+                              color: theme.text_title,
+                            ),
+                      );
+                    }).toList()
+                  ],
+                  selectedItemBuilder: (context) => [
+                    const SizedBox.shrink(),
+                    ...items.map((item) {
+                      if (!item.enable) return const SizedBox.shrink();
+                      return itemDisplayBuilder?.call(item.value) ??
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                item.label,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ));
+                    }).toList()
+                  ],
+                  elevation: 2,
+                  isExpanded: isExpanded!,
+                  dropdownColor: theme.bg_dropdown,
                 ),
-                ...items.map((item) {
-                  if (item.value != null && selectedCondition(item.value)) {
-                    return DropdownMenuItem<T>(
-                      enabled: item.enable,
-                      value: item.value,
-                      child: selectedItemBuilder?.call(item.value) ??
-                          CustomText(
-                            item.label,
-                            color: theme.text_selected_dropdown_label,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    );
-                  }
-                  return DropdownMenuItem<T>(
-                    enabled: item.enable,
-                    value: item.value,
-                    child: itemDropdownBuilder?.call(item.value) ??
-                        CustomText(
-                          item.label,
-                          color: theme.text_title,
-                        ),
-                  );
-                }).toList()
-              ],
-              selectedItemBuilder: (context) => [
-                const SizedBox.shrink(),
-                ...items.map((item) {
-                  if (!item.enable) return const SizedBox.shrink();
-                  return itemDisplayBuilder?.call(item.value) ??
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: CustomText(item.label));
-                }).toList()
-              ],
-              elevation: 2,
-              isExpanded: isExpanded!,
-              dropdownColor: theme.bg_dropdown,
+              ),
             ),
           ),
         ),
-      ),
+        Divider(
+          color: Colors.black54,
+          height: 1,
+        ),
+      ],
     );
   }
 }
