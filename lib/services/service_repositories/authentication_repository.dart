@@ -22,7 +22,7 @@ class AuthenticationRepositoty {
 
   Future<SystemRolesResponse> getSystemRole() => apis.getSystemRoles();
 
-  Future<ApiResponse<User>> getAccount() => apis.getAccount();
+  Future<ApiResponse<Account>> getAccount() => apis.getAccount();
 
   Future<ApiResponse<Account>> getAccountById(String id) =>
       apis.getAccountById(id);

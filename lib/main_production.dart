@@ -36,7 +36,7 @@ void main() async {
         saveLocale: true,
         child: Builder(builder: (context) {
           return MaterialApp(
-            title: 'Job Swipe Company',
+            title: 'Job Swipe For Company',
             debugShowCheckedModeBanner: false,
             builder: BotToastInit(),
             navigatorObservers: [BotToastNavigatorObserver()],

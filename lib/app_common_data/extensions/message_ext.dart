@@ -8,7 +8,7 @@ extension MessageExt on Message? {
   bool get isSentByMe {
     return (this == null || this!.senderId.isEmptyOrNull)
         ? false
-        : this!.senderId! == (getIt.get<AppData>().user?.id);
+        : this!.senderId! == (getIt.get<AppData>().company?.id);
   }
 
   MessagePosition getPosition(Message? previousMessage, Message? nextMessage) {

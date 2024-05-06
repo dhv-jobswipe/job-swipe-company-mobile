@@ -58,7 +58,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Assets.icons.icEmptyNotification.svg(
+                  Assets.icons.icEmptyConversation.svg(
                     height: context.screenSize.width * 0.5,
                     width: context.screenSize.width * 0.5,
                   ),

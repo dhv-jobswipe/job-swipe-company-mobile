@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
     <application
-        android:label="Job Swipe Company"
+        android:label="Job Swipe For Company"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,10 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:pbl5/locator_config.dart';
-import 'package:pbl5/models/application_position/application_position.dart';
-import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/models/user/user.dart';
