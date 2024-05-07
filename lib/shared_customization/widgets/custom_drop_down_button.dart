@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pbl5/constants.dart';
+import 'package:pbl5/shared_customization/widgets/buttons/custom_icon_button.dart';
 import '/app_common_data/themes/app_theme_data.dart';
 import '/shared_customization/extensions/build_context.ext.dart';
 import '/shared_customization/widgets/custom_container.dart';
@@ -42,6 +43,8 @@ class CustomDropdownButton<T> extends StatelessWidget {
   final Color? borderColor;
   final double? placeholderSize;
   final Color? backgroundColor;
+  final VoidCallback? onDeleteTap;
+  final bool isShowDeleteIcon;
 
   const CustomDropdownButton({
     super.key,
@@ -66,6 +69,8 @@ class CustomDropdownButton<T> extends StatelessWidget {
     this.borderColor,
     this.placeholderSize = 14,
     this.backgroundColor,
+    this.onDeleteTap,
+    this.isShowDeleteIcon = false,
   });
 
   @override
@@ -93,9 +98,24 @@ class CustomDropdownButton<T> extends StatelessWidget {
               borderRadius: BorderRadius.circular(radius),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<T>(
-                  icon: icon ??
-                      Icon(Icons.keyboard_arrow_down_rounded,
-                          size: 28, color: Colors.black87),
+                  icon: isShowDeleteIcon
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            icon ??
+                                Icon(Icons.keyboard_arrow_down_rounded,
+                                    size: 28, color: Colors.black87),
+                            CustomIconButton(
+                              onPressed: onDeleteTap,
+                              icon: Icons.delete_forever_sharp,
+                              color: Colors.red,
+                              size: 25,
+                            ),
+                          ],
+                        )
+                      : icon ??
+                          Icon(Icons.keyboard_arrow_down_rounded,
+                              size: 28, color: Colors.black87),
                   padding: EdgeInsets.zero,
                   value: value,
                   onChanged: onChanged,

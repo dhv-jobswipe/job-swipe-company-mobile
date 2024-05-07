@@ -19,13 +19,5 @@ class CompanyRepository {
       }));
 
   Future<ApiResponse<Company>> updateCompanyBasicInfo(Company company) =>
-      apis.updateCompanyBasicInfo({
-        "company_name": company.companyName,
-        "company_url": company.companyUrl,
-        "established_date": company.establishedDate,
-        "address": company.address,
-        "phone_number": company.phoneNumber,
-        "account_status": company.accountStatus,
-        "others": company.others // Optional
-      });
+      apis.updateCompanyBasicInfo(company.toJson());
 }

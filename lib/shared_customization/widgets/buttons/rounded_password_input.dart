@@ -21,6 +21,7 @@ class RoundedPasswordInput extends StatelessWidget {
       obscureText: true,
       validator: (String? e) {
         print(e);
+        return null;
       },
       decoration: InputDecoration(
           icon: Icon(Icons.lock, color: kPrimaryColor),

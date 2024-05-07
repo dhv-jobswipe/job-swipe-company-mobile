@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:pbl5/models/language/language.dart';
-import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/models/user_awards/user_awards.dart';
 import 'package:pbl5/models/user_educations/user_educations.dart';
@@ -13,7 +11,6 @@ import 'package:pbl5/shared_customization/extensions/file_ext.dart';
 
 class UserRepository {
   final ApiClient apis;
-
   const UserRepository({required this.apis});
 
   Future<ApiResponse<User>> getProfile() => apis.getProfile();
@@ -35,10 +32,6 @@ class UserRepository {
         "summary_introduction": user.summaryIntroduction,
         "social_media_link": user.socialMediaLink,
       });
-
-  Future<ApiResponse<List<SystemConstant>>> getConstantType(
-          {String constantType = "04", bool isPrefix = true}) =>
-      apis.getConstantType(constantType, isPrefix);
 
   Future<ApiResponse<User>> updateEducation(
           {required List<UserEducations> userEducations}) =>
@@ -72,15 +65,4 @@ class UserRepository {
 
   Future<ApiResponse> deleteAward({required List<String> ids}) =>
       apis.deleteAward(ids);
-
-  Future<ApiResponse<List<Language>>> updateLanguages(
-          {required List<Language> languages}) =>
-      apis.updateLanguages(languages);
-
-  Future<ApiResponse> deleteLanguage({required List<String> ids}) =>
-      apis.deleteLanguage(ids);
-
-  Future<ApiResponse<List<Language>>> insertLanguages(
-          {required List<Language> languages}) =>
-      apis.insertLanguages(languages);
 }

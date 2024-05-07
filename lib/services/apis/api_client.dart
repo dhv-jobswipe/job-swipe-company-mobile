@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:pbl5/models/account/account.dart';
+import 'package:pbl5/models/application_position/application_position.dart';
 import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/conversation/conversation.dart';
 import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/message/message.dart';
 import 'package:pbl5/models/notification_data/notification_data.dart';
+import 'package:pbl5/models/skill/skill.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/models/user_awards/user_awards.dart';
@@ -91,6 +93,38 @@ abstract class ApiClient {
   @DELETE('/profile/user?type=award')
   Future<ApiResponse> deleteAward(@Body() List<String> body);
 
+  ///
+  /// Application position
+  ///
+  @PATCH('/account/application-positions')
+  Future<ApiResponse<List<ApplicationPosition>>> updateApplyPositions(
+      @Body() List<ApplicationPosition> body);
+
+  @DELETE('/account/application-positions')
+  Future<ApiResponse> deleteApplyPositions(@Body() List<String> body);
+
+  @POST('/account/application-positions')
+  Future<ApiResponse<List<ApplicationPosition>>> insertApplyPositions(
+      @Body() List<ApplicationPosition> body);
+
+  ///
+  /// Skill
+  ///
+  @PATCH('/account/application-positions/{application_position_id}')
+  Future<ApiResponse<List<Skill>>> updateSkills(
+    @Path("application_position_id") String applicationPositionId,
+    @Body() List<Skill> body,
+  );
+
+  @DELETE('/account/application-positions')
+  Future<ApiResponse> deleteSkills(
+    @Query("application_position_id") String applicationPositionId,
+    @Body() List<String> body,
+  );
+
+  ///
+  /// Language
+  ///
   @PATCH('/account/languages')
   Future<ApiResponse<List<Language>>> updateLanguages(
       @Body() List<Language> body);
@@ -101,12 +135,6 @@ abstract class ApiClient {
   @POST('/account/languages')
   Future<ApiResponse<List<Language>>> insertLanguages(
       @Body() List<Language> body);
-
-  @GET('/constants')
-  Future<ApiResponse<List<SystemConstant>>> getConstantType(
-    @Query('constant_type') String constantType,
-    @Query('is_prefix') bool isPrefix,
-  );
 
   ///
   /// Company

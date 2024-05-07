@@ -29,6 +29,7 @@ class User with _$User {
     @JsonKey(name: 'updated_at') String? updatedAt,
     @JsonKey(name: 'application_positions')
     @Default([])
+    @JsonKey(name: 'application_positions')
     List<ApplicationPosition> applicationPositions,
     @Default([]) List<Language> languages,
     @JsonKey(name: 'summary_introduction') String? summaryIntroduction,

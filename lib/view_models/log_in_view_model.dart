@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbl5/app_common_data/enums/system_constant_prefix.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
+import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
 
@@ -42,7 +43,7 @@ class LogInViewModel extends BaseViewModel {
 
       onSuccess?.call();
     } on Exception catch (error) {
-      onFailure?.call(error.toString());
+      onFailure?.call(parseError(error));
     }
   }
 }

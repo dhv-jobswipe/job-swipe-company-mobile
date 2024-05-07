@@ -4,9 +4,11 @@ import 'package:pbl5/models/app_data.dart';
 import 'package:pbl5/services/apiAI/api_ai.dart';
 import 'package:pbl5/services/apis/api_client.dart';
 import 'package:pbl5/services/app_dio.dart';
+import 'package:pbl5/services/service_repositories/apply_position_repository.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
 import 'package:pbl5/services/service_repositories/chat_repository.dart';
 import 'package:pbl5/services/service_repositories/company_repository.dart';
+import 'package:pbl5/services/service_repositories/language_repository.dart';
 import 'package:pbl5/services/service_repositories/notification_repository.dart';
 import 'package:pbl5/services/service_repositories/recommendation_predict_repository.dart';
 import 'package:pbl5/services/service_repositories/system_constant_repository.dart';
@@ -49,8 +51,7 @@ Future<void> setupLocator() async {
   var authRepo = getIt.registerSingleton<AuthenticationRepositoty>(
       AuthenticationRepositoty(apis: apis));
 
-  var userRepo =
-      getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
+  getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
 
   var recPredictRepo = getIt.registerSingleton<RecommendationPredictRepository>(
       RecommendationPredictRepository(apiAI: apiAI));
@@ -66,6 +67,12 @@ Future<void> setupLocator() async {
 
   var companyRepo =
       getIt.registerSingleton<CompanyRepository>(CompanyRepository(apis: apis));
+
+  var languageRepo = getIt
+      .registerSingleton<LanguageRepository>(LanguageRepository(apis: apis));
+
+  var applyPositionRepo = getIt.registerSingleton<ApplyPositionRepository>(
+      ApplyPositionRepository(apis: apis));
 
   ///
   /// View models
@@ -86,10 +93,11 @@ Future<void> setupLocator() async {
 
   getIt.registerLazySingleton<ProfileViewModel>(() => ProfileViewModel(
         authRepositoty: authRepo,
-        userRepository: userRepo,
         systemConstantRepository: systemConstantRepo,
         customSharedPreferences: storage,
         companyRepository: companyRepo,
+        applyPositionRepository: applyPositionRepo,
+        languageRepository: languageRepo,
       ));
 
   getIt.registerLazySingleton<NotificationViewModel>(

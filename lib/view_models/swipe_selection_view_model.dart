@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/services/service_repositories/recommendation_predict_repository.dart';
+import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
 
 class SwipeSelectionViewModel extends BaseViewModel {
@@ -20,7 +21,12 @@ class SwipeSelectionViewModel extends BaseViewModel {
       updateUI();
       onSuccess?.call();
     } on Exception catch (error) {
-      onFailure?.call(error.toString());
+      onFailure?.call(parseError(error));
     }
   }
+
+  Future<void> getRecommendedUsers({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {}
 }
