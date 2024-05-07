@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
+import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
 
 class IntegratedAuthViewModel extends BaseViewModel {
@@ -18,7 +19,7 @@ class IntegratedAuthViewModel extends BaseViewModel {
     try {
       systemRoleResponse = (await authenticationRepositoty.getSystemRole());
     } on Exception catch (error) {
-      onFailure?.call(error.toString());
+      onFailure?.call(parseError(error));
     }
   }
 

@@ -1,28 +1,19 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pbl5/app_common_data/enums/system_constant_prefix.dart';
 import 'package:pbl5/constants.dart';
 import 'package:pbl5/locator_config.dart';
-import 'package:pbl5/models/app_data.dart';
 import 'package:pbl5/models/application_position/application_position.dart';
 import 'package:pbl5/models/language/language.dart';
-import 'package:pbl5/models/user_awards/user_awards.dart';
-import 'package:pbl5/models/user_educations/user_educations.dart';
-import 'package:pbl5/models/user_experiences/user_experiences.dart';
 import 'package:pbl5/routes.dart';
 import 'package:pbl5/screens/base/base_view.dart';
-import 'package:pbl5/screens/edit_profile/edit_award_screen.dart';
+import 'package:pbl5/screens/edit_profile/edit_application_position.dart';
 import 'package:pbl5/screens/edit_profile/edit_basic_profile_screen.dart';
-import 'package:pbl5/screens/edit_profile/edit_education_screen.dart';
-import 'package:pbl5/screens/edit_profile/edit_experience_screen.dart';
 import 'package:pbl5/screens/edit_profile/edit_language.dart';
 import 'package:pbl5/screens/profile/edit_email.dart';
-import 'package:pbl5/screens/profile/edit_name.dart';
 import 'package:pbl5/screens/profile/edit_phone.dart';
 import 'package:pbl5/screens/profile/widgets/display_image_widget.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
@@ -44,7 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     viewModel = getIt.get<ProfileViewModel>();
-    // getIt.get<ProfileViewModel>().getProfile();
     super.initState();
   }
 
@@ -121,32 +111,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: Column(
                               children: [
-                                buildFullname(),
-                                buildSummaryIntro(),
+                                buildCompanyName(),
+                                buildCompanyUrl(),
                                 buildEmail(),
-                                buildSocialMediaLink(),
                                 buildAddress(),
                                 buildPhone(),
-                                buildDOB(),
+                                buildEstablishedDate(),
                               ],
                             ),
-                          ),
-                          _buildCustomRoundedContainer(
-                            onEditPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditEducationScreen(
-                                    viewModel: viewModel,
-                                  ),
-                                ),
-                              ).then((value) {
-                                if (value == 'updateEducation') {
-                                  viewModel.getProfile();
-                                }
-                              });
-                            },
-                            child: buildApplicationPositions(),
                           ),
                           _buildCustomRoundedContainer(
                             onEditPressed: () {
@@ -170,51 +142,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditEducationScreen(
+                                  builder: (context) => EditApplyPositionScreen(
                                     viewModel: viewModel,
                                   ),
                                 ),
                               ).then((value) {
-                                if (value == 'updateEducation') {
+                                if (value == 'updateApplyPosition') {
                                   viewModel.getProfile();
                                 }
                               });
                             },
-                            child: buildEducation(),
-                          ),
-                          _buildCustomRoundedContainer(
-                            onEditPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditAwardScreen(
-                                    viewModel: viewModel,
-                                  ),
-                                ),
-                              ).then((value) {
-                                if (value == 'updateEducation') {
-                                  viewModel.getProfile();
-                                }
-                              });
-                            },
-                            child: buildAward(),
-                          ),
-                          _buildCustomRoundedContainer(
-                            onEditPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditExperienceScreen(
-                                    viewModel: viewModel,
-                                  ),
-                                ),
-                              ).then((value) {
-                                if (value == 'updateEducation') {
-                                  viewModel.getProfile();
-                                }
-                              });
-                            },
-                            child: buildExperience(),
+                            child: buildApplicationPositions(),
                           ),
                           _buildCustomRoundedContainer(
                             child: InkWell(
@@ -355,53 +293,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Builder buildSocialMediaLink() {
-    return Builder(
-      builder: (context) {
-        final socialMediaLinks =
-            context.select<ProfileViewModel, List<String>?>(
-                (vm) => vm.user?.socialMediaLink);
-        final allSocialMediaLinks = socialMediaLinks?.join(', ');
-
-        final allSocialMediaDetail = socialMediaLinks
-            ?.map(
-              (link) => Card(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 8,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    link,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-            )
-            .toList();
-
-        return buildUserInfoDisplay(
-          getValue: allSocialMediaLinks ?? '',
-          title: 'Social Media Links',
-          editPage: EditNameFormPage(
-            viewModel: viewModel,
-          ),
-          detailContent: Column(
-            children: allSocialMediaDetail ?? [],
-          ),
-          dialogTitle: Text('Social Media Links'),
-        );
-      },
-    );
-  }
-
   Builder buildAvatarImage() {
     return Builder(
       builder: (context) {
-        final userImage =
-            context.select<ProfileViewModel, String?>((vm) => vm.user?.avatar);
-        final gender =
-            context.select<ProfileViewModel, bool?>((vm) => vm.user?.gender);
+        final userImage = context
+            .select<ProfileViewModel, String?>((vm) => vm.company?.avatar);
         return InkWell(
           onTap: () async {
             final List<File> file = await ImagePickerHelper.showImagePicker(
@@ -412,7 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
           child: DisplayImage(
             urlPath: userImage,
-            gender: gender,
+            gender: true,
             onPressed: () {},
           ),
         );
@@ -420,109 +316,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Builder buildExperience() {
+  Builder buildEstablishedDate() {
     return Builder(
       builder: (context) {
-        final listUserExperiences =
-            context.select<ProfileViewModel, List<UserExperiences>?>(
-                (vm) => vm.user?.experiences);
-        final allJobTitles = listUserExperiences
-            ?.map(
-              (e) => (e.position ?? '') + ' at ' + (e.workPlace ?? ''),
-            )
-            .join(', ');
-        final allExperienceDetail = listUserExperiences
-            ?.map((e) => Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildRichKeyValue(
-                            context, 'Position: ', e.position ?? ''),
-                        buildRichKeyValue(
-                            context, 'Work Place: ', e.workPlace ?? ''),
-                        buildRichKeyValue(
-                            context,
-                            'Start date: ',
-                            e.experienceStartTime.toDateTime.toDayMonthYear() ??
-                                ''),
-                        buildRichKeyValue(
-                            context,
-                            'End date: ',
-                            e.experienceEndTime.toDateTime.toDayMonthYear() ??
-                                ''),
-                        buildRichKeyValue(context, 'Type: ',
-                            e.experienceType?.constantName ?? ''),
-                        buildRichKeyValue(context, 'Note: ', e.note ?? ''),
-                      ],
-                    ),
-                  ),
-                ))
-            .toList();
-
+        final dob = context.select<ProfileViewModel, String?>(
+            (vm) => vm.company?.establishedDate);
         return buildUserInfoDisplay(
-          getValue: allJobTitles ?? '',
-          title: 'Experiences',
-          editPage: const EditPhoneFormPage(),
-          dialogTitle: Text("Experiences"),
-          detailContent: Column(children: allExperienceDetail ?? []),
-        );
-      },
-    );
-  }
-
-  Builder buildAward() {
-    return Builder(
-      builder: (context) {
-        final listUserAwards =
-            context.select<ProfileViewModel, List<UserAwards>?>(
-                (vm) => vm.user?.awards);
-        final allAwardName =
-            listUserAwards?.map((e) => e.certificateName ?? '').join(', ');
-
-        final allAwardDetail = listUserAwards
-            ?.map((a) => Card(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 8,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildRichKeyValue(context, 'Certificate Name: ',
-                            a.certificateName ?? ''),
-                        buildRichKeyValue(
-                            context,
-                            'Certificate Time: ',
-                            a.certificateTime.toDateTime.toDayMonthYear() ??
-                                ''),
-                        buildRichKeyValue(context, 'Note: ', a.note ?? ''),
-                      ],
-                    ),
-                  ),
-                ))
-            .toList();
-
-        return buildUserInfoDisplay(
-          getValue: allAwardName ?? '',
-          title: 'Awards',
-          editPage: const EditPhoneFormPage(),
-          dialogTitle: Text("Awards"),
-          detailContent: Column(children: allAwardDetail ?? []),
-        );
-      },
-    );
-  }
-
-  Builder buildDOB() {
-    return Builder(
-      builder: (context) {
-        final dob =
-            context.select<ProfileViewModel, String?>((vm) => vm.user?.dob);
-        return buildUserInfoDisplay(
-          getValue: dob != null ? dob.toDateTime.toDayMonthYear() ?? '' : 'N/A',
+          getValue: dob != null ? dob.toDateTime.toDayMonthYear() : 'N/A',
           title: 'Date of Birth',
           editPage: const EditPhoneFormPage(),
           detailContent: Card(
@@ -531,9 +331,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Text(dob != null
-                      ? dob.toDateTime.toDayMonthYear() ?? ''
-                      : 'N/A'))),
+                  child: Text(
+                      dob != null ? dob.toDateTime.toDayMonthYear() : 'N/A'))),
           dialogTitle: const Text('Date of Birth'),
         );
       },
@@ -543,7 +342,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Builder buildPhone() {
     return Builder(builder: (context) {
       final userPhone = context
-          .select<ProfileViewModel, String?>((vm) => vm.user?.phoneNumber);
+          .select<ProfileViewModel, String?>((vm) => vm.company?.phoneNumber);
       return buildUserInfoDisplay(
         getValue: userPhone ?? '',
         title: 'Phone',
@@ -562,8 +361,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Builder buildAddress() {
     return Builder(builder: (context) {
-      final address =
-          context.select<ProfileViewModel, String?>((vm) => vm.user?.address);
+      final address = context
+          .select<ProfileViewModel, String?>((vm) => vm.company?.address);
       return buildUserInfoDisplay(
         getValue: address ?? '',
         title: 'Address',
@@ -580,11 +379,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  Builder buildCompanyName() {
+    return Builder(
+      builder: (context) {
+        final companyName = context
+            .select<ProfileViewModel, String?>((vm) => vm.company?.companyName);
+
+        return buildUserInfoDisplay(
+          getValue: companyName ?? '',
+          title: 'Company Name',
+          editPage: const EditEmailFormPage(),
+          detailContent: Card(
+              margin: const EdgeInsets.symmetric(
+                vertical: 8,
+              ),
+              child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(companyName ?? ''))),
+          dialogTitle: const Text('Company Name'),
+        );
+      },
+    );
+  }
+
+  Builder buildCompanyUrl() {
+    return Builder(
+      builder: (context) {
+        final companyUrl = context
+            .select<ProfileViewModel, String?>((vm) => vm.company?.companyUrl);
+
+        return buildUserInfoDisplay(
+          getValue: companyUrl ?? '',
+          title: 'Company URL',
+          editPage: const EditEmailFormPage(),
+          detailContent: Card(
+              margin: const EdgeInsets.symmetric(
+                vertical: 8,
+              ),
+              child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(companyUrl ?? ''))),
+          dialogTitle: const Text('Company URL'),
+        );
+      },
+    );
+  }
+
   Builder buildEmail() {
     return Builder(
       builder: (context) {
-        final userEmail =
-            context.select<ProfileViewModel, String?>((vm) => vm.user?.email);
+        final userEmail = context
+            .select<ProfileViewModel, String?>((vm) => vm.company?.email);
 
         return buildUserInfoDisplay(
           getValue: userEmail ?? '',
@@ -603,60 +448,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Builder buildSummaryIntro() {
-    return Builder(
-      builder: (context) {
-        final userSI = context.select<ProfileViewModel, String?>(
-            (vm) => vm.user?.summaryIntroduction);
-
-        return buildUserInfoDisplay(
-          getValue: userSI ?? '',
-          title: 'Summary Introduction',
-          editPage: const EditEmailFormPage(),
-          detailContent: Card(
-              margin: const EdgeInsets.symmetric(
-                vertical: 8,
-              ),
-              child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(userSI ?? ''))),
-          dialogTitle: const Text('Summary Introduction'),
-        );
-      },
-    );
-  }
-
-  Builder buildFullname() {
-    return Builder(builder: (context) {
-      final userFirstName =
-          context.select<ProfileViewModel, String?>((vm) => vm.user?.firstName);
-      final userLastName =
-          context.select<ProfileViewModel, String?>((vm) => vm.user?.lastName);
-      return buildUserInfoDisplay(
-        getValue: (userLastName ?? '') + " " + (userFirstName ?? ''),
-        title: 'Name',
-        editPage: EditNameFormPage(
-          viewModel: viewModel,
-        ),
-        detailContent: Card(
-            margin: const EdgeInsets.symmetric(
-              vertical: 8,
-            ),
-            child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child:
-                    Text((userLastName ?? '') + " " + (userFirstName ?? '')))),
-        dialogTitle: const Text('Name'),
-      );
-    });
-  }
-
   Builder buildApplicationPositions() {
     return Builder(
       builder: (context) {
         final applicationPositions =
             context.select<ProfileViewModel, List<ApplicationPosition>?>(
-                (vm) => vm.user?.applicationPositions);
+                (vm) => vm.company?.applicationPositions);
         final allApplicationPositionName = applicationPositions
             ?.map((e) => e.applyPosition?.constantName ?? '')
             .join(', ');
@@ -704,7 +501,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 [];
         return buildUserInfoDisplay(
           getValue: allApplicationPositionName ?? '',
-          title: 'Application Position',
+          title: 'Application Positions',
           editPage: const EditPhoneFormPage(),
           dialogTitle: Text("Application Position"),
           detailContent: Column(children: applicationCards),
@@ -717,7 +514,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Builder(
       builder: (context) {
         final listLanguages = context.select<ProfileViewModel, List<Language>?>(
-            (vm) => vm.user?.languages);
+            (vm) => vm.company?.languages);
         final allLanguageNames = listLanguages
             ?.map((e) => e.languageConstant?.constantName ?? '')
             .join(', ');
@@ -737,7 +534,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           e.languageConstant?.constantName ?? ''),
                       buildRichKeyValue(context, 'Score: ', e.score.toString()),
                       buildRichKeyValue(context, 'Certificate Date: ',
-                          e.certificateDate.toDateTime.toDayMonthYear() ?? ''),
+                          e.certificateDate.toDateTime.toDayMonthYear()),
                     ],
                   ),
                 ),
@@ -757,16 +554,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Builder buildEducation() {
+  Builder buildApplyPositions() {
     return Builder(
       builder: (context) {
-        final listEducation =
-            context.select<ProfileViewModel, List<UserEducations>?>(
-                (vm) => vm.user?.educations);
-        final allStudyPlaces =
-            listEducation?.map((e) => e.studyPlace ?? '').join(', ');
+        final listApplyPositions =
+            context.select<ProfileViewModel, List<ApplicationPosition>?>(
+                (vm) => vm.company?.applicationPositions);
+        final allLanguageNames = listApplyPositions
+            ?.map((e) => e.applyPosition?.constantName ?? '')
+            .join(', ');
 
-        final allStudyDetail = listEducation
+        final allLanguageDetail = listApplyPositions
             ?.map(
               (e) => Card(
                 margin: const EdgeInsets.symmetric(
@@ -777,17 +575,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      buildRichKeyValue(context, 'Position: ',
+                          e.applyPosition?.constantName ?? ''),
+                      buildRichKeyValue(context, 'Salary: ',
+                          e.salaryRange?.constantName ?? ''),
                       buildRichKeyValue(
-                          context, 'Study place: ', e.studyPlace ?? ''),
-                      buildRichKeyValue(
-                          context, 'Majority: ', e.majority ?? ''),
-                      buildRichKeyValue(context, 'Start date: ',
-                          e.studyStartTime.toDateTime.toDayMonthYear() ?? ''),
-                      buildRichKeyValue(context, 'End date: ',
-                          e.studyEndTime.toDateTime.toDayMonthYear() ?? ''),
-                      buildRichKeyValue(
-                          context, 'CPA: ', e.cpa.toString() ?? ''),
-                      buildRichKeyValue(context, 'Note: ', e.note ?? ''),
+                          context,
+                          'Skills: ',
+                          e.skills
+                                  ?.map((e) => e.skill?.constantName ?? '')
+                                  .join(', ') ??
+                              ''),
                     ],
                   ),
                 ),
@@ -795,13 +593,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )
             .toList();
         return buildUserInfoDisplay(
-          getValue: allStudyPlaces ?? '',
-          title: 'Education',
+          getValue: allLanguageNames ?? '',
+          title: 'Apply Positions',
           editPage: const EditPhoneFormPage(),
           detailContent: Column(
-            children: allStudyDetail ?? [],
+            children: allLanguageDetail ?? [],
           ),
-          dialogTitle: const Text('Education'),
+          dialogTitle: const Text('Apply Positions'),
         );
       },
     );

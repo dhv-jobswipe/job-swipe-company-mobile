@@ -90,7 +90,7 @@ class _EditBasicProfileScreenState extends State<EditBasicProfileScreen> {
       lastDate: DateTime.now(),
     );
     if (picked != null)
-      widget.viewModel.dobController.text =
+      widget.viewModel.establishedDateController.text =
           DateFormat('dd-MM-yyyy').format(picked);
   }
 
@@ -134,35 +134,13 @@ class _EditBasicProfileScreenState extends State<EditBasicProfileScreen> {
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: widget.viewModel.firstNameController,
-                              decoration:
-                                  InputDecoration(labelText: 'First Name'),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          // Add some spacing between the fields
-                          Expanded(
-                            child: TextFormField(
-                              controller: widget.viewModel.lastNameController,
-                              decoration:
-                                  InputDecoration(labelText: 'Last Name'),
-                            ),
-                          ),
-                        ],
+                      TextFormField(
+                        controller: widget.viewModel.companyNameController,
+                        decoration: InputDecoration(labelText: 'Company Name'),
                       ),
                       TextFormField(
-                        controller:
-                            widget.viewModel.summaryIntroductionController,
-                        decoration:
-                            InputDecoration(labelText: 'Summary Introduction'),
-                      ),
-                      TextFormField(
-                        controller: widget.viewModel.emailController,
-                        decoration: InputDecoration(labelText: 'Email'),
+                        controller: widget.viewModel.companyUrlController,
+                        decoration: InputDecoration(labelText: 'Company URL'),
                       ),
                       TextFormField(
                         controller: widget.viewModel.addressController,
@@ -176,36 +154,15 @@ class _EditBasicProfileScreenState extends State<EditBasicProfileScreen> {
                         onTap: () => _selectDate(context),
                         child: IgnorePointer(
                           child: TextFormField(
-                            controller: widget.viewModel.dobController,
+                            controller:
+                                widget.viewModel.establishedDateController,
                             decoration: InputDecoration(
                               labelText: 'Date of Birth',
                             ),
                           ),
                         ),
                       ),
-                      buildGenderSelector(),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: widget.viewModel.socialMediaLinks.length,
-                        itemBuilder: (context, index) {
-                          return TextFormField(
-                            initialValue:
-                                widget.viewModel.socialMediaLinks[index],
-                            decoration: InputDecoration(
-                                labelText: 'Social Media Link ${index + 1}'),
-                            onChanged: (value) {
-                              setState(() {
-                                widget.viewModel.socialMediaLinks[index] =
-                                    value;
-                              });
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
+                      SizedBox(height: 15.h),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 0),
                         child: ElevatedButton.icon(
@@ -271,40 +228,6 @@ class _EditBasicProfileScreenState extends State<EditBasicProfileScreen> {
           ],
         );
       },
-    );
-  }
-
-  Column buildGenderSelector() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 4.h,
-        ),
-        Text('Gender', style: TextStyle(fontSize: 13, color: Colors.black87)),
-        Row(
-          children: <bool>[true, false].map((bool value) {
-            return Row(
-              children: [
-                Radio<bool>(
-                  value: value,
-                  groupValue: widget.viewModel.gender,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      widget.viewModel.gender = value!;
-                    });
-                  },
-                ),
-                Text(value ? 'Male' : 'Female'),
-              ],
-            );
-          }).toList(),
-        ),
-        Divider(
-          color: Colors.black54,
-        ),
-      ],
     );
   }
 }

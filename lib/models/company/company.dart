@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pbl5/models/application_position/application_position.dart';
+import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/other_description/other_description.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 
@@ -20,6 +22,10 @@ class Company with _$Company {
     @JsonKey(name: "company_url") String? companyUrl,
     @JsonKey(name: "established_date") String? establishedDate,
     @Default([]) List<OtherDescription> others,
+    @Default([])
+    @JsonKey(name: 'application_positions')
+    List<ApplicationPosition> applicationPositions,
+    @Default([]) List<Language> languages,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'updated_at') String? updatedAt,
     @JsonKey(name: "deleted_at") String? deletedAt,

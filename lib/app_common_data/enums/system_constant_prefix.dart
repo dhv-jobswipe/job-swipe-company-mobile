@@ -4,7 +4,8 @@ enum SystemConstantPrefix {
   SKILL._("03"),
   EXPERIENCE_TYPE._("04"),
   NOTIFICATION_TYPE._("05"),
-  LANGUAGE._("06");
+  LANGUAGE._("06"),
+  SALARY_RANGES._("07");
 
   final String prefix;
   const SystemConstantPrefix._(this.prefix);

@@ -67,9 +67,9 @@ class _MainScreenState extends State<MainScreen> {
     // Get conversations
     GetIt.instance.get<ConversationViewModel>().getConversation();
     // Get profile
-    GetIt.instance.get<ProfileViewModel>().getCompanyProfile();
-    //Get list companies
-    GetIt.instance.get<SwipeSelectionViewModel>().getRecommendedCompanies();
+    GetIt.instance.get<ProfileViewModel>().getProfile();
+    //Get list users
+    GetIt.instance.get<SwipeSelectionViewModel>().getRecommendedUsers();
     super.initState();
   }
 

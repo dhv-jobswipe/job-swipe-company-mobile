@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,6 @@ import 'package:pbl5/constants.dart';
 import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/models/app_data.dart';
 import 'package:pbl5/screens/base/base_view.dart';
-import 'package:pbl5/screens/insert_profile/insert_award_screen.dart';
 import 'package:pbl5/screens/insert_profile/insert_language_screen.dart';
 import 'package:pbl5/screens/login/components/sign_in_form.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
@@ -196,13 +193,6 @@ class _EditLanguageScreenState extends State<EditLanguageScreen> {
         ],
       ),
       mobileBuilder: (context) {
-        debugPrint("LANGUAGE CONSTANT: " +
-            getIt
-                .get<AppData>()
-                .systemConstants[SystemConstantPrefix.LANGUAGE]!
-                .toString());
-        debugPrint(
-            "USER LANGUAGES: " + widget.viewModel.user!.languages.toString());
         return Stack(
           children: [
             Form(
@@ -213,12 +203,12 @@ class _EditLanguageScreenState extends State<EditLanguageScreen> {
                 ),
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
-                  child: widget.viewModel.user?.languages == []
+                  child: widget.viewModel.company?.languages == []
                       ? const SizedBox.shrink()
                       : Column(
                           children: [
                             ...List.generate(
-                              widget.viewModel.user?.languages.length ?? 0,
+                              widget.viewModel.company?.languages.length ?? 0,
                               (index) => CustomizedRoundedContainer(
                                 child: Column(
                                   children: [

@@ -12,10 +12,6 @@ class AppData {
   Company? company;
   Map<SystemConstantPrefix, List<SystemConstant>> systemConstants = {};
 
-  void updateUser(User? newUser) {
-    user = newUser;
-  }
-
   Future<void> fetchAllSystemConstants() async {
     try {
       for (var prefix in SystemConstantPrefix.values) {
@@ -32,5 +28,6 @@ class AppData {
 
   void clear() {
     user = null;
+    company = null;
   }
 }

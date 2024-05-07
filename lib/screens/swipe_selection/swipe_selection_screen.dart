@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:get_it/get_it.dart';
 import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/screens/base/base_view.dart';
 import 'package:pbl5/screens/swipe_selection/card/candidate_model.dart';

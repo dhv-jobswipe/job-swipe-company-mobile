@@ -5,7 +5,6 @@ import '/app_common_data/themes/app_theme_data.dart';
 import '/shared_customization/extensions/build_context.ext.dart';
 import '/shared_customization/extensions/string_ext.dart';
 import '/shared_customization/widgets/custom_container.dart';
-import '/shared_customization/widgets/texts/custom_required_text.dart';
 import '/app_common_data/app_text_sytle.dart';
 import '/generated/assets.gen.dart';
 
