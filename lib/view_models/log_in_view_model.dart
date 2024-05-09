@@ -8,7 +8,7 @@ import 'package:pbl5/view_models/base_view_model.dart';
 class LogInViewModel extends BaseViewModel {
   final AuthenticationRepositoty authenticationRepositoty;
   final CustomSharedPreferences customSharedPreferences;
-  final emailController = TextEditingController()..text = 'rachael81@gmail.com';
+  final emailController = TextEditingController()..text = 'whernandez@example.com';
   final passwordController = TextEditingController()..text = '123456Aa';
 
   LogInViewModel({

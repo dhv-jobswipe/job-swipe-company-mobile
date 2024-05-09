@@ -12,6 +12,7 @@ import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/models/user_awards/user_awards.dart';
 import 'package:pbl5/models/user_educations/user_educations.dart';
 import 'package:pbl5/models/user_experiences/user_experiences.dart';
+import 'package:pbl5/screens/pair/pair.dart';
 import 'package:pbl5/services/api_models/api_page_response/api_page_response.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -57,6 +58,9 @@ abstract class ApiClient {
   ///
   @GET('/profile/user')
   Future<ApiResponse<User>> getProfile();
+
+  @GET('/profile/user')
+  Future<ApiResponse<User>> getProfileById(@Query("user_id") String id);
 
   @PATCH('/profile/user/avatar')
   Future<ApiResponse> updateAvatar(@Body() FormData body);
@@ -234,4 +238,15 @@ abstract class ApiClient {
   @PATCH("/chat/messages?is_all=true")
   Future<ApiResponse> markAllAsReadMessage(
       @Query("conversation_id") String conversationId);
+
+  ///
+  /// pair
+  ///
+  @POST('/matched-pairs/request')
+  Future<ApiResponse<Pair>> requestMatchedPair(
+      @Query("requested_account_id") String requestedAccountId);
+
+///
+///
+///
 }

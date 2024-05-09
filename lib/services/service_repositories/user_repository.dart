@@ -15,6 +15,9 @@ class UserRepository {
 
   Future<ApiResponse<User>> getProfile() => apis.getProfile();
 
+  Future<ApiResponse<User>> getProfileById(String userId) => apis.getProfileById(userId);
+
+
   Future<ApiResponse> updateAvatar({required File avatar}) async =>
       apis.updateAvatar(FormData.fromMap({
         "file": await avatar.toMultipartFile,

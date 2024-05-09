@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:pbl5/locator_config.dart';
+import 'package:pbl5/models/company/company.dart';
+import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/screens/base/base_view.dart';
 import 'package:pbl5/screens/swipe_selection/card/candidate_model.dart';
 import 'package:pbl5/screens/swipe_selection/card/card.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
+import 'package:provider/provider.dart';
 
 class SwipeSelectionScreen extends StatefulWidget {
   const SwipeSelectionScreen({super.key});
@@ -15,26 +18,14 @@ class SwipeSelectionScreen extends StatefulWidget {
 
 class _SwipeSelectionScreenState extends State<SwipeSelectionScreen> {
   late SwipeSelectionViewModel viewModel;
-  final CardSwiperController controller = CardSwiperController();
+  final CardSwiperController cardSwiperController = CardSwiperController();
 
-  final cards = candidates.map(ExampleCard.new).toList();
-
-  // List<Widget> cards = [];
+  // final exampleCards = candidates.map(ExampleCard.new).toList();
+  List<Widget> cards = [];
 
   @override
   void initState() {
     viewModel = getIt.get<SwipeSelectionViewModel>();
-    // viewModel.getRecommendedCompanies().then((_) {
-    //   if (viewModel.companies != null) {
-    //     setState(() {
-    //       cards = viewModel.companies!
-    //           .map((company) => CompanyCard(company))
-    //           .toList();
-    //     });
-    //   } else {
-    //     cards = exampleCards;
-    //   }
-    // });
     super.initState();
   }
 
@@ -56,11 +47,19 @@ class _SwipeSelectionScreenState extends State<SwipeSelectionScreen> {
           leadingWidth: 0,
         ),
         mobileBuilder: (context) {
-          return Column(
+          final users =
+          context.select<SwipeSelectionViewModel, List<User>?>(
+                  (viewModel) => viewModel.users?.data);
+          if (users != null) {
+            cards = users.map((user) => UserCard(user: user)).toList();
+          }
+          return cards.isEmpty
+              ? Center(child: Container())
+              : Column(
             children: [
               Flexible(
                 child: CardSwiper(
-                  controller: controller,
+                  controller: cardSwiperController,
                   cardsCount: cards.length,
                   onSwipe: _onSwipe,
                   onUndo: _onUndo,
@@ -68,16 +67,20 @@ class _SwipeSelectionScreenState extends State<SwipeSelectionScreen> {
                     horizontal: true,
                     vertical: false,
                   ),
+                  onEnd: () {
+                    cardSwiperController.moveTo(cards.length - 1);
+                  },
                   numberOfCardsDisplayed: 3,
+                  isLoop: false,
                   backCardOffset: const Offset(40, 40),
                   padding: const EdgeInsets.all(24.0),
                   cardBuilder: (
-                    context,
-                    index,
-                    horizontalThresholdPercentage,
-                    verticalThresholdPercentage,
-                  ) =>
-                      cards[index],
+                      context,
+                      index,
+                      horizontalThresholdPercentage,
+                      verticalThresholdPercentage,
+                      ) =>
+                  cards[index],
                 ),
               ),
               Padding(
@@ -88,31 +91,30 @@ class _SwipeSelectionScreenState extends State<SwipeSelectionScreen> {
                     ElevatedButton(
                       onPressed: () {
                         viewModel.getRecommendedCompanies().then((_) {
-                          if (viewModel.companies != null) {
-                            debugPrint(
-                                'Companies k null: ${viewModel.companies}');
-                            setState(() {
-                              // cards = viewModel.companies!
-                              //     .map((company) => CompanyCard(company))
-                              //     .toList();
-                            });
-                          }
+                          debugPrint(
+                              'Companies k null: ${viewModel.users}');
+                          setState(() {
+                            cards = users!
+                                .map((user) => UserCard(user:user))
+                                .toList();
+                            cardSwiperController.moveTo(0);
+                          });
                         });
                       },
                       child: const Icon(Icons.ac_unit),
                     ),
                     ElevatedButton(
-                      onPressed: controller.undo,
+                      onPressed: cardSwiperController.undo,
                       child: const Icon(Icons.rotate_left),
                     ),
                     ElevatedButton(
-                      onPressed: () =>
-                          controller.swipe(CardSwiperDirection.left),
+                      onPressed: () => cardSwiperController
+                          .swipe(CardSwiperDirection.left),
                       child: const Icon(Icons.keyboard_arrow_left),
                     ),
                     ElevatedButton(
-                      onPressed: () =>
-                          controller.swipe(CardSwiperDirection.right),
+                      onPressed: () => cardSwiperController
+                          .swipe(CardSwiperDirection.right),
                       child: const Icon(Icons.keyboard_arrow_right),
                     ),
                   ],
@@ -124,23 +126,36 @@ class _SwipeSelectionScreenState extends State<SwipeSelectionScreen> {
   }
 
   bool _onSwipe(
-    int previousIndex,
-    int? currentIndex,
-    CardSwiperDirection direction,
-  ) {
+      int previousIndex,
+      int? currentIndex,
+      CardSwiperDirection direction,
+      ) {
     debugPrint(
-      'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
-    );
+        'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top');
+    if (currentIndex != null && cards.length - currentIndex == 10) {
+      viewModel.getRecommendedCompanies(
+          page: viewModel.users!.paging!.nextPage);
+    }
+    if (direction == CardSwiperDirection.right) {
+      debugPrint('Swiped right' +
+          viewModel.users!.data![previousIndex].firstName.toString());
+      viewModel.requestMatchedPair(
+        userId: viewModel.users!.data![previousIndex].id,
+        onSuccess: () {},
+        onFailure: (e) {},
+      );
+    }
+
     return true;
   }
 
   bool _onUndo(
-    int? previousIndex,
-    int currentIndex,
-    CardSwiperDirection direction,
-  ) {
+      int? previousIndex,
+      int currentIndex,
+      CardSwiperDirection direction,
+      ) {
     debugPrint(
-      'The card $currentIndex was undod from the ${direction.name}',
+      'The card $currentIndex was undo from the ${direction.name}',
     );
     return true;
   }

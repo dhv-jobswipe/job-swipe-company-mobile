@@ -41,5 +41,7 @@ class User with _$User {
     @Default([]) List<UserExperiences> experiences,
   }) = _User;
 
+  static User get empty => const User();
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }

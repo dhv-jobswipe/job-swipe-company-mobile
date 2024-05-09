@@ -73,7 +73,7 @@ extension ApiPageResponseExt<T> on ApiPageResponse<T>? {
   }
 
   ApiPageResponse<T> insertFirst(T data,
-          {bool Function(T element)? removeIfDuplicate}) =>
+      {bool Function(T element)? removeIfDuplicate}) =>
       ApiPageResponse<T>(
         status: this?.status,
         error: this?.error,
@@ -85,12 +85,12 @@ extension ApiPageResponseExt<T> on ApiPageResponse<T>? {
               .toList()
         ],
         paging: (this?.paging ??
-                const Paging(currentPage: 1, totalCount: 0, totalPages: 1))
+            const Paging(currentPage: 1, totalCount: 0, totalPages: 1))
             .copyWith(totalCount: (this?.paging?.totalCount ?? 0) + 1),
       );
 
   ApiPageResponse<T> insertLast(T data,
-          {bool Function(T element)? removeIfDuplicate}) =>
+      {bool Function(T element)? removeIfDuplicate}) =>
       ApiPageResponse<T>(
         status: this?.status,
         error: this?.error,
@@ -102,7 +102,7 @@ extension ApiPageResponseExt<T> on ApiPageResponse<T>? {
           data
         ],
         paging: (this?.paging ??
-                const Paging(currentPage: 1, totalCount: 0, totalPages: 1))
+            const Paging(currentPage: 1, totalCount: 0, totalPages: 1))
             .copyWith(totalCount: (this?.paging?.totalCount ?? 0) + 1),
       );
 
@@ -123,7 +123,7 @@ extension ApiPageResponseExt<T> on ApiPageResponse<T>? {
   /// Update a element
   ///
   ApiPageResponse<T> update(
-          T Function(T element) onUpdate, bool Function(T element) condition) =>
+      T Function(T element) onUpdate, bool Function(T element) condition) =>
       ApiPageResponse<T>(
           status: this?.status,
           message: this?.message,

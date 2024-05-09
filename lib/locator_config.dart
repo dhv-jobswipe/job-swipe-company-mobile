@@ -10,13 +10,14 @@ import 'package:pbl5/services/service_repositories/chat_repository.dart';
 import 'package:pbl5/services/service_repositories/company_repository.dart';
 import 'package:pbl5/services/service_repositories/language_repository.dart';
 import 'package:pbl5/services/service_repositories/notification_repository.dart';
-import 'package:pbl5/services/service_repositories/recommendation_predict_repository.dart';
+import 'package:pbl5/services/service_repositories/swipe_selection_repository.dart';
 import 'package:pbl5/services/service_repositories/system_constant_repository.dart';
 import 'package:pbl5/services/service_repositories/user_repository.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
 import 'package:pbl5/view_models/app_notification_view_model.dart';
 import 'package:pbl5/view_models/chat_view_model.dart';
 import 'package:pbl5/view_models/conversation_view_model.dart';
+import 'package:pbl5/view_models/detail_view_model.dart';
 import 'package:pbl5/view_models/forgot_password_view_model.dart';
 import 'package:pbl5/view_models/integrated_auth_view_model.dart';
 import 'package:pbl5/view_models/log_in_view_model.dart';
@@ -51,10 +52,10 @@ Future<void> setupLocator() async {
   var authRepo = getIt.registerSingleton<AuthenticationRepositoty>(
       AuthenticationRepositoty(apis: apis));
 
-  getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
+  var userRepo = getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
 
-  var recPredictRepo = getIt.registerSingleton<RecommendationPredictRepository>(
-      RecommendationPredictRepository(apiAI: apiAI));
+  var recPredictRepo = getIt.registerSingleton<SwipeSelectionRepository>(
+      SwipeSelectionRepository(apiAI: apiAI, apiClient: apis));
 
   var notiRepo = getIt.registerSingleton<NotificationRepository>(
       NotificationRepository(apis: apis));
@@ -124,4 +125,7 @@ Future<void> setupLocator() async {
 
   getIt.registerLazySingleton<ResetPasswordViewModel>(
       () => ResetPasswordViewModel(authenticationRepositoty: authRepo));
+
+  getIt.registerLazySingleton<DetailViewModel>(
+          () => DetailViewModel(userRepository: userRepo));
 }

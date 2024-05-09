@@ -10,6 +10,8 @@ import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
 import 'package:pbl5/shared_customization/widgets/custom_widgets/screens/custom_image_full_screen.dart';
 import 'package:pbl5/shared_customization/widgets/custom_widgets/screens/custom_video_view_screen.dart';
 
+import 'screens/user_detail/user_detail_screen.dart';
+
 class Routes {
   Routes._();
   static const String splash = '/splash';
@@ -20,6 +22,8 @@ class Routes {
   static const String videoScreen = '/videoScreen';
   static const String forgotPassword = '/forgotPassword';
   static const String resetPassword = '/resetPassword';
+  static const String userDetail = '/userDetail';
+
 
   static final Map<String, WidgetBuilder> routes = {
     splash: (BuildContext context) => const SplashScreen(),
@@ -33,6 +37,10 @@ class Routes {
         CustomVideoViewScreen(file: context.getArguments<FileContent>()!),
     forgotPassword: (BuildContext context) => const ForgotPasswordScreen(),
     resetPassword: (BuildContext context) => ResetPasswordScreen(
-        args: context.getArguments<ResetPasswordScreenArgs>()!)
+        args: context.getArguments<ResetPasswordScreenArgs>()!),
+   userDetail: (BuildContext context) =>
+       UserDetailScreen(userId: context.getArguments<String>()!),
+
+
   };
 }
