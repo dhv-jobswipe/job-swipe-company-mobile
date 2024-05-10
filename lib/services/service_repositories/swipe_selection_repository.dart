@@ -19,4 +19,10 @@ class SwipeSelectionRepository {
   Future<ApiResponse<Pair>> requestMatchedPair(String userId) =>
       apiClient.requestMatchedPair(userId);
 
+  Future<ApiResponse<Pair>> acceptPair(String pairId) =>
+      apiClient.acceptPair(pairId);
+
+  Future<ApiResponse<Pair>> rejectPair(String pairId) =>
+      apiClient.rejectPair(pairId);
+
 }

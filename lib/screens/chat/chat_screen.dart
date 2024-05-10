@@ -20,6 +20,7 @@ import 'package:uuid/uuid.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.conversationId});
+
   final String conversationId;
 
   @override
@@ -30,6 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
   late final ChatViewModel viewModel;
   final _itemScrollController = ItemScrollController();
   bool isLoadMore = false;
+
   String get conversationId => widget.conversationId;
 
   @override
@@ -80,7 +82,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onTap: () {},
                 titleWidget: CustomText(
-                  "${conversation?.user?.lastName} ${conversation?.user?.firstName}",
+                  "${conversation?.user?.lastName ?? ''} ${conversation?.user?.firstName ?? ''}",
                   style: AppTextStyle.titleText,
                   color: Colors.pink,
                 ),

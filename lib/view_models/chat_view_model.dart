@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pbl5/app_common_data/common_data/global_key_variable.dart';
 import 'package:pbl5/models/conversation/conversation.dart';
 import 'package:pbl5/models/message/message.dart';
+import 'package:pbl5/services/api_models/api_page_response/api_page_response.dart';
 import 'package:pbl5/services/service_repositories/chat_repository.dart';
 import 'package:pbl5/shared_customization/extensions/api_page_response_ext.dart';
 import 'package:pbl5/shared_customization/extensions/list_ext.dart';
@@ -11,7 +12,6 @@ import 'package:pbl5/shared_customization/extensions/string_ext.dart';
 import 'package:pbl5/shared_customization/helpers/dialogs/dialog_helper.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
-import 'package:pbl5/services/api_models/api_page_response/api_page_response.dart';
 
 class ChatViewModel extends BaseViewModel {
   ///
@@ -20,6 +20,7 @@ class ChatViewModel extends BaseViewModel {
   ApiPageResponse<Message>? messages;
   Conversation? conversation;
   bool canLoadMore = true;
+
   BuildContext get _context => GlobalKeyVariable.navigatorState.currentContext!;
 
   ///
@@ -72,7 +73,8 @@ class ChatViewModel extends BaseViewModel {
           content: content, files: files);
       if (response.data == null) return;
       for (var m in response.data!) {
-        messages = messages.insertFirst(m);
+        messages = messages.insertFirst(m,
+            removeIfDuplicate: (element) => element.id == m.id);
       }
     } catch (e) {
       debugPrint("Error: $e".debug);

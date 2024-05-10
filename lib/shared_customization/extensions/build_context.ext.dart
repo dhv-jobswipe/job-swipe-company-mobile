@@ -10,6 +10,7 @@ import 'package:pbl5/routes.dart';
 import 'package:pbl5/shared_customization/extensions/string_ext.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
 import 'package:provider/provider.dart';
+
 import '/app_common_data/themes/app_theme.dart';
 
 extension BuildContextExt on BuildContext {
@@ -145,6 +146,8 @@ extension BuildContextExt on BuildContext {
       case NotificationType.MATCHING:
       case NotificationType.REQUEST_MATCHING:
       case NotificationType.REJECT_MATCHING:
+        routeName = Routes.userDetail;
+        arguments = data?.sender?.accountId;
         break;
       case NotificationType.NEW_CONVERSATION:
         break;

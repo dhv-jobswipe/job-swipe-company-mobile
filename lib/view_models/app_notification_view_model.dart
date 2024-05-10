@@ -41,6 +41,7 @@ class AppNotificationViewModel extends BaseViewModel {
   static final int _timerPreiod = 5; // seconds
   static final String _DEBUG_TAG = "SOCKET TCP ===>";
   static final String _END_OF_DATA_SYMBOL = "\$";
+
   Future<BuildContext> get _context async {
     await Future.doWhile(
         () => GlobalKeyVariable.navigatorState.currentContext == null);
@@ -156,8 +157,10 @@ class AppNotificationViewModel extends BaseViewModel {
           message = Message.fromJson(jsonDecode(socketDataBody.data ?? ''));
           _conversationViewModel.refreshConversation(message.conversationId);
           if (message.conversationId == _chatViewModel.conversation?.id) {
-            _chatViewModel.messages =
-                _chatViewModel.messages.insertFirst(message);
+            _chatViewModel.messages = _chatViewModel.messages.insertFirst(
+              message,
+              removeIfDuplicate: (element) => element.id == message?.id,
+            );
             _chatViewModel.updateUI();
           }
           break;

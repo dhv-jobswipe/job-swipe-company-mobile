@@ -43,7 +43,27 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Assets.images.logoDash.image(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Job Swipe', style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 27,
+              fontFamily: 'Poppins',
+              color: Colors.pink,
+            ),
+
+
+            ),
+        Text('for company', style: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 20,
+          fontFamily: 'Poppins',
+          color: Colors.black54,
+        ),),
+          ],
+        ),
       ),
     );
   }

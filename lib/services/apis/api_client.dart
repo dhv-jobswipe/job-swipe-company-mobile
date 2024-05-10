@@ -242,11 +242,20 @@ abstract class ApiClient {
   ///
   /// pair
   ///
+  @GET('/matched-pairs')
+  Future<ApiResponse<Pair>> getMatchById(@Query("match_id") String pairId);
+
   @POST('/matched-pairs/request')
   Future<ApiResponse<Pair>> requestMatchedPair(
       @Query("requested_account_id") String requestedAccountId);
 
-///
-///
-///
+  @POST('/matched-pairs/accept')
+  Future<ApiResponse<Pair>> acceptPair(@Query("match_id") String pairId);
+
+  @POST('/matched-pairs/reject')
+  Future<ApiResponse<Pair>> rejectPair(@Query("match_id") String pairId);
+
+  ///
+  ///
+  ///
 }

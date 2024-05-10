@@ -139,7 +139,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                 color: Colors.white,
                 child: DefaultTabController(
 
-                  length: 4,
+                  length: 5,
                   child: Scaffold(
                     backgroundColor: orangePink,
                     appBar: TabBar(
@@ -188,6 +188,16 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                             ),
                           ),
                         ),
+                        Tab(
+                          child: Text(
+                            'APPLY POSITION',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     body: Container(
@@ -200,6 +210,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                             EducationTab(educations: user.educations),
                             ExperienceTab(experiences: user.experiences),
                             AwardTab(awards: user.awards),
+                            JobsTab(positions: user.applicationPositions,),
                           ],
                         )),
                   ),
