@@ -38,12 +38,10 @@ class OverviewTab extends StatelessWidget {
                 ),
               ),
 
-Padding(
-
+              Padding(
                 padding: EdgeInsets.only(top: 16.h),
                 child: Text('\t' + (user.summaryIntroduction ?? '')),
                 ),
-
 
               Padding(
                 padding: EdgeInsets.only(top: 16.h),

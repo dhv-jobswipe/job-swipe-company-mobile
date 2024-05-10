@@ -4,6 +4,9 @@ import 'package:get_it/get_it.dart';
 import 'package:pbl5/constants.dart';
 import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/screens/base/base_view.dart';
+import 'package:pbl5/screens/user_detail/tabs/award_tab.dart';
+import 'package:pbl5/screens/user_detail/tabs/education_tab.dart';
+import 'package:pbl5/screens/user_detail/tabs/experience_tab.dart';
 import 'package:pbl5/screens/user_detail/tabs/jobs_tab.dart';
 import 'package:pbl5/screens/user_detail/tabs/overview_tab.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
@@ -27,13 +30,11 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   void initState() {
     viewModel = getIt.get<DetailViewModel>();
     GetIt.instance.get<DetailViewModel>().onGetUserByIdPressed(userId: widget.userId,);
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('UserDetailScreen: ' + widget.userId.toString());
     return BaseView(
       viewModel: viewModel,
       backgroundColor: orangePink,
@@ -65,8 +66,8 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                 child: Column(
                   children: [
                     Flexible(
-                      child: user!.avatar != null
-                          ? Image.network(user!.avatar!)
+                      child: user.avatar != null
+                          ? Image.network(user.avatar!)
                           : Icon(
                               Icons.location_city,
                               size: 95,
@@ -77,7 +78,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-        (user!.lastName ?? '') + " " + (user!.firstName ?? ''),
+        (user.lastName ?? '') + " " + (user.firstName ?? ''),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 19.sp,
@@ -85,8 +86,8 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                             fontFamily: 'Poppins',
                           ),
                         ),
-                        if (user!.accountStatus != null)
-                          user!.accountStatus!
+                        if (user.accountStatus != null)
+                          user.accountStatus!
                               ? Container(
                                   margin: EdgeInsets.only(left: 10.w),
                                   padding: EdgeInsets.all(2),
@@ -137,11 +138,15 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
               child: Container(
                 color: Colors.white,
                 child: DefaultTabController(
-                  length: 2,
+
+                  length: 4,
                   child: Scaffold(
                     backgroundColor: orangePink,
                     appBar: TabBar(
+                      isScrollable: true,
+                      padding: EdgeInsets.zero,
                       indicatorColor: Colors.white,
+
                       tabs: [
                         Tab(
                           child: Text(
@@ -155,7 +160,27 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                         ),
                         Tab(
                           child: Text(
-                            'JOBS',
+                            'EDUCATION',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            'EXPERIENCE',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            'AWARD',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12.sp,
@@ -170,9 +195,11 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                         child: TabBarView(
                           children: <Widget>[
                             OverviewTab(
-                              user: user!,
+                              user: user,
                             ),
-                            JobsTab(),
+                            EducationTab(educations: user.educations),
+                            ExperienceTab(experiences: user.experiences),
+                            AwardTab(awards: user.awards),
                           ],
                         )),
                   ),
