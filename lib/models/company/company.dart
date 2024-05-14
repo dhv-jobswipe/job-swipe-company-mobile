@@ -4,10 +4,10 @@ import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/other_description/other_description.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 
+part 'company.freezed.dart';
 part 'company.g.dart';
 
-part 'company.freezed.dart';
-
+//git commit -m "PBL-539 <message>"
 @freezed
 class Company with _$Company {
   const factory Company({
