@@ -1,3 +1,5 @@
+// git commit -m "PBL-594 notification"
+
 enum SystemConstantPrefix {
   SYSTEM_ROLE._("01"),
   APPLY_POSITION._("02"),

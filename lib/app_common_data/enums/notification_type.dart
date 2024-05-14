@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pbl5/app_common_data/enums/system_constant_prefix.dart';
 
+// git commit -m "PBL-594 notification"
+
 enum NotificationType {
   TEST._("00000"),
   // Match

@@ -6,6 +6,8 @@ import 'package:pbl5/shared_customization/extensions/api_page_response_ext.dart'
 import 'package:pbl5/shared_customization/helpers/dialogs/dialog_helper.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
 
+// git commit -m "PBL-594 notification"
+
 class NotificationViewModel extends BaseViewModel {
   ///
   /// States

@@ -28,6 +28,8 @@ import 'package:pbl5/view_models/chat_view_model.dart';
 import 'package:pbl5/view_models/conversation_view_model.dart';
 import 'package:pbl5/view_models/notification_view_model.dart';
 
+// git commit -m "PBL-594 notification"
+
 class AppNotificationViewModel extends BaseViewModel {
   ///
   /// State

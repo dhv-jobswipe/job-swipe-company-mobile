@@ -29,6 +29,7 @@ import 'package:pbl5/view_models/reset_password_view_model.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 
 GetIt getIt = GetIt.instance;
+// git commit -m "PBL-594 notification"
 //git commit -m "PBL-627 <message>"
 //git commit -m "PBL-696 <message>"
 //git commit -m "PBL-703 <message>"
