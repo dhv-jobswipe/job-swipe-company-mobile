@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
+//git commit -m "PBL-627 <message>"
 class AnimatedBtn extends StatelessWidget {
   const AnimatedBtn({
     super.key,

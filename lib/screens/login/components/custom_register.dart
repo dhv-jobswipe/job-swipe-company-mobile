@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pbl5/screens/login/components/register_form.dart';
-
 import 'package:pbl5/view_models/register_view_model.dart';
+//git commit -m "PBL-627 <message>"
 
 Future<Object?> customRegisterDialog(
   BuildContext context, {

@@ -29,6 +29,7 @@ import 'package:pbl5/view_models/reset_password_view_model.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 
 GetIt getIt = GetIt.instance;
+//git commit -m "PBL-627 <message>"
 
 Future<void> setupLocator() async {
   ///
@@ -52,7 +53,8 @@ Future<void> setupLocator() async {
   var authRepo = getIt.registerSingleton<AuthenticationRepositoty>(
       AuthenticationRepositoty(apis: apis));
 
-  var userRepo = getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
+  var userRepo =
+      getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
 
   var recPredictRepo = getIt.registerSingleton<SwipeSelectionRepository>(
       SwipeSelectionRepository(apiAI: apiAI, apiClient: apis));
@@ -127,5 +129,5 @@ Future<void> setupLocator() async {
       () => ResetPasswordViewModel(authenticationRepositoty: authRepo));
 
   getIt.registerLazySingleton<DetailViewModel>(
-          () => DetailViewModel(userRepository: userRepo));
+      () => DetailViewModel(userRepository: userRepo));
 }

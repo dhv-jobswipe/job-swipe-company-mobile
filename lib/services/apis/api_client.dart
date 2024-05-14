@@ -20,6 +20,7 @@ import '/models/credential/credential.dart';
 import '../api_models/api_response/api_response.dart';
 
 part 'api_client.g.dart';
+//git commit -m "PBL-627 <message>"
 
 @RestApi()
 abstract class ApiClient {

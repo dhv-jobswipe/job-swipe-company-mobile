@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +5,7 @@ import 'package:pbl5/screens/login/components/custom_register.dart';
 import 'package:pbl5/screens/login/components/sign_in_form.dart';
 import 'package:pbl5/view_models/log_in_view_model.dart';
 import 'package:pbl5/view_models/register_view_model.dart';
+//git commit -m "PBL-627 <message>"
 
 Future<Object?> customSigninDialog(
   BuildContext context, {
