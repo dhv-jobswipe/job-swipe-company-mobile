@@ -24,6 +24,7 @@ import 'package:pbl5/view_models/base_view_model.dart';
 //git commit -m "PBL-540 <message>"
 //git commit -m "PBL-541 <message>"
 //git commit -m "PBL-576 <message>"
+//git commit -m "PBL-577 <message>"
 class ProfileViewModel extends BaseViewModel {
   final AuthenticationRepositoty authRepositoty;
   final LanguageRepository languageRepository;
