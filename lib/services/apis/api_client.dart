@@ -20,8 +20,9 @@ import '/models/credential/credential.dart';
 import '../api_models/api_response/api_response.dart';
 
 part 'api_client.g.dart';
-//git commit -m "PBL-627 <message>"
 
+//git commit -m "PBL-627 <message>"
+//git commit -m "PBL-696 <message>"
 @RestApi()
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;

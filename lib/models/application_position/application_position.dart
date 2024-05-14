@@ -3,8 +3,10 @@ import 'package:pbl5/models/skill/skill.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 
 part 'application_position.freezed.dart';
+
 part 'application_position.g.dart';
 
+//git commit -m "PBL-696 <message>"
 @freezed
 class ApplicationPosition with _$ApplicationPosition {
   const factory ApplicationPosition({

@@ -10,6 +10,7 @@ part 'user.g.dart';
 
 part 'user.freezed.dart';
 
+//git commit -m "PBL-696 <message>"
 @freezed
 class User with _$User {
   const factory User({

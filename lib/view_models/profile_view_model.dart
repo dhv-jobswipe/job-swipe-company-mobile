@@ -20,6 +20,7 @@ import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.d
 import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
 
+//git commit -m "PBL-696 <message>"
 class ProfileViewModel extends BaseViewModel {
   final AuthenticationRepositoty authRepositoty;
   final LanguageRepository languageRepository;
