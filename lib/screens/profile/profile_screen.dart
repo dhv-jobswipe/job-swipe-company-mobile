@@ -28,6 +28,7 @@ import 'package:pbl5/view_models/profile_view_model.dart';
 //git commit -m "PBL-541 <message>"
 //git commit -m "PBL-576 <message>"
 //git commit -m "PBL-577 <message>"
+//git commit -m "PBL-535 <message>"
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 

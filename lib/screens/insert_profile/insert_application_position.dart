@@ -19,6 +19,7 @@ import 'package:pbl5/view_models/profile_view_model.dart';
 import 'package:rive/rive.dart';
 import 'package:uuid/uuid.dart';
 
+//git commit -m "PBL-535 <message>"
 class InsertApplicationPositionScreen extends StatefulWidget {
   final ProfileViewModel viewModel;
 
