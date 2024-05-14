@@ -2,9 +2,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 
 part 'language.freezed.dart';
-
 part 'language.g.dart';
 
+//git commit -m "PBL-576 <message>"
 @freezed
 class Language with _$Language {
   factory Language({
