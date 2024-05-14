@@ -39,6 +39,7 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+//git commit -m "PBL-552 <message>"
 //git commit -m "PBL-696 <message>"
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileViewModel viewModel;

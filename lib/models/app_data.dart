@@ -8,6 +8,7 @@ import 'package:pbl5/services/service_repositories/system_constant_repository.da
 import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 
 //git commit -m "PBL-577 <message>"
+//git commit -m "PBL-552 <message>"
 class AppData {
   User? user;
   Company? company;
