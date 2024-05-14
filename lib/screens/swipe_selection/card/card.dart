@@ -1,16 +1,24 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/routes.dart';
+
+final employeeImage = [
+  'assets/images/employee1.jpeg',
+  'assets/images/employee2.jpeg',
+  'assets/images/employee3.jpeg',
+  'assets/images/employee4.jpeg',
+  'assets/images/employee5.jpeg',
+];
 
 class UserCard extends StatelessWidget {
   final User user;
 
-  const UserCard(
-       {
-        super.key,
-        required this.user,
-      });
+  const UserCard({
+    super.key,
+    required this.user,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +51,13 @@ class UserCard extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: user.avatar != null
-                          ? NetworkImage(user.avatar!)
-                          : AssetImage('assets/images/company_placeholder.png')
-                      as ImageProvider<Object>,
-                      fit: BoxFit.cover,
-                    )),
+                  image: user.avatar != null
+                      ? NetworkImage(user.avatar!)
+                      : AssetImage(employeeImage[
+                              Random().nextInt(employeeImage.length)])
+                          as ImageProvider<Object>,
+                  fit: BoxFit.cover,
+                )),
               ),
             ),
             Padding(
@@ -57,7 +66,7 @@ class UserCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                  (user.lastName ?? '') + " " + (user.firstName ?? ''),
+                    (user.lastName ?? '') + " " + (user.firstName ?? ''),
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -86,4 +95,3 @@ class UserCard extends StatelessWidget {
     );
   }
 }
-

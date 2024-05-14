@@ -14,7 +14,7 @@ class CompanyRepository {
   Future<ApiResponse<Company>> getCompanyProfile() => apis.getCompanyProfile();
 
   Future<ApiResponse> updateAvatar({required File avatar}) async =>
-      apis.updateAvatar(FormData.fromMap({
+      apis.updateCompanyAvatar(FormData.fromMap({
         "file": await avatar.toMultipartFile,
       }));
 
