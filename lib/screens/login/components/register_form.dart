@@ -4,6 +4,7 @@ import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
 import 'package:pbl5/view_models/register_view_model.dart';
 import 'package:rive/rive.dart';
 
+//git commit -m "PBL-635 <message>"
 class RegisterForm extends StatefulWidget {
   final RegisterViewModel viewModel;
   final String systemRoleId;

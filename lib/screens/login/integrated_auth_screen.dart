@@ -9,8 +9,9 @@ import 'package:pbl5/view_models/integrated_auth_view_model.dart';
 import 'package:pbl5/view_models/log_in_view_model.dart';
 import 'package:pbl5/view_models/register_view_model.dart';
 import 'package:rive/rive.dart';
-//git commit -m "PBL-627 <message>"
 
+//git commit -m "PBL-627 <message>"
+//git commit -m "PBL-635 <message>"
 class IntegratedAuthScreen extends StatefulWidget {
   const IntegratedAuthScreen({super.key});
 

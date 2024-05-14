@@ -5,6 +5,7 @@ import 'package:pbl5/services/service_repositories/authentication_repository.dar
 import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
 
+//git commit -m "PBL-635 <message>"
 class RegisterViewModel extends BaseViewModel {
   final AuthenticationRepositoty authenticationRepositoty;
   final emailController = TextEditingController()..text = 'user@gmail.com';
