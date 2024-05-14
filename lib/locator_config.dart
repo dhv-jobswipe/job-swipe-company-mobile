@@ -33,6 +33,7 @@ GetIt getIt = GetIt.instance;
 //git commit -m "PBL-696 <message>"
 //git commit -m "PBL-703 <message>"
 //git commit -m "PBL-577 <message>"
+//git commit -m "PBL-554 <message>"
 Future<void> setupLocator() async {
   ///
   /// Other dependencies
