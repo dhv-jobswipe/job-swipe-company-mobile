@@ -23,6 +23,7 @@ import 'package:rive/rive.dart';
 import 'package:uuid/uuid.dart';
 
 //git commit -m "PBL-696 <message>"
+//git commit -m "PBL-533 <message>"
 class EditApplyPositionScreen extends StatefulWidget {
   final ProfileViewModel viewModel;
 
