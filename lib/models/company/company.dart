@@ -8,6 +8,7 @@ part 'company.freezed.dart';
 part 'company.g.dart';
 
 //git commit -m "PBL-539 <message>"
+//git commit -m "PBL-540 <message>"
 @freezed
 class Company with _$Company {
   const factory Company({

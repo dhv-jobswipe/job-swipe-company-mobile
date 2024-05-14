@@ -8,6 +8,7 @@ part 'application_position.g.dart';
 //git commit -m "PBL-696 <message>"
 //git commit -m "PBL-703 <message>"
 //git commit -m "PBL-703 <message>"
+//git commit -m "PBL-540 <message>"
 @freezed
 class ApplicationPosition with _$ApplicationPosition {
   const factory ApplicationPosition({

@@ -9,14 +9,16 @@ import 'package:pbl5/services/api_models/api_response/api_response.dart';
 import 'package:pbl5/services/apis/api_client.dart';
 import 'package:pbl5/shared_customization/extensions/file_ext.dart';
 
+//git commit -m "PBL-540 <message>"
 class UserRepository {
   final ApiClient apis;
+
   const UserRepository({required this.apis});
 
   Future<ApiResponse<User>> getProfile() => apis.getProfile();
 
-  Future<ApiResponse<User>> getProfileById(String userId) => apis.getProfileById(userId);
-
+  Future<ApiResponse<User>> getProfileById(String userId) =>
+      apis.getProfileById(userId);
 
   Future<ApiResponse> updateAvatar({required File avatar}) async =>
       apis.updateAvatar(FormData.fromMap({
