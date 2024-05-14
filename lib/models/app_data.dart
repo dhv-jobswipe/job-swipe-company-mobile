@@ -10,6 +10,7 @@ import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.d
 //git commit -m "PBL-577 <message>"
 //git commit -m "PBL-552 <message>"
 //git commit -m "PBL-553 <message>"
+//git commit -m "PBL-550 <message>"
 class AppData {
   User? user;
   Company? company;
