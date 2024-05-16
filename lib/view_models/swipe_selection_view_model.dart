@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/services/api_models/api_page_response/api_page_response.dart';
 import 'package:pbl5/services/service_repositories/swipe_selection_repository.dart';
@@ -11,7 +10,6 @@ class SwipeSelectionViewModel extends BaseViewModel {
   final SwipeSelectionRepository recPredictRepo;
 
   ApiPageResponse<User>? users;
-
 
   SwipeSelectionViewModel({required this.recPredictRepo});
 

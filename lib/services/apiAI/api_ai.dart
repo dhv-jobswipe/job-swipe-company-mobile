@@ -3,8 +3,6 @@ import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/services/api_models/api_page_response/api_page_response.dart';
 import 'package:retrofit/http.dart';
 
-import '../api_models/api_response/api_response.dart';
-
 part 'api_ai.g.dart';
 
 @RestApi()
@@ -14,5 +12,4 @@ abstract class ApiAI {
   @GET('/recommend/company')
   Future<ApiPageResponse<User>> getRecommendedUsers(
       {@Query('page') int page = 1, @Query('paging') int paging = 10});
-
 }

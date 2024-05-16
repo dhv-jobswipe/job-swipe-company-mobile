@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pbl5/generated/assets.gen.dart';
 import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/models/account/account.dart';
 import 'package:pbl5/screens/login/integrated_auth_screen.dart';
@@ -47,21 +46,24 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Job Swipe', style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 27,
-              fontFamily: 'Poppins',
-              color: Colors.pink,
+            Text(
+              'Job Swipe',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 27,
+                fontFamily: 'Poppins',
+                color: Colors.pink,
+              ),
             ),
-
-
+            Text(
+              'for company',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 20,
+                fontFamily: 'Poppins',
+                color: Colors.black54,
+              ),
             ),
-        Text('for company', style: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 20,
-          fontFamily: 'Poppins',
-          color: Colors.black54,
-        ),),
           ],
         ),
       ),

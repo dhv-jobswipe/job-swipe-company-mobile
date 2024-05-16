@@ -303,6 +303,26 @@ class $AssetsImagesGen {
   AssetGenImage get dash404NotFound =>
       const AssetGenImage('assets/images/dash_404_not_found.png');
 
+  /// File path: assets/images/employee1.jpeg
+  AssetGenImage get employee1 =>
+      const AssetGenImage('assets/images/employee1.jpeg');
+
+  /// File path: assets/images/employee2.jpeg
+  AssetGenImage get employee2 =>
+      const AssetGenImage('assets/images/employee2.jpeg');
+
+  /// File path: assets/images/employee3.jpeg
+  AssetGenImage get employee3 =>
+      const AssetGenImage('assets/images/employee3.jpeg');
+
+  /// File path: assets/images/employee4.jpeg
+  AssetGenImage get employee4 =>
+      const AssetGenImage('assets/images/employee4.jpeg');
+
+  /// File path: assets/images/employee5.jpeg
+  AssetGenImage get employee5 =>
+      const AssetGenImage('assets/images/employee5.jpeg');
+
   /// File path: assets/images/error_background.png
   AssetGenImage get errorBackground =>
       const AssetGenImage('assets/images/error_background.png');
@@ -338,6 +358,11 @@ class $AssetsImagesGen {
         avatarPlaceholder,
         companyPlaceholder,
         dash404NotFound,
+        employee1,
+        employee2,
+        employee3,
+        employee4,
+        employee5,
         errorBackground,
         femaleAva,
         imageLoading,

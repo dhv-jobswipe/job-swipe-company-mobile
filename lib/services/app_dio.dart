@@ -81,23 +81,25 @@ class AppDio with DioMixin implements Dio {
             }
           }
         } catch (err) {
-          if (error.response?.data['error'] != null) {
-            showErrorDialog(
-              GlobalKeyVariable.navigatorState.currentContext!,
-              title: tr(LocaleKeys.CommonData_Error),
-              content: parseError(error),
-            ).then((value) {
-              sp.prefs.clear();
-            });
-          } else {
-            showErrorDialog(
-              GlobalKeyVariable.navigatorState.currentContext!,
-              title: tr(LocaleKeys.CommonData_Error),
-              content: err.toString(),
-            ).then((value) {
-              sp.prefs.clear();
-            });
-          }
+          GlobalKeyVariable.futureCurrentContext.then((context) {
+            if (error.response?.data['error'] != null) {
+              showErrorDialog(
+                context,
+                title: tr(LocaleKeys.CommonData_Error),
+                content: parseError(error),
+              ).then((value) {
+                sp.prefs.clear();
+              });
+            } else {
+              showErrorDialog(
+                context,
+                title: tr(LocaleKeys.CommonData_Error),
+                content: err.toString(),
+              ).then((value) {
+                sp.prefs.clear();
+              });
+            }
+          });
         }
         return handler.next(error);
       },

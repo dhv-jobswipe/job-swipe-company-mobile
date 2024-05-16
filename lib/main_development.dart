@@ -11,6 +11,7 @@ import 'package:pbl5/flavor_config.dart';
 import 'package:pbl5/locator_config.dart';
 import 'package:pbl5/models/app_data.dart';
 import 'package:pbl5/routes.dart';
+import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,11 @@ void main() async {
       versionAPI: '/v1');
 
   // Get system constants
-  await getIt.get<AppData>().fetchAllSystemConstants();
+  try {
+    getIt.get<AppData>().fetchAllSystemConstants();
+  } catch (e) {
+    debugPrint(parseError(e));
+  }
 
   runApp(
     AppTheme(

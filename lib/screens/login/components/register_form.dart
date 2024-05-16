@@ -99,26 +99,10 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller:
-                                    widget.viewModel.firstNameController,
-                                decoration:
-                                    InputDecoration(labelText: 'First Name'),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            // Add some spacing between the fields
-                            Expanded(
-                              child: TextFormField(
-                                controller: widget.viewModel.lastNameController,
-                                decoration:
-                                    InputDecoration(labelText: 'Last Name'),
-                              ),
-                            ),
-                          ],
+                        TextFormField(
+                          controller: widget.viewModel.companyNameController,
+                          decoration:
+                              InputDecoration(labelText: 'Company Name'),
                         ),
                         TextFormField(
                           controller: widget.viewModel.emailController,
@@ -139,61 +123,14 @@ class _RegisterFormState extends State<RegisterForm> {
                               InputDecoration(labelText: 'Phone Number'),
                         ),
                         TextFormField(
-                          controller: widget.viewModel.dobController,
+                          controller: widget.viewModel.comapyUrlController,
+                          decoration: InputDecoration(labelText: 'Company URL'),
+                        ),
+                        TextFormField(
+                          controller:
+                              widget.viewModel.establishedDateController,
                           decoration:
                               InputDecoration(labelText: 'Date of Birth'),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ListTile(
-                                minVerticalPadding: 0,
-                                title: const Text('Male'),
-                                onTap: () {
-                                  setState(() {
-                                    widget.viewModel.gender = true;
-                                  });
-                                },
-                                leading: Radio<bool>(
-                                  value: true,
-                                  groupValue: widget.viewModel.gender,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  visualDensity: VisualDensity(
-                                      horizontal: -4, vertical: -4),
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      widget.viewModel.gender = value!;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: ListTile(
-                                minVerticalPadding: 0,
-                                title: const Text('Female'),
-                                onTap: () {
-                                  setState(() {
-                                    widget.viewModel.gender = false;
-                                  });
-                                },
-                                leading: Radio<bool>(
-                                  value: false,
-                                  groupValue: widget.viewModel.gender,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  visualDensity: VisualDensity(
-                                      horizontal: -4, vertical: -4),
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      widget.viewModel.gender = value!;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
