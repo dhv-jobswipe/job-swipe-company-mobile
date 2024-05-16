@@ -35,6 +35,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     viewModel = getIt.get<ProfileViewModel>();
+    if (viewModel.company == null) {
+      viewModel.getProfile();
+    }
     super.initState();
   }
 

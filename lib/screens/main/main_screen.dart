@@ -17,7 +17,6 @@ import 'package:pbl5/view_models/app_notification_view_model.dart';
 import 'package:pbl5/view_models/conversation_view_model.dart';
 import 'package:pbl5/view_models/main_view_model.dart';
 import 'package:pbl5/view_models/notification_view_model.dart';
-import 'package:pbl5/view_models/profile_view_model.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -74,8 +73,6 @@ class _MainScreenState extends State<MainScreen> {
     GetIt.instance.get<NotificationViewModel>().getNotifications();
     // Get conversations
     GetIt.instance.get<ConversationViewModel>().getConversation();
-    // Get profile
-    GetIt.instance.get<ProfileViewModel>().getProfile();
     //Get list users
     GetIt.instance.get<SwipeSelectionViewModel>().getRecommendedCompanies();
     super.initState();
