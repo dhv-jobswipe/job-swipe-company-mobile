@@ -31,8 +31,8 @@ abstract class ApiClient {
   @POST('/auth/login')
   Future<ApiResponse<Credential>> login(@Body() Map<String, dynamic> body);
 
-  @POST('/auth/user-register')
-  Future<ApiResponse<User>> register(@Body() Map<String, dynamic> body);
+  @POST('/auth/company-register')
+  Future<ApiResponse<Company>> register(@Body() Map<String, dynamic> body);
 
   @POST('/auth/logout')
   Future<ApiResponse> logout();
