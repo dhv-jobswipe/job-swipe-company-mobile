@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
               'for company',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 20,
+                fontSize: 17,
                 fontFamily: 'Poppins',
                 color: Colors.black54,
               ),

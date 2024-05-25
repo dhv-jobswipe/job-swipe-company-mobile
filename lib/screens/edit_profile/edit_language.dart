@@ -259,8 +259,8 @@ class _EditLanguageScreenState extends State<EditLanguageScreen> {
                                                 vm.updateLanguageSystemConstant[
                                                     index]);
                                         return CustomDropdownButton(
-                                          label: "Experience Type",
-                                          placeholder: "Select Experience Type",
+                                          label: "Language Type",
+                                          placeholder: "Select Language Type",
                                           onChanged: (value) {
                                             if (value != null) {
                                               widget.viewModel

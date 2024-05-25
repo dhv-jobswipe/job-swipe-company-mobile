@@ -200,187 +200,187 @@ class _EditApplyPositionScreenState extends State<EditApplyPositionScreen> {
                             ...(company?.applicationPositions ?? [])
                                 .asMap()
                                 .entries
-                                .map((entry) => CustomizedRoundedContainer(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(height: 20),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Position ${entry.key + 1}: ",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18),
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.delete,
-                                                    color: Colors.red),
-                                                onPressed: () {
-                                                  showCupertinoDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return ConfirmDialogAlert(
-                                                          title:
-                                                              'Delete apply position',
-                                                          content:
-                                                              "Are you sure you want to delete this apply position?",
-                                                          confirmText: 'Delete',
-                                                          onConfirm: () {
-                                                            onDeleteApplyPosition(
-                                                                context,
-                                                                entry.value.id);
-                                                          },
-                                                        );
-                                                      });
+                                .map(
+                                  (entry) => CustomizedRoundedContainer(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(height: 20),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Position ${entry.key + 1}: ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.delete,
+                                                  color: Colors.red),
+                                              onPressed: () {
+                                                showCupertinoDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return ConfirmDialogAlert(
+                                                        title:
+                                                            'Delete apply position',
+                                                        content:
+                                                            "Are you sure you want to delete this apply position?",
+                                                        confirmText: 'Delete',
+                                                        onConfirm: () {
+                                                          onDeleteApplyPosition(
+                                                              context,
+                                                              entry.value.id);
+                                                        },
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        CustomDropdownButton<SystemConstant>(
+                                          label: "Apply Position",
+                                          placeholder: "Select apply position",
+                                          onChanged: (value) {
+                                            if (value == null) return;
+                                            widget.viewModel.company =
+                                                company?.copyWith(
+                                                    applicationPositions: company
+                                                        .applicationPositions
+                                                        .update(
+                                                            (e) => e.copyWith(
+                                                                applyPosition:
+                                                                    value),
+                                                            (e) =>
+                                                                e.id ==
+                                                                entry
+                                                                    .value.id));
+                                            widget.viewModel.updateUI();
+                                          },
+                                          value: entry.value.applyPosition,
+                                          items: positionDropdownModels,
+                                          selectedCondition: (item) =>
+                                              item?.constantId ==
+                                              entry.value.applyPosition
+                                                  ?.constantId,
+                                          borderColor: Colors.transparent,
+                                          contentPadding: EdgeInsets.zero,
+                                        ),
+                                        CustomDropdownButton<SystemConstant>(
+                                          label: "Salary Range",
+                                          placeholder: "Select salary range",
+                                          onChanged: (value) {
+                                            if (value == null) return;
+                                            widget.viewModel.company =
+                                                company?.copyWith(
+                                                    applicationPositions: company
+                                                        .applicationPositions
+                                                        .update(
+                                                            (e) => e.copyWith(
+                                                                salaryRange:
+                                                                    value),
+                                                            (e) =>
+                                                                e.id ==
+                                                                entry
+                                                                    .value.id));
+                                            widget.viewModel.updateUI();
+                                          },
+                                          value: entry.value.salaryRange,
+                                          items: salaryDropdownModels,
+                                          selectedCondition: (item) =>
+                                              item?.constantId ==
+                                              entry.value.salaryRange
+                                                  ?.constantId,
+                                          borderColor: Colors.transparent,
+                                          contentPadding: EdgeInsets.zero,
+                                        ),
+                                        ...(entry.value.skills ?? [])
+                                            .asMap()
+                                            .entries
+                                            .map(
+                                              (skillEntry) =>
+                                                  CustomDropdownButton<
+                                                      SystemConstant>(
+                                                label:
+                                                    "Skill ${skillEntry.key + 1}",
+                                                placeholder:
+                                                    "Select skill ${skillEntry.key + 1}",
+                                                isShowDeleteIcon: skillEntry
+                                                    .value.isGenerated,
+                                                onChanged: (value) {
+                                                  if (value == null) return;
+                                                  widget.viewModel.company = company?.copyWith(
+                                                      applicationPositions: company.applicationPositions.update(
+                                                          (ap) => ap.copyWith(
+                                                              skills: ap.skills.update(
+                                                                  (e) => e.copyWith(
+                                                                      skill:
+                                                                          value),
+                                                                  (e) =>
+                                                                      e.id ==
+                                                                      skillEntry.value.id)),
+                                                          (ap) => ap.id == entry.value.id));
+                                                  widget.viewModel.updateUI();
                                                 },
+                                                onDeleteTap: () {
+                                                  widget.viewModel.company = company?.copyWith(
+                                                      applicationPositions: company
+                                                          .applicationPositions
+                                                          .update(
+                                                              (ap) => ap.copyWith(
+                                                                  skills: ap
+                                                                      .skills
+                                                                      .deleteAt(
+                                                                          skillEntry
+                                                                              .key)),
+                                                              (ap) =>
+                                                                  ap.id ==
+                                                                  entry.value
+                                                                      .id));
+                                                  widget.viewModel.updateUI();
+                                                },
+                                                value: skillEntry.value.skill,
+                                                items: skillDropdownModels,
+                                                selectedCondition: (item) =>
+                                                    item?.constantId ==
+                                                    skillEntry.value.skill
+                                                        ?.constantId,
+                                                borderColor: Colors.transparent,
+                                                contentPadding: EdgeInsets.zero,
                                               ),
-                                            ],
-                                          ),
-                                          CustomDropdownButton<SystemConstant>(
-                                            label: "Apply Position",
-                                            placeholder:
-                                                "Select apply position",
-                                            onChanged: (value) {
-                                              if (value == null) return;
-                                              widget.viewModel.company =
-                                                  company?.copyWith(
-                                                      applicationPositions: company
-                                                          .applicationPositions
-                                                          .update(
-                                                              (e) => e.copyWith(
-                                                                  applyPosition:
-                                                                      value),
-                                                              (e) =>
-                                                                  e.id ==
-                                                                  entry.value
-                                                                      .id));
-                                              widget.viewModel.updateUI();
-                                            },
-                                            value: entry.value.applyPosition,
-                                            items: positionDropdownModels,
-                                            selectedCondition: (item) =>
-                                                item?.constantId ==
-                                                entry.value.applyPosition
-                                                    ?.constantId,
-                                            borderColor: Colors.transparent,
-                                            contentPadding: EdgeInsets.zero,
-                                          ),
-                                          CustomDropdownButton<SystemConstant>(
-                                            label: "Salary Range",
-                                            placeholder: "Select salary range",
-                                            onChanged: (value) {
-                                              if (value == null) return;
-                                              widget.viewModel.company =
-                                                  company?.copyWith(
-                                                      applicationPositions: company
-                                                          .applicationPositions
-                                                          .update(
-                                                              (e) => e.copyWith(
-                                                                  salaryRange:
-                                                                      value),
-                                                              (e) =>
-                                                                  e.id ==
-                                                                  entry.value
-                                                                      .id));
-                                              widget.viewModel.updateUI();
-                                            },
-                                            value: entry.value.salaryRange,
-                                            items: salaryDropdownModels,
-                                            selectedCondition: (item) =>
-                                                item?.constantId ==
-                                                entry.value.salaryRange
-                                                    ?.constantId,
-                                            borderColor: Colors.transparent,
-                                            contentPadding: EdgeInsets.zero,
-                                          ),
-                                          ...(entry.value.skills ?? [])
-                                              .asMap()
-                                              .entries
-                                              .map(
-                                                (skillEntry) =>
-                                                    CustomDropdownButton<
-                                                        SystemConstant>(
-                                                  label:
-                                                      "Skill ${skillEntry.key + 1}",
-                                                  placeholder:
-                                                      "Select skill ${skillEntry.key + 1}",
-                                                  isShowDeleteIcon: skillEntry
-                                                      .value.isGenerated,
-                                                  onChanged: (value) {
-                                                    if (value == null) return;
-                                                    widget.viewModel.company = company?.copyWith(
-                                                        applicationPositions: company.applicationPositions.update(
-                                                            (ap) => ap.copyWith(
-                                                                skills: ap.skills.update(
-                                                                    (e) => e.copyWith(
-                                                                        skill:
-                                                                            value),
-                                                                    (e) =>
-                                                                        e.id ==
-                                                                        skillEntry.value.id)),
-                                                            (ap) => ap.id == entry.value.id));
-                                                    widget.viewModel.updateUI();
-                                                  },
-                                                  onDeleteTap: () {
-                                                    widget.viewModel.company = company?.copyWith(
-                                                        applicationPositions: company
-                                                            .applicationPositions
-                                                            .update(
-                                                                (ap) => ap.copyWith(
-                                                                    skills: ap
-                                                                        .skills
-                                                                        .deleteAt(skillEntry
-                                                                            .key)),
-                                                                (ap) =>
-                                                                    ap.id ==
-                                                                    entry.value
-                                                                        .id));
-                                                    widget.viewModel.updateUI();
-                                                  },
-                                                  value: skillEntry.value.skill,
-                                                  items: skillDropdownModels,
-                                                  selectedCondition: (item) =>
-                                                      item?.constantId ==
-                                                      skillEntry.value.skill
-                                                          ?.constantId,
-                                                  borderColor:
-                                                      Colors.transparent,
-                                                  contentPadding:
-                                                      EdgeInsets.zero,
-                                                ),
-                                              )
-                                              .toList(),
-                                          CustomButton(
-                                            onPressed: () {
-                                              widget.viewModel.company = company?.copyWith(
-                                                  applicationPositions: company
-                                                      .applicationPositions
-                                                      .update(
-                                                          (e) => e.copyWith(
-                                                              skills: e.skills
-                                                                  .insertLast(Skill(
-                                                                      id: Uuid()
-                                                                          .v4(),
-                                                                      isGenerated:
-                                                                          true))),
-                                                          (e) =>
-                                                              e.id ==
-                                                              entry.value.id));
-                                              widget.viewModel.updateUI();
-                                            },
-                                            label: "Add Skill",
-                                            color: const Color(0xFFF77D8E),
-                                            margin:
-                                                const EdgeInsets.only(top: 12),
-                                          ),
-                                          SizedBox(height: 20),
-                                        ],
-                                      ),
-                                    ))
+                                            )
+                                            .toList(),
+                                        CustomButton(
+                                          onPressed: () {
+                                            widget.viewModel.company = company?.copyWith(
+                                                applicationPositions: company
+                                                    .applicationPositions
+                                                    .update(
+                                                        (e) => e.copyWith(
+                                                            skills: e.skills
+                                                                .insertLast(Skill(
+                                                                    id: Uuid()
+                                                                        .v4(),
+                                                                    isGenerated:
+                                                                        true))),
+                                                        (e) =>
+                                                            e.id ==
+                                                            entry.value.id));
+                                            widget.viewModel.updateUI();
+                                          },
+                                          label: "Add Skill",
+                                          color: const Color(0xFFF77D8E),
+                                          margin:
+                                              const EdgeInsets.only(top: 12),
+                                        ),
+                                        SizedBox(height: 20),
+                                      ],
+                                    ),
+                                  ),
+                                )
                                 .toList(),
                             buildSaveButton(context, onPressed: () {
                               onUpdateApplyPosition(context);
