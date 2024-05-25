@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
+import 'package:pbl5/shared_customization/extensions/string_ext.dart';
 import 'package:pbl5/view_models/register_view_model.dart';
 import 'package:rive/rive.dart';
 
@@ -140,8 +142,22 @@ class _RegisterFormState extends State<RegisterForm> {
                         ),
                         TextFormField(
                           controller: widget.viewModel.dobController,
-                          decoration:
-                              InputDecoration(labelText: 'Date of Birth'),
+                          decoration: InputDecoration(
+                            labelText: 'Date of Birth',
+                          ),
+                          onTap: () async {
+                            final DateTime? picked = await showDatePicker(
+                              context: context,
+                              initialDate: widget.viewModel.dobController.text
+                                  .toInitialDateTime,
+                              firstDate: DateTime(1900, 1),
+                              lastDate: DateTime.now(),
+                            );
+                            if (picked != null)
+                              widget.viewModel.dobController.text =
+                                  DateFormat('dd-MM-yyyy').format(picked);
+                          },
+                          readOnly: true,
                         ),
                         Row(
                           children: [

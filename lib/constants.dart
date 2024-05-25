@@ -10,3 +10,6 @@ const Color shadowColorDark = Colors.black;
 const Color orangePink = Color(0xFFF77D8E);
 const String kConstantDate = '2021-01-01';
 const int kConstantTimestamp = 1609459200;
+const Color skinColor = Color(0xFFFFa791);
+const Color lightPink = Color(0xFFffb2b3);
+const Color lightBlue = Color(0xFFBADCDC);

@@ -6,6 +6,7 @@ import 'package:pbl5/constants.dart';
 import 'package:pbl5/screens/base/base_view.dart';
 import 'package:pbl5/screens/login/components/sign_in_form.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
+import 'package:pbl5/shared_customization/extensions/string_ext.dart';
 import 'package:pbl5/view_models/profile_view_model.dart';
 import 'package:rive/rive.dart';
 
@@ -150,17 +151,27 @@ class _EditBasicProfileScreenState extends State<EditBasicProfileScreen> {
                         controller: widget.viewModel.phoneController,
                         decoration: InputDecoration(labelText: 'Phone Number'),
                       ),
-                      InkWell(
-                        onTap: () => _selectDate(context),
-                        child: IgnorePointer(
-                          child: TextFormField(
-                            controller:
-                                widget.viewModel.establishedDateController,
-                            decoration: InputDecoration(
-                              labelText: 'Date of Birth',
-                            ),
-                          ),
+                      TextFormField(
+                        controller: widget.viewModel.establishedDateController,
+                        decoration: InputDecoration(
+                          labelText: 'Date of Birth',
                         ),
+                        onTap: () async {
+                          final DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: widget
+                                .viewModel
+                                .establishedDateController
+                                .text
+                                .toInitialDateTime,
+                            firstDate: DateTime(1900, 1),
+                            lastDate: DateTime.now(),
+                          );
+                          if (picked != null)
+                            widget.viewModel.establishedDateController.text =
+                                DateFormat('dd-MM-yyyy').format(picked);
+                        },
+                        readOnly: true,
                       ),
                       SizedBox(height: 15.h),
                       Padding(
