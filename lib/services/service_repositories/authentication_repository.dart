@@ -1,7 +1,7 @@
 import 'package:pbl5/models/account/account.dart';
+import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/credential/credential.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
-import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/services/api_models/api_response/api_response.dart';
 
 import '/services/apis/api_client.dart';
@@ -17,8 +17,11 @@ class AuthenticationRepositoty {
         "password": password,
       });
 
-  Future<ApiResponse<User>> register({required User user}) =>
-      apis.register(user.toJson());
+  Future<ApiResponse<Company>> register(Company company, String password) =>
+      apis.register({
+        ...company.toJson(),
+        "password": password,
+      });
 
   Future<SystemRolesResponse> getSystemRole() => apis.getSystemRoles();
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/services/api_models/api_page_response/api_page_response.dart';
 import 'package:pbl5/services/service_repositories/swipe_selection_repository.dart';
@@ -11,7 +10,7 @@ class SwipeSelectionViewModel extends BaseViewModel {
   final SwipeSelectionRepository recPredictRepo;
 
   ApiPageResponse<User>? users;
-
+  bool isLoadmore = false;
 
   SwipeSelectionViewModel({required this.recPredictRepo});
 
@@ -21,12 +20,24 @@ class SwipeSelectionViewModel extends BaseViewModel {
     Function(String)? onFailure,
   }) async {
     try {
+      if (page != 1) {
+        isLoadmore = true;
+        updateUI();
+      } else if (page == 1) {
+        users = null;
+        updateUI();
+      }
       var response = (await recPredictRepo.getRecommendedUsers(page: page));
       users = users.insertPage(response);
-      updateUI();
       onSuccess?.call();
+      isLoadmore = false;
+      updateUI();
     } on Exception catch (error) {
       onFailure?.call(parseError(error));
+      users = ApiPageResponse.empty();
+    } finally {
+      isLoadmore = false;
+      updateUI();
     }
   }
 

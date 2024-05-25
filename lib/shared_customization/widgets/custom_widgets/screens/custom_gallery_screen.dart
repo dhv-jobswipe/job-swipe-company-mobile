@@ -21,6 +21,7 @@ import '/shared_customization/extensions/list_ext.dart';
 import '/shared_customization/extensions/scroll_controller_ext.dart';
 import '/shared_customization/widgets/custom_layout.dart';
 import '/shared_customization/widgets/texts/custom_text.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class CustomGalleryWidget extends StatefulWidget {
   final bool multiSelection;
@@ -68,13 +69,22 @@ class _CustomGalleryWidgetState extends State<CustomGalleryWidget> {
   }
 
   _getData() async {
-    final PermissionState ps = await PhotoManager.requestPermissionExtend(
-        requestOption: const PermissionRequestOption(
-      androidPermission:
-          AndroidPermission(type: RequestType.common, mediaLocation: false),
-      iosAccessLevel: IosAccessLevel.readWrite,
-    ));
-    if (ps.isAuth || ps.hasAccess) {
+    bool canAccess = false;
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+      final androidInfo = await deviceInfoPlugin.androidInfo;
+      if (androidInfo.version.sdkInt > 32) {
+        final PermissionStatus ps = await Permission.photos.request();
+        canAccess = ps.isGranted || ps.isLimited;
+      } else {
+        final PermissionState ps = await PhotoManager.requestPermissionExtend();
+        canAccess = ps.hasAccess || ps.isAuth;
+      }
+    } else {
+      final PermissionState ps = await PhotoManager.requestPermissionExtend();
+      canAccess = ps.hasAccess || ps.isAuth;
+    }
+    if (canAccess) {
       await _getPath();
       await _getListAssetEntity();
     } else {

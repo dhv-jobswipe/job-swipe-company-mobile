@@ -105,7 +105,7 @@ class _IntegratedAuthScreenState extends State<IntegratedAuthScreen> {
                                   isSignInDialogShown = true;
                                 },
                                 systemRoleId: integratedAuthViewModel
-                                        .getUserSystemRoleId() ??
+                                        .getCompanySystemRoleId() ??
                                     '',
                                 onClosed: (_) {
                                   isDialogClosing = true;

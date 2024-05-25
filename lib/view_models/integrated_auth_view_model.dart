@@ -31,7 +31,7 @@ class IntegratedAuthViewModel extends BaseViewModel {
 
   String? getCompanySystemRoleId() {
     return systemRoleResponse?.data
-        .firstWhere((e) => e.constantName == 'Company')
+        .firstWhere((e) => e.constantName!.toLowerCase() == 'company')
         .constantId;
   }
 }

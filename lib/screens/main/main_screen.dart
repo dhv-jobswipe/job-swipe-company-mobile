@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pbl5/app_common_data/extensions/unread_count_ext.dart';
+import 'package:pbl5/models/app_data.dart';
 import 'package:pbl5/screens/base/base_view.dart';
 import 'package:pbl5/screens/conversation/conversation_screen.dart';
 import 'package:pbl5/screens/notification/notification_screen.dart';
@@ -16,7 +17,6 @@ import 'package:pbl5/view_models/app_notification_view_model.dart';
 import 'package:pbl5/view_models/conversation_view_model.dart';
 import 'package:pbl5/view_models/main_view_model.dart';
 import 'package:pbl5/view_models/notification_view_model.dart';
-import 'package:pbl5/view_models/profile_view_model.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +54,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     viewModel = GetIt.instance.get<MainViewModel>();
+    // Get system constatnts if not already fetched
+    Future.delayed(const Duration(seconds: 1), () {
+      var appDataViewModel = GetIt.instance.get<AppData>();
+      if (appDataViewModel.systemConstants.keys.isEmpty) {
+        appDataViewModel.fetchAllSystemConstants();
+      }
+    });
     appNotificationViewModel = GetIt.instance.get<AppNotificationViewModel>();
     // Connect to socket server
     appNotificationViewModel
@@ -66,8 +73,6 @@ class _MainScreenState extends State<MainScreen> {
     GetIt.instance.get<NotificationViewModel>().getNotifications();
     // Get conversations
     GetIt.instance.get<ConversationViewModel>().getConversation();
-    // Get profile
-    GetIt.instance.get<ProfileViewModel>().getProfile();
     //Get list users
     GetIt.instance.get<SwipeSelectionViewModel>().getRecommendedCompanies();
     super.initState();
