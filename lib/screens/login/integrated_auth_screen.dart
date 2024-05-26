@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pbl5/screens/base/base_view.dart';
@@ -73,9 +74,9 @@ class _IntegratedAuthScreenState extends State<IntegratedAuthScreen> {
                       child: Column(
                         children: [
                           Text(
-                            "Find your dream job",
+                            "Find your\ndream\nemployees",
                             style: TextStyle(
-                                fontSize: 60,
+                                fontSize: 43,
                                 fontFamily: "Poppins",
                                 height: 1.2),
                           ),
@@ -83,13 +84,13 @@ class _IntegratedAuthScreenState extends State<IntegratedAuthScreen> {
                             height: 16,
                           ),
                           Text(
-                            "Welcome to our job finding app! Swipe to explore jobs and companies. Start your career journey with us today.",
+                            "Welcome to our employees finding app! Swipe to explore employees. Start your head hunter journey with us today.",
                           ),
                         ],
                       ),
                     ),
                     const Spacer(
-                      flex: 2,
+                      flex: 4,
                     ),
                     AnimatedBtn(
                       btnAnimationController: _btnAnimationController,
