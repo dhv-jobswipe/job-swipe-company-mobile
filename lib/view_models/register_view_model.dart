@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pbl5/models/company/company.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/services/service_repositories/authentication_repository.dart';
+import 'package:pbl5/shared_customization/extensions/string_ext.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/dio_parse_error.dart';
 import 'package:pbl5/view_models/base_view_model.dart';
 
@@ -15,8 +16,7 @@ class RegisterViewModel extends BaseViewModel {
     ..text = 'Job Swipe Company';
   final comapyUrlController = TextEditingController()
     ..text = 'http://jobswipe.com';
-  final establishedDateController = TextEditingController()
-    ..text = '2024-01-01';
+  final establishedDateController = TextEditingController()..text = '';
 
   RegisterViewModel({required this.authenticationRepositoty});
 
@@ -35,7 +35,7 @@ class RegisterViewModel extends BaseViewModel {
           phoneNumber: phoneController.text,
           companyName: companyNameController.text,
           companyUrl: comapyUrlController.text,
-          establishedDate: establishedDateController.text,
+          establishedDate: establishedDateController.text.toDatetimeApi,
           systemRole: SystemConstant(constantId: systemRoleId),
         ),
         passwordController.text,

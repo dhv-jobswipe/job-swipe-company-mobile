@@ -125,24 +125,27 @@ class _RegisterFormState extends State<RegisterForm> {
                               InputDecoration(labelText: 'Phone Number'),
                         ),
                         TextFormField(
-                          controller: widget.viewModel.dobController,
+                          controller:
+                              widget.viewModel.establishedDateController,
                           decoration: InputDecoration(
-                            labelText: 'Date of Birth',
+                            labelText: 'Established Time',
                           ),
                           onTap: () async {
                             final DateTime? picked = await showDatePicker(
                               context: context,
-                              initialDate: widget.viewModel.dobController.text
+                              initialDate: widget
+                                  .viewModel
+                                  .establishedDateController
+                                  .text
                                   .toInitialDateTime,
                               firstDate: DateTime(1900, 1),
                               lastDate: DateTime.now(),
                             );
                             if (picked != null)
-                              widget.viewModel.dobController.text =
+                              widget.viewModel.establishedDateController.text =
                                   DateFormat('dd-MM-yyyy').format(picked);
                           },
                           readOnly: true,
-
                         ),
                       ],
                     ),

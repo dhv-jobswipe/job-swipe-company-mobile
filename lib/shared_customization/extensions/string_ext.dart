@@ -42,10 +42,14 @@ extension StringExt on String? {
 
   DateTime get toInitialDateTime {
     if (this.isEmptyOrNull) return DateTime.now();
+
     try {
       var date = DateFormat("dd-MM-yyyy").parse(this!, true);
+      print("Date: $date");
+      print(this);
       return date;
     } catch (err) {
+      print("Error: $err");
       return DateTime.now();
     }
   }

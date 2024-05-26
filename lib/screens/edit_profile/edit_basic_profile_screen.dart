@@ -154,7 +154,7 @@ class _EditBasicProfileScreenState extends State<EditBasicProfileScreen> {
                       TextFormField(
                         controller: widget.viewModel.establishedDateController,
                         decoration: InputDecoration(
-                          labelText: 'Date of Birth',
+                          labelText: 'Established Date',
                         ),
                         onTap: () async {
                           final DateTime? picked = await showDatePicker(

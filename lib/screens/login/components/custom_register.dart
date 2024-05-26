@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pbl5/screens/login/components/register_form.dart';
-
+import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
 import 'package:pbl5/view_models/register_view_model.dart';
 
 Future<Object?> customRegisterDialog(
@@ -24,51 +22,65 @@ Future<Object?> customRegisterDialog(
                 CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
             child: child);
       },
-      pageBuilder: (context, _, __) => Center(
-            child: Container(
-              height: 620,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(40))),
-              child: Scaffold(
-                backgroundColor: Colors.white,
-                resizeToAvoidBottomInset:
-                    false, // avoid overflow error when keyboard shows up
-                body: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Column(
-                      children: [
-                        const Text(
-                          "Register",
-                          style: TextStyle(fontSize: 34, fontFamily: "Poppins"),
-                        ),
-                        SizedBox(
-                          height: 18.h,
-                        ),
-                        Expanded(
-                          child: RegisterForm(
-                            viewModel: viewModel,
-                            systemRoleId: systemRoleId,
+      pageBuilder: (context, _, __) {
+        final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
+        return GestureDetector(
+          onTap: () {
+            context.unfocus();
+          },
+          child: Padding(
+            padding: EdgeInsets.only(bottom: bottomInset),
+            child: Center(
+              child: Container(
+                height: 620,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(40))),
+                child: Scaffold(
+                  backgroundColor: Colors.white,
+                  resizeToAvoidBottomInset:
+                      false, // avoid overflow error when keyboard shows up
+                  body: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Column(
+                        children: [
+                          const Text(
+                            "Register",
+                            style:
+                                TextStyle(fontSize: 34, fontFamily: "Poppins"),
                           ),
-                        ),
-                      ],
-                    ),
-                    const Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: -55,
-                      child: CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.close, color: Colors.black),
+                          SizedBox(
+                            height: 18.h,
+                          ),
+                          Expanded(
+                            child: RegisterForm(
+                              viewModel: viewModel,
+                              systemRoleId: systemRoleId,
+                            ),
+                          ),
+                        ],
                       ),
-                    )
-                  ],
+                      const Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: -55,
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.close, color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          )).then(onClosed);
+          ),
+        );
+      }).then(onClosed);
 }
