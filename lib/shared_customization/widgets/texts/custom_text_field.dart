@@ -5,6 +5,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pbl5/constants.dart';
 import '/app_common_data/common_data/global_key_variable.dart';
 import '/app_common_data/themes/app_theme_data.dart';
 import '/shared_customization/extensions/build_context.ext.dart';
@@ -222,14 +223,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     child: Align(
                         alignment: Alignment.center,
                         child: obscureText
-                            ? Assets.icons.icEye.svg(
-                                color: theme.icon_primary,
-                                width: 22,
-                                height: 22)
-                            : Assets.icons.icEyeSlash.svg(
-                                color: theme.icon_primary,
-                                width: 22,
-                                height: 22)),
+                            ? Assets.icons.icEye
+                                .svg(color: orangePink, width: 22, height: 22)
+                            : Assets.icons.icEyeSlash
+                                .svg(color: orangePink, width: 22, height: 22)),
                   );
                 }
                 return isShowClearButton
@@ -351,7 +348,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               }
             },
             child: Icon(Icons.calendar_month_rounded,
-                size: 24, color: theme.icon_primary));
+                size: 24, color: orangePink));
       case KeyboardType.datetimeHour:
         return _buildSuffixIcon(
             onTap: () async {
@@ -399,27 +396,34 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   errorInvalidText:
                       tr(LocaleKeys.CommonValidation_DateTimeFormatIsInvalid));
               if (dateTime != null) {
-                widget
-                    .onChanged(dateTime.toDayMonthYear(locale: currentLocale));
-                controller.text =
-                    dateTime.toDayMonthYear(locale: currentLocale);
                 TimeOfDay? timeOfDay = await showTimePicker(
                     context: context,
                     initialEntryMode: TimePickerEntryMode.inputOnly,
                     initialTime: const TimeOfDay(hour: 7, minute: 0));
-                if (timeOfDay != null) {}
+                if (timeOfDay != null) {
+                  dateTime = dateTime.add(Duration(
+                      hours: timeOfDay.hour, minutes: timeOfDay.minute));
+                }
+                widget.onChanged(dateTime.toDayMonthYear(
+                  locale: currentLocale,
+                  withHour: true,
+                ));
+                controller.text = dateTime.toDayMonthYear(
+                  locale: currentLocale,
+                  withHour: true,
+                );
               }
             },
             child: Icon(Icons.calendar_month_rounded,
-                size: 24, color: theme.icon_primary));
+                size: 24, color: orangePink));
       case KeyboardType.phone:
         return _buildSuffixIcon(
-            child: Icon(Icons.phone_enabled_rounded,
-                size: 22, color: theme.icon_primary));
+            child:
+                Icon(Icons.phone_enabled_rounded, size: 22, color: orangePink));
       case KeyboardType.money:
         return _buildSuffixIcon(
             child: CustomText(CURRENCY,
-                color: theme.icon_primary, fontWeight: FontWeight.w600));
+                color: orangePink, fontWeight: FontWeight.w600));
       default:
         if (!obscureText && !widget.readOnly) {
           isDefaultSuffixIcon = true;
@@ -428,7 +432,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 controller.clear();
                 widget.onChanged('');
               },
-              child: Icon(Icons.close, size: 22, color: theme.icon_primary));
+              child: Icon(Icons.close, size: 22, color: orangePink));
         }
     }
     return null;

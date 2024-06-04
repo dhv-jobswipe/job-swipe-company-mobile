@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
 import 'package:pbl5/shared_customization/extensions/string_ext.dart';
+import 'package:pbl5/shared_customization/helpers/dialogs/dialog_helper.dart';
 import 'package:pbl5/view_models/register_view_model.dart';
 import 'package:rive/rive.dart';
 
@@ -62,7 +63,7 @@ class _RegisterFormState extends State<RegisterForm> {
             );
           },
           onFailure: (e) {
-            debugPrint("Failed to login: $e");
+            showErrorDialog(context, content: e);
             error.fire();
             Future.delayed(
               Duration(seconds: 2),
@@ -123,6 +124,10 @@ class _RegisterFormState extends State<RegisterForm> {
                           controller: widget.viewModel.phoneController,
                           decoration:
                               InputDecoration(labelText: 'Phone Number'),
+                        ),
+                        TextFormField(
+                          controller: widget.viewModel.comapyUrlController,
+                          decoration: InputDecoration(labelText: 'Company URL'),
                         ),
                         TextFormField(
                           controller:

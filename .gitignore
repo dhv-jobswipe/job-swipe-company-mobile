@@ -54,6 +54,7 @@ linux/**/generated_plugins.cmake
 windows/**/generated_plugin_registrant.cc
 windows/**/generated_plugin_registrant.h
 windows/**/generated_plugins.cmake
+pubspec.lock
 
 # Ignore .env file
 .env

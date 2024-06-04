@@ -10,52 +10,46 @@ class EducationTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder : (context){
-
-        final allStudyPlaces =
-        educations.map((e) => e.studyPlace ?? '').join(', ');
-
-        final allStudyDetail = educations
-            .map(
-              (e) => Container(
-
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildRichKeyValue(
-                      context, 'Study place: ', e.studyPlace ?? ''),
-                  buildRichKeyValue(
-                      context, 'Majority: ', e.majority ?? ''),
-                  buildRichKeyValue(context, 'Start date: ',
-                      e.studyStartTime?.toDateTime?.toDayMonthYear() ?? ''),
-                  buildRichKeyValue(context, 'End date: ',
-                      e.studyEndTime?.toDateTime?.toDayMonthYear() ?? ''),
-                  buildRichKeyValue(
-                      context, 'CPA: ', e.cpa?.toString() ?? ''),
-                  buildRichKeyValue(context, 'Note: ', e.note ?? ''),
-                  SizedBox(height: 15,),
-                  Divider(),
-                ],
+    return Builder(builder: (context) {
+      final allStudyDetail = educations
+          .map(
+            (e) => Container(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildRichKeyValue(
+                        context, 'Study place: ', e.studyPlace ?? ''),
+                    buildRichKeyValue(context, 'Majority: ', e.majority ?? ''),
+                    buildRichKeyValue(context, 'Start date: ',
+                        e.studyStartTime?.toDateTime?.toDayMonthYear() ?? ''),
+                    buildRichKeyValue(context, 'End date: ',
+                        e.studyEndTime?.toDateTime?.toDayMonthYear() ?? ''),
+                    buildRichKeyValue(
+                        context, 'CPA: ', e.cpa?.toString() ?? ''),
+                    buildRichKeyValue(context, 'Note: ', e.note ?? ''),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Divider(),
+                  ],
+                ),
               ),
             ),
-          ),
-        )
-            .toList();
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: allStudyDetail,),
-        );
-      }
-    );
+          )
+          .toList();
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: allStudyDetail,
+        ),
+      );
+    });
   }
 }
 
-RichText buildRichKeyValue(
-    BuildContext context, String title, String content) {
+RichText buildRichKeyValue(BuildContext context, String title, String content) {
   return RichText(
     text: TextSpan(
       text: title,

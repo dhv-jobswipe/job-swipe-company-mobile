@@ -9,9 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '/shared_customization/extensions/string_ext.dart';
-import '/app_common_data/themes/app_theme_data.dart';
-import '/shared_customization/extensions/build_context.ext.dart';
-import '/shared_customization/widgets/custom_widgets/screens/custom_gallery_screen.dart';
 import '/generated/translations.g.dart';
 import '/shared_customization/helpers/dialogs/dialog_helper.dart';
 
@@ -24,24 +21,41 @@ class ImagePickerHelper {
     bool multiSelection = true,
     bool withVideoOption = false,
   }) async {
-    AppThemeData theme = context.appTheme.appThemeData;
-    dynamic data = await showModalBottomSheet(
-        backgroundColor: theme.white,
-        barrierColor: theme.white,
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (_) => CustomGalleryWidget(
-              multiSelection: multiSelection,
-              withCameraOption: withCameraOption,
-              withVideoOption: withVideoOption,
-            ));
-    List<File> selectedFiles = (data == null)
-        ? []
-        : (data as List<File?>)
-            .where((element) => element != null)
-            .map((e) => e!)
-            .toList();
+    // AppThemeData theme = context.appTheme.appThemeData;
+    // dynamic data = await showModalBottomSheet(
+    //     backgroundColor: theme.white,
+    //     barrierColor: theme.white,
+    //     context: context,
+    //     isScrollControlled: true,
+    //     useSafeArea: true,
+    //     builder: (_) => CustomGalleryWidget(
+    //           multiSelection: multiSelection,
+    //           withCameraOption: withCameraOption,
+    //           withVideoOption: withVideoOption,
+    //         ));
+    // List<File> selectedFiles = (data == null)
+    //     ? []
+    //     : (data as List<File?>)
+    //         .where((element) => element != null)
+    //         .map((e) => e!)
+    //         .toList();
+    PermissionStatus status = await Permission.storage.request();
+    if ([PermissionStatus.denied, PermissionStatus.permanentlyDenied]
+        .contains(status)) {
+      showConfirmDialog(context,
+          title: tr(LocaleKeys.Permission_CanNotAccessGalleryPermission),
+          content: tr(LocaleKeys.Permission_PleaseAccessGalleryPermission),
+          onAccept: openAppSettings);
+      return [];
+    }
+    List<File> selectedFiles = [];
+    if (multiSelection) {
+      List<XFile> xFiles = await ImagePicker().pickMultiImage();
+      selectedFiles = xFiles.map((e) => File(e.path)).toList();
+    } else {
+      XFile? xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      selectedFiles = [if (xFile != null) File(xFile.path)];
+    }
     return selectedFiles;
   }
 

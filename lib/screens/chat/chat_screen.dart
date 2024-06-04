@@ -3,6 +3,7 @@ import 'package:pbl5/app_common_data/app_text_sytle.dart';
 import 'package:pbl5/app_common_data/extensions/scroll_ext.dart';
 import 'package:pbl5/generated/assets.gen.dart';
 import 'package:pbl5/locator_config.dart';
+import 'package:pbl5/routes.dart';
 import 'package:pbl5/screens/base/base_view.dart';
 import 'package:pbl5/screens/chat/widgets/chat_input_widget.dart';
 import 'package:pbl5/screens/chat/widgets/chat_item_widget.dart';
@@ -80,7 +81,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   borderRadius: BorderRadius.circular(100),
                   size: 45,
                 ),
-                onTap: () {},
+                onTap: () {
+                  if (conversation?.user?.id == null) return;
+                  context.pushNamed(Routes.userDetail,
+                      arguments: conversation!.user!.id!);
+                },
                 titleWidget: CustomText(
                   "${conversation?.user?.lastName ?? ''} ${conversation?.user?.firstName ?? ''}",
                   style: AppTextStyle.titleText,

@@ -8,14 +8,12 @@ import 'package:pbl5/view_models/base_view_model.dart';
 
 class RegisterViewModel extends BaseViewModel {
   final AuthenticationRepositoty authenticationRepositoty;
-  final emailController = TextEditingController()..text = 'company@gmail.com';
-  final passwordController = TextEditingController()..text = '123456Aa';
-  final addressController = TextEditingController()..text = 'Da Nang, Viet Nam';
-  final phoneController = TextEditingController()..text = '0123456789';
-  final companyNameController = TextEditingController()
-    ..text = 'Job Swipe Company';
-  final comapyUrlController = TextEditingController()
-    ..text = 'http://jobswipe.com';
+  final emailController = TextEditingController()..text = '';
+  final passwordController = TextEditingController()..text = '';
+  final addressController = TextEditingController()..text = '';
+  final phoneController = TextEditingController()..text = '';
+  final companyNameController = TextEditingController()..text = '';
+  final comapyUrlController = TextEditingController()..text = '';
   final establishedDateController = TextEditingController()..text = '';
 
   RegisterViewModel({required this.authenticationRepositoty});

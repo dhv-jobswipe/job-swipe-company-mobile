@@ -105,11 +105,19 @@ Future<void> showFeaturePendingDialog(BuildContext context) => showDialog(
       ),
     );
 
-Future<dynamic> showCustomDialog(
-        {required BuildContext context, required WidgetBuilder builder}) =>
+Future<dynamic> showCustomDialog({
+  required BuildContext context,
+  required WidgetBuilder builder,
+  bool barrierDismissible = true,
+}) =>
     showDialog(
       context: context,
-      builder: (_) => Material(
+      barrierDismissible: barrierDismissible,
+      builder: (_) => GestureDetector(
+        onTap: barrierDismissible ? () => Navigator.pop(_) : null,
+        child: Material(
           color: context.appTheme.appThemeData.transparent,
-          child: Center(child: BaseDialogContent(builder: builder))),
+          child: Center(child: BaseDialogContent(builder: builder)),
+        ),
+      ),
     );
