@@ -45,6 +45,8 @@ class CustomDropdownButton<T> extends StatelessWidget {
   final Color? backgroundColor;
   final VoidCallback? onDeleteTap;
   final bool isShowDeleteIcon;
+  final bool isShowDivider;
+  final Color? textColor;
 
   const CustomDropdownButton({
     super.key,
@@ -71,6 +73,8 @@ class CustomDropdownButton<T> extends StatelessWidget {
     this.backgroundColor,
     this.onDeleteTap,
     this.isShowDeleteIcon = false,
+    this.isShowDivider = true,
+    this.textColor,
   });
 
   @override
@@ -104,7 +108,8 @@ class CustomDropdownButton<T> extends StatelessWidget {
                           children: [
                             icon ??
                                 Icon(Icons.keyboard_arrow_down_rounded,
-                                    size: 28, color: Colors.black87),
+                                    size: 28,
+                                    color: textColor ?? Colors.black87),
                             CustomIconButton(
                               onPressed: onDeleteTap,
                               icon: Icons.delete_forever_sharp,
@@ -115,7 +120,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
                         )
                       : icon ??
                           Icon(Icons.keyboard_arrow_down_rounded,
-                              size: 28, color: Colors.black87),
+                              size: 28, color: textColor ?? Colors.black87),
                   padding: EdgeInsets.zero,
                   value: value,
                   onChanged: onChanged,
@@ -162,6 +167,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
                               child: Text(
                                 item.label,
                                 style: TextStyle(
+                                  color: textColor,
                                   fontWeight: FontWeight.normal,
                                 ),
                               ));
@@ -175,10 +181,11 @@ class CustomDropdownButton<T> extends StatelessWidget {
             ),
           ),
         ),
-        Divider(
-          color: Colors.black54,
-          height: 1,
-        ),
+        if (isShowDivider)
+          Divider(
+            color: Colors.black54,
+            height: 1,
+          ),
       ],
     );
   }

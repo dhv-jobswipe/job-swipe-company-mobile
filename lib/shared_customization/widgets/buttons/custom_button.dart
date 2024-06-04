@@ -177,7 +177,8 @@ class _CustomButtonState extends State<CustomButton> {
                   ? widget.countDownText?.call(durationInMilliseconds) ??
                       tr(LocaleKeys.CommonAction_Confirm)
                   : widget.label ?? tr(LocaleKeys.CommonAction_Confirm),
-              style: AppTextStyle.buttonText.copyWith(color: type.textColor),
+              style: AppTextStyle.buttonText
+                  .copyWith(color: widget.labelColor ?? type.textColor),
             ),
       ),
     );

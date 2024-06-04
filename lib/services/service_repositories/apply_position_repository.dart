@@ -22,6 +22,9 @@ class ApplyPositionRepository {
           {required List<ApplicationPosition> applicationPositions}) =>
       apis.insertApplyPositions(applicationPositions);
 
+  Future<ApiResponse<List<ApplicationPosition>>> getApplyPositions() =>
+      apis.getApplyPositions();
+
   ///
   /// Skill
   ///

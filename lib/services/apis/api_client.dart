@@ -6,13 +6,13 @@ import 'package:pbl5/models/conversation/conversation.dart';
 import 'package:pbl5/models/language/language.dart';
 import 'package:pbl5/models/message/message.dart';
 import 'package:pbl5/models/notification_data/notification_data.dart';
+import 'package:pbl5/models/pair/pair.dart';
 import 'package:pbl5/models/skill/skill.dart';
 import 'package:pbl5/models/system_roles_response/system_roles_response.dart';
 import 'package:pbl5/models/user/user.dart';
 import 'package:pbl5/models/user_awards/user_awards.dart';
 import 'package:pbl5/models/user_educations/user_educations.dart';
 import 'package:pbl5/models/user_experiences/user_experiences.dart';
-import 'package:pbl5/screens/pair/pair.dart';
 import 'package:pbl5/services/api_models/api_page_response/api_page_response.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -110,6 +110,9 @@ abstract class ApiClient {
   @POST('/account/application-positions')
   Future<ApiResponse<List<ApplicationPosition>>> insertApplyPositions(
       @Body() List<ApplicationPosition> body);
+
+  @GET('/account/application-positions')
+  Future<ApiResponse<List<ApplicationPosition>>> getApplyPositions();
 
   ///
   /// Skill
@@ -240,10 +243,14 @@ abstract class ApiClient {
       @Query("conversation_id") String conversationId);
 
   ///
-  /// pair
+  /// Pair
   ///
   @GET('/matched-pairs')
   Future<ApiResponse<Pair>> getMatchById(@Query("match_id") String pairId);
+
+  @GET('/matched-pairs/by-account')
+  Future<ApiResponse<Pair>> getMatchByAccountId(
+      @Query("account_id") String accountId);
 
   @POST('/matched-pairs/request')
   Future<ApiResponse<Pair>> requestMatchedPair(
@@ -255,7 +262,7 @@ abstract class ApiClient {
   @POST('/matched-pairs/reject')
   Future<ApiResponse<Pair>> rejectPair(@Query("match_id") String pairId);
 
-  ///
-  ///
-  ///
+  @POST('/matched-pairs/interview-invitation')
+  Future<ApiResponse> sendInterviewInvitationMail(
+      @Body() Map<String, dynamic> body);
 }

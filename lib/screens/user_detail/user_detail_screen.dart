@@ -14,10 +14,8 @@ import 'package:pbl5/view_models/detail_view_model.dart';
 import 'package:provider/provider.dart';
 
 class UserDetailScreen extends StatefulWidget {
-  final String userId;
-
-
   UserDetailScreen({super.key, required this.userId});
+  final String userId;
 
   @override
   State<UserDetailScreen> createState() => _UserDetailScreenState();
@@ -29,7 +27,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   @override
   void initState() {
     viewModel = getIt.get<DetailViewModel>();
-    GetIt.instance.get<DetailViewModel>().onGetUserByIdPressed(userId: widget.userId,);
+    GetIt.instance.get<DetailViewModel>()..initState(userId: widget.userId);
     super.initState();
   }
 
@@ -48,7 +46,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
             size: 30,
             color: Colors.white,
           ),
-          onPressed: (){
+          onPressed: () {
             viewModel.clear();
             context.pop();
           },
@@ -56,169 +54,173 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
       ),
       mobileBuilder: (context) {
         var user = context.select((DetailViewModel vm) => vm.user);
-        return
-          user == null ? Container() :
-          Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Column(
-                  children: [
-                    Flexible(
-                      child: user.avatar != null
-                          ? Image.network(user.avatar!)
-                          : Icon(
-                              Icons.location_city,
-                              size: 95,
-                              color: Colors.white,
-                            ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-        (user.lastName ?? '') + " " + (user.firstName ?? ''),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 19.sp,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins',
+        var pair = context.select((DetailViewModel vm) => vm.pair);
+        var positions =
+            context.select((DetailViewModel vm) => vm.applicationPositions);
+        return user == null
+            ? Container()
+            : Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Flexible(
+                            child: user.avatar != null
+                                ? Image.network(user.avatar!)
+                                : Icon(
+                                    Icons.location_city,
+                                    size: 95,
+                                    color: Colors.white,
+                                  ),
                           ),
-                        ),
-                        if (user.accountStatus != null)
-                          user.accountStatus!
-                              ? Container(
-                                  margin: EdgeInsets.only(left: 10.w),
-                                  padding: EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.lightGreenAccent,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  margin: EdgeInsets.only(left: 10.w),
-                                  padding: EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.redAccent,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                  ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                (user.lastName ?? '') +
+                                    " " +
+                                    (user.firstName ?? ''),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 19.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins',
                                 ),
-                      ],
-                    ),
-                    Text(
-                      'Available for new job',
-                      style: TextStyle(
-                        color: Colors.white54,
+                              ),
+                              if (user.accountStatus != null)
+                                user.accountStatus!
+                                    ? Container(
+                                        margin: EdgeInsets.only(left: 10.w),
+                                        padding: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.lightGreenAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.all(6),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        margin: EdgeInsets.only(left: 10.w),
+                                        padding: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.redAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.all(6),
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                        ),
+                                      ),
+                            ],
+                          ),
+                          Text(
+                            'Available for new job',
+                            style: TextStyle(color: Colors.white54),
+                          ),
+                          SizedBox(height: 50.h),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: 50.h,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                color: Colors.white,
-                child: DefaultTabController(
-
-                  length: 5,
-                  child: Scaffold(
-                    backgroundColor: orangePink,
-                    appBar: TabBar(
-                      isScrollable: true,
-                      padding: EdgeInsets.zero,
-                      indicatorColor: Colors.white,
-
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            'OVERVIEW',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'EDUCATION',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'EXPERIENCE',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'AWARD',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'APPLY POSITION',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    body: Container(
-                        color: Colors.white,
-                        child: TabBarView(
-                          children: <Widget>[
-                            OverviewTab(
-                              user: user,
-                            ),
-                            EducationTab(educations: user.educations),
-                            ExperienceTab(experiences: user.experiences),
-                            AwardTab(awards: user.awards),
-                            JobsTab(positions: user.applicationPositions,),
-                          ],
-                        )),
                   ),
-                ),
-              ),
-            ),
-          ],
-        );
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      color: Colors.white,
+                      child: DefaultTabController(
+                        length: 5,
+                        child: Scaffold(
+                          backgroundColor: orangePink,
+                          appBar: TabBar(
+                            isScrollable: true,
+                            padding: EdgeInsets.zero,
+                            indicatorColor: Colors.white,
+                            tabs: [
+                              Tab(
+                                child: Text(
+                                  'OVERVIEW',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'EDUCATION',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'EXPERIENCE',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'AWARD',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'APPLY POSITION',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          body: Container(
+                              color: Colors.white,
+                              child: TabBarView(
+                                children: <Widget>[
+                                  OverviewTab(
+                                      user: user,
+                                      pair: pair,
+                                      applicationPositions: positions),
+                                  EducationTab(educations: user.educations),
+                                  ExperienceTab(experiences: user.experiences),
+                                  AwardTab(awards: user.awards),
+                                  JobsTab(positions: user.applicationPositions),
+                                ],
+                              )),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
       },
     );
   }

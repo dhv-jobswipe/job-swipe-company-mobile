@@ -52,7 +52,8 @@ Future<void> setupLocator() async {
   var authRepo = getIt.registerSingleton<AuthenticationRepositoty>(
       AuthenticationRepositoty(apis: apis));
 
-  var userRepo = getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
+  var userRepo =
+      getIt.registerSingleton<UserRepository>(UserRepository(apis: apis));
 
   var recPredictRepo = getIt.registerSingleton<SwipeSelectionRepository>(
       SwipeSelectionRepository(apiAI: apiAI, apiClient: apis));
@@ -126,6 +127,9 @@ Future<void> setupLocator() async {
   getIt.registerLazySingleton<ResetPasswordViewModel>(
       () => ResetPasswordViewModel(authenticationRepositoty: authRepo));
 
-  getIt.registerLazySingleton<DetailViewModel>(
-          () => DetailViewModel(userRepository: userRepo));
+  getIt.registerLazySingleton<DetailViewModel>(() => DetailViewModel(
+        userRepository: userRepo,
+        swipeSelectionRepository: recPredictRepo,
+        applyPositionRepository: applyPositionRepo,
+      ));
 }

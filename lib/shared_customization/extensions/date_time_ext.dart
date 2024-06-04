@@ -11,10 +11,10 @@ extension DateTimeExt on DateTime? {
   String get monthYear =>
       this == null ? '' : DateFormat('MM/yyyy').format(this!);
 
-  String toDayMonthYear({Locale? locale}) {
+  String toDayMonthYear({Locale? locale, bool withHour = false}) {
     if (this == null) return '';
-
-    return DateFormat('dd-MM-yyyy').format(this!);
+    return DateFormat(withHour ? "dd-MM-yyyy HH:mm" : 'dd-MM-yyyy')
+        .format(this!);
   }
 
   String toCustomFormat(String format) =>

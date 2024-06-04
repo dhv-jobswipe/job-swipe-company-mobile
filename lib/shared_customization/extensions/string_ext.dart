@@ -77,6 +77,17 @@ extension StringExt on String? {
     }
   }
 
+  String? get toDatetimeHourApi {
+    if (this.isEmptyOrNull) return null;
+    try {
+      DateFormat format = DateFormat('dd-MM-yyyy HH:mm');
+      DateTime dateTime = format.parse(this!);
+      return DateFormat("yyyy-MM-ddTHH:mm:ss").format(dateTime);
+    } catch (err) {
+      return null;
+    }
+  }
+
   String get hardCoded => this ?? "";
 
   String get debug => "DEBUG: ===> ${this ?? ""}";

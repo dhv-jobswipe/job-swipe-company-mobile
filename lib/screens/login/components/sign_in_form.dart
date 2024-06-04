@@ -113,10 +113,12 @@ class _SignInFormState extends State<SignInForm> {
                     },
                     onSaved: (email) {},
                     decoration: InputDecoration(
+                        hintText: "Enter your email...",
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SvgPicture.asset("assets/icons/email.svg"),
-                    )),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: SvgPicture.asset("assets/icons/email.svg"),
+                        )),
                   ),
                 ),
                 const Text(
@@ -136,10 +138,12 @@ class _SignInFormState extends State<SignInForm> {
                     onSaved: (password) {},
                     obscureText: true,
                     decoration: InputDecoration(
+                        hintText: "Enter your password...",
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SvgPicture.asset("assets/icons/password.svg"),
-                    )),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: SvgPicture.asset("assets/icons/password.svg"),
+                        )),
                   ),
                 ),
                 Row(
