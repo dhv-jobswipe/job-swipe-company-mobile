@@ -171,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         //     child: _buildSummaryInfo(),
                         //   ),
                         // ),
-                        _buildTitle(title: 'Background'),
+                        _buildTitle(title: 'Information'),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
@@ -344,7 +344,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: UtilBigCard(
           scrollController: ScrollController(),
           color: lightBlue,
-          title: "Position",
+          title: "Opening Position",
           child: Column(
             children: applicationCards,
           ),
