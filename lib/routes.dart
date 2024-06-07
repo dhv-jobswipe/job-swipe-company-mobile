@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pbl5/models/file_content/file_content.dart';
+import 'package:pbl5/screens/change_password/change_password_screen.dart';
 import 'package:pbl5/screens/chat/chat_screen.dart';
 import 'package:pbl5/screens/forgot_password/forgot_password_screen.dart';
 import 'package:pbl5/screens/login/integrated_auth_screen.dart';
@@ -23,7 +24,7 @@ class Routes {
   static const String forgotPassword = '/forgotPassword';
   static const String resetPassword = '/resetPassword';
   static const String userDetail = '/userDetail';
-
+  static const String changePassword = '/changePassword';
 
   static final Map<String, WidgetBuilder> routes = {
     splash: (BuildContext context) => const SplashScreen(),
@@ -38,9 +39,8 @@ class Routes {
     forgotPassword: (BuildContext context) => const ForgotPasswordScreen(),
     resetPassword: (BuildContext context) => ResetPasswordScreen(
         args: context.getArguments<ResetPasswordScreenArgs>()!),
-   userDetail: (BuildContext context) =>
-       UserDetailScreen(userId: context.getArguments<String>()!),
-
-
+    userDetail: (BuildContext context) =>
+        UserDetailScreen(userId: context.getArguments<String>()!),
+    changePassword: (BuildContext context) => const ChangePasswordScreen(),
   };
 }

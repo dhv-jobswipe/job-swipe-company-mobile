@@ -18,6 +18,7 @@ import 'package:pbl5/screens/profile/widgets/secondary_card.dart';
 import 'package:pbl5/screens/profile/widgets/util_big_card.dart';
 import 'package:pbl5/shared_customization/extensions/build_context.ext.dart';
 import 'package:pbl5/shared_customization/extensions/date_time_ext.dart';
+import 'package:pbl5/shared_customization/extensions/list_ext.dart';
 import 'package:pbl5/shared_customization/extensions/string_ext.dart';
 import 'package:pbl5/shared_customization/helpers/image_helper.dart';
 import 'package:pbl5/view_models/profile_view_model.dart';
@@ -208,7 +209,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   InkWell _buildChangePasswordButton() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        context.pushNamed(Routes.changePassword);
+      },
       child: SecondaryCard(
         title: 'Change Password',
         icondata: Icons.key,
@@ -222,9 +225,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Builder(builder: (context) {
       final listLanguages = context.select<ProfileViewModel, List<Language>?>(
           (vm) => vm.company?.languages);
-      final allLanguageNames = listLanguages
-          ?.map((e) => e.languageConstant?.constantName ?? '')
-          .join(', ');
 
       final allLanguageDetail = listLanguages
           ?.map(
@@ -278,10 +278,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final applicationPositions =
           context.select<ProfileViewModel, List<ApplicationPosition>?>(
               (vm) => vm.company?.applicationPositions);
-      final allApplicationPositionName = applicationPositions
-          ?.map((e) => e.applyPosition?.constantName ?? '')
-          .join(', ');
-
       final applicationCards = applicationPositions?.map((applicationPosition) {
             final positionSkills = applicationPosition.skills;
             return Padding(
@@ -652,7 +648,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 context: context,
                 multiSelection: false,
                 withCameraOption: true);
-            viewModel.updateAvatar(file: file.first);
+            if (file.isNotEmptyOrNull) viewModel.updateAvatar(file: file.first);
           },
           child: DisplayImage(
             urlPath: userImage,

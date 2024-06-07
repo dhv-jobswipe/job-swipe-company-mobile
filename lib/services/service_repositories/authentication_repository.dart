@@ -58,21 +58,21 @@ class AuthenticationRepositoty {
           .status ==
       "success";
 
-// Future<bool> changePassword({
-//   required String oldPwd,
-//   required String newPwd,
-//   required String confirmNewPwd,
-// }) async {
-//   try {
-//     return (await apis.changePassword({
-//           "old_password": oldPwd,
-//           "new_password": newPwd,
-//           "confirm_new_password": confirmNewPwd
-//         }))
-//             .status ==
-//         "success";
-//   } catch (e) {
-//     rethrow;
-//   }
-// }
+  Future<bool> changePassword({
+    required String currentPwd,
+    required String newPwd,
+    required String confirmNewPwd,
+  }) async {
+    try {
+      return (await apis.changePassword({
+            "current_password": currentPwd,
+            "new_password": newPwd,
+            "new_password_confirmation": confirmNewPwd
+          }))
+              .status ==
+          "success";
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

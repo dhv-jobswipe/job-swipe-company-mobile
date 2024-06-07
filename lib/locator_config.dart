@@ -15,6 +15,7 @@ import 'package:pbl5/services/service_repositories/system_constant_repository.da
 import 'package:pbl5/services/service_repositories/user_repository.dart';
 import 'package:pbl5/shared_customization/helpers/utilizations/storages.dart';
 import 'package:pbl5/view_models/app_notification_view_model.dart';
+import 'package:pbl5/view_models/change_password_view_model.dart';
 import 'package:pbl5/view_models/chat_view_model.dart';
 import 'package:pbl5/view_models/conversation_view_model.dart';
 import 'package:pbl5/view_models/detail_view_model.dart';
@@ -132,4 +133,7 @@ Future<void> setupLocator() async {
         swipeSelectionRepository: recPredictRepo,
         applyPositionRepository: applyPositionRepo,
       ));
+
+  getIt.registerLazySingleton<ChangePasswordViewModel>(
+      () => ChangePasswordViewModel(authenticationRepositoty: authRepo));
 }

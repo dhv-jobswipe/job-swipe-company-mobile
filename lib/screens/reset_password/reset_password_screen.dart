@@ -50,6 +50,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       mobileBuilder: (context) => CustomDismissKeyboard(
         canPop: false,
         child: CustomLayout.scrollableView(
+          backgroundColor: Colors.white,
           onWillPop: () => Future.value(false),
           showAppBar: false,
           leading: EMPTY_WIDGET,
