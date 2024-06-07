@@ -175,10 +175,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 ///
                 /// Chat input
                 ///
-                ChatInputWidget(onSend: (inputModel) {
-                  viewModel.sendMessage(
-                      content: inputModel.content, files: inputModel.files);
-                })
+                ChatInputWidget(
+                  isActive: viewModel.conversation?.activeStatus == true,
+                  onSend: (inputModel) {
+                    viewModel.sendMessage(
+                        content: inputModel.content, files: inputModel.files);
+                  },
+                )
               ],
             ),
           );

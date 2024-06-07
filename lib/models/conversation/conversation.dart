@@ -12,6 +12,7 @@ class Conversation with _$Conversation {
     String? id,
     User? user,
     Company? company,
+    @JsonKey(name: "active_status") bool? activeStatus,
     @JsonKey(name: "last_message") Message? lastMessage,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'updated_at') String? updatedAt,
