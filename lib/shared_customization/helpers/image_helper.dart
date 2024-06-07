@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
@@ -39,7 +40,16 @@ class ImagePickerHelper {
     //         .where((element) => element != null)
     //         .map((e) => e!)
     //         .toList();
-    PermissionStatus status = await Permission.storage.request();
+    PermissionStatus? status;
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+      final androidInfo = await deviceInfoPlugin.androidInfo;
+      status = androidInfo.version.sdkInt > 32
+          ? await Permission.photos.request()
+          : await Permission.storage.request();
+    } else {
+      status = await Permission.photos.request();
+    }
     if ([PermissionStatus.denied, PermissionStatus.permanentlyDenied]
         .contains(status)) {
       showConfirmDialog(context,

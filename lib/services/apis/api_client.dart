@@ -47,6 +47,9 @@ abstract class ApiClient {
   @POST('/auth/reset-password')
   Future<ApiResponse> resetPassword(@Body() Map<String, dynamic> body);
 
+  @POST('/auth/change-password')
+  Future<ApiResponse> changePassword(@Body() Map<String, dynamic> body);
+
   @GET('/auth/account')
   Future<ApiResponse<Account>> getAccount();
 

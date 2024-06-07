@@ -70,6 +70,46 @@ class DetailViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> acceptPair({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    if (pair?.id.isEmptyOrNull == true) return;
+    final cancel = showLoading();
+    try {
+      var res = (await swipeSelectionRepository.acceptPair(pair!.id!));
+      if (res.data != null) {
+        pair = res.data;
+        updateUI();
+      }
+      onSuccess?.call();
+    } catch (e) {
+      onFailure?.call(parseError(e));
+    } finally {
+      cancel();
+    }
+  }
+
+  Future<void> declinePair({
+    VoidCallback? onSuccess,
+    Function(String)? onFailure,
+  }) async {
+    if (pair?.id.isEmptyOrNull == true) return;
+    final cancel = showLoading();
+    try {
+      var res = await swipeSelectionRepository.rejectPair(pair!.id!);
+      if (res.data != null) {
+        pair = res.data;
+        updateUI();
+      }
+      onSuccess?.call();
+    } catch (e) {
+      onFailure?.call(parseError(e));
+    } finally {
+      cancel();
+    }
+  }
+
   void clear() {
     user = null;
   }

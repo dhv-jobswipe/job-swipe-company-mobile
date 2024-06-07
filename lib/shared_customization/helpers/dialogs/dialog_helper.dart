@@ -86,6 +86,7 @@ Future<bool?> showConfirmDialog(
       context: context,
       builder: (context) {
         return Material(
+          color: context.appTheme.appThemeData.transparent,
           child: Center(
               child: ConfirmDialogContent(
             content: content,

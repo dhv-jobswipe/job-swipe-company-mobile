@@ -86,6 +86,7 @@ class ProfileViewModel extends BaseViewModel {
     VoidCallback? onSuccess,
     Function(String)? onFailure,
   }) async {
+    final cancel = showLoading();
     try {
       await companyRepository.updateAvatar(avatar: await file);
       getProfile();
@@ -93,6 +94,8 @@ class ProfileViewModel extends BaseViewModel {
       onSuccess?.call();
     } catch (error) {
       onFailure?.call(parseError(error));
+    } finally {
+      cancel();
     }
   }
 

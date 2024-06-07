@@ -39,6 +39,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: CustomForm(
           key: Key("forgot_password_form"),
           child: (formKey) => CustomLayout.scrollableView(
+            backgroundColor: Colors.white,
             showAppBar: false,
             onWillPop: () => Future.value(true),
             paddingAll: const EdgeInsets.fromLTRB(16, 32, 16, 16),

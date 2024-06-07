@@ -1,6 +1,7 @@
 // SHARED BETWEEN PROJECTS - DO NOT MODIFY BY HAND
 
 import 'package:flutter/material.dart';
+import 'package:pbl5/constants.dart';
 import '/app_common_data/common_data/global_key_variable.dart';
 import '/app_common_data/themes/app_theme_data.dart';
 import '/shared_customization/extensions/build_context.ext.dart';
@@ -12,7 +13,7 @@ extension ButtonTypeExt on ButtonType {
     AppThemeData theme =
         GlobalKeyVariable.navigatorState.currentContext!.appTheme.appThemeData;
     return {
-      ButtonType.primary: Colors.pink,
+      ButtonType.primary: orangePink,
       ButtonType.white: theme.button_white_bg,
       ButtonType.disable: theme.button_disable_bg,
       ButtonType.red: theme.button_error_bg,
