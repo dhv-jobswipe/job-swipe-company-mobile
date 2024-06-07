@@ -59,9 +59,11 @@ class OverviewTab extends StatelessWidget {
                   children: [
                     Icon(Icons.mail),
                     SizedBox(width: 15.h),
-                    Text(
-                      user.email ?? '',
-                      style: TextStyle(fontSize: 15.sp),
+                    Expanded(
+                      child: Text(
+                        user.email ?? '',
+                        style: TextStyle(fontSize: 15.sp),
+                      ),
                     ),
                   ],
                 ),
@@ -93,11 +95,13 @@ class OverviewTab extends StatelessWidget {
                   children: [
                     Icon(Icons.date_range),
                     SizedBox(width: 15.h),
-                    Text(
-                      user.dob != null
-                          ? user.dob.toDateTime.toDayMonthYear()
-                          : '',
-                      style: TextStyle(fontSize: 15.sp),
+                    Expanded(
+                      child: Text(
+                        user.dob != null
+                            ? user.dob.toDateTime.toDayMonthYear()
+                            : '',
+                        style: TextStyle(fontSize: 15.sp),
+                      ),
                     ),
                   ],
                 ),
@@ -108,9 +112,11 @@ class OverviewTab extends StatelessWidget {
                   children: [
                     Icon(Icons.phone),
                     SizedBox(width: 15.h),
-                    Text(
-                      user.phoneNumber ?? '',
-                      style: TextStyle(fontSize: 15.sp),
+                    Expanded(
+                      child: Text(
+                        user.phoneNumber ?? '',
+                        style: TextStyle(fontSize: 15.sp),
+                      ),
                     ),
                   ],
                 ),
@@ -121,9 +127,11 @@ class OverviewTab extends StatelessWidget {
                   children: [
                     Icon(Icons.location_on_rounded),
                     SizedBox(width: 15.h),
-                    Text(
-                      user.address ?? '',
-                      style: TextStyle(fontSize: 15.sp),
+                    Expanded(
+                      child: Text(
+                        user.address ?? '',
+                        style: TextStyle(fontSize: 15.sp),
+                      ),
                     ),
                   ],
                 ),
