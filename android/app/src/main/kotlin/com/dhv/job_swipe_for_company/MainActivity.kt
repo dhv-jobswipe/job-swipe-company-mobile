@@ -1,4 +1,4 @@
-package com.example.pbl5
+package com.dhv.job_swipe_for_company
 
 import io.flutter.embedding.android.FlutterActivity
 

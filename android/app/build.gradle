@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.pbl5"
+    namespace "com.dhv.job_swipe_for_company"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
     flavorDimensions "version"
@@ -61,7 +61,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.pbl5"
+        applicationId "com.dhv.job_swipe_for_company"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21
