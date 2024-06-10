@@ -10,6 +10,7 @@ import 'package:pbl5/services/service_repositories/chat_repository.dart';
 import 'package:pbl5/services/service_repositories/company_repository.dart';
 import 'package:pbl5/services/service_repositories/language_repository.dart';
 import 'package:pbl5/services/service_repositories/notification_repository.dart';
+import 'package:pbl5/services/service_repositories/search_repository.dart';
 import 'package:pbl5/services/service_repositories/swipe_selection_repository.dart';
 import 'package:pbl5/services/service_repositories/system_constant_repository.dart';
 import 'package:pbl5/services/service_repositories/user_repository.dart';
@@ -27,6 +28,7 @@ import 'package:pbl5/view_models/notification_view_model.dart';
 import 'package:pbl5/view_models/profile_view_model.dart';
 import 'package:pbl5/view_models/register_view_model.dart';
 import 'package:pbl5/view_models/reset_password_view_model.dart';
+import 'package:pbl5/view_models/search_view_model.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 
 GetIt getIt = GetIt.instance;
@@ -76,6 +78,9 @@ Future<void> setupLocator() async {
 
   var applyPositionRepo = getIt.registerSingleton<ApplyPositionRepository>(
       ApplyPositionRepository(apis: apis));
+
+  var searchRepo =
+      getIt.registerSingleton<SearchRepository>(SearchRepository(apis: apis));
 
   ///
   /// View models
@@ -136,4 +141,7 @@ Future<void> setupLocator() async {
 
   getIt.registerLazySingleton<ChangePasswordViewModel>(
       () => ChangePasswordViewModel(authenticationRepositoty: authRepo));
+
+  getIt.registerLazySingleton<SearchViewModel>(
+      () => SearchViewModel(searchRepo: searchRepo));
 }

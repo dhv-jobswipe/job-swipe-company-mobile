@@ -11,12 +11,14 @@ import 'package:pbl5/screens/base/base_view.dart';
 import 'package:pbl5/screens/conversation/conversation_screen.dart';
 import 'package:pbl5/screens/notification/notification_screen.dart';
 import 'package:pbl5/screens/profile/profile_screen.dart';
+import 'package:pbl5/screens/search/search_screen.dart';
 import 'package:pbl5/screens/swipe_selection/swipe_selection_screen.dart';
 import 'package:pbl5/shared_customization/widgets/custom_widgets/custom_dismiss_keyboard.dart';
 import 'package:pbl5/view_models/app_notification_view_model.dart';
 import 'package:pbl5/view_models/conversation_view_model.dart';
 import 'package:pbl5/view_models/main_view_model.dart';
 import 'package:pbl5/view_models/notification_view_model.dart';
+import 'package:pbl5/view_models/search_view_model.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -46,8 +48,9 @@ class _MainScreenState extends State<MainScreen> {
   /// widget list
   final List<Widget> bottomBarPages = [
     const SwipeSelectionScreen(),
-    const NotificationScreen(),
+    const SearchScreen(),
     const ConversationScreen(),
+    const NotificationScreen(),
     const ProfileScreen(),
   ];
 
@@ -75,6 +78,9 @@ class _MainScreenState extends State<MainScreen> {
     GetIt.instance.get<ConversationViewModel>().getConversation();
     //Get list users
     GetIt.instance.get<SwipeSelectionViewModel>().getRecommendedCompanies();
+    //get list search
+    GetIt.instance.get<SearchViewModel>().searchCompanies();
+
     super.initState();
   }
 
@@ -140,20 +146,14 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                       BottomBarItem(
                         inActiveItem: Icon(
-                          FontAwesomeIcons.solidBell,
+                          FontAwesomeIcons.magnifyingGlass,
                           color: Colors.black54,
                           size: 24,
-                        ).withUnreadCount(
-                          context.select<AppNotificationViewModel, int>(
-                              (vm) => vm.unreadNotificationCount),
                         ),
                         activeItem: Icon(
-                          FontAwesomeIcons.solidBell,
+                          FontAwesomeIcons.magnifyingGlass,
                           color: Colors.white,
                           size: 24,
-                        ).withUnreadCount(
-                          context.select<AppNotificationViewModel, int>(
-                              (vm) => vm.unreadNotificationCount),
                         ),
                         itemLabel: 'Page 2',
                       ),
@@ -167,6 +167,25 @@ class _MainScreenState extends State<MainScreen> {
                           FontAwesomeIcons.solidMessage,
                           color: Colors.white,
                           size: 24,
+                        ),
+                        itemLabel: 'Page 3',
+                      ),
+                      BottomBarItem(
+                        inActiveItem: Icon(
+                          FontAwesomeIcons.solidBell,
+                          color: Colors.black54,
+                          size: 24,
+                        ).withUnreadCount(
+                          context.select<AppNotificationViewModel, int>(
+                              (vm) => vm.unreadNotificationCount),
+                        ),
+                        activeItem: Icon(
+                          FontAwesomeIcons.solidBell,
+                          color: Colors.white,
+                          size: 24,
+                        ).withUnreadCount(
+                          context.select<AppNotificationViewModel, int>(
+                              (vm) => vm.unreadNotificationCount),
                         ),
                         itemLabel: 'Page 4',
                       ),

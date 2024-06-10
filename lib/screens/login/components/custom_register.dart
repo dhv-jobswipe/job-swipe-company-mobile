@@ -33,13 +33,12 @@ Future<Object?> customRegisterDialog(
             padding: EdgeInsets.only(bottom: bottomInset),
             child: Center(
               child: Container(
-                height: 620,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                height: 620.h,
+                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.symmetric(vertical: 32.h, horizontal: 16.w),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(40))),
+                    borderRadius: BorderRadius.all(Radius.circular(40.r))),
                 child: Scaffold(
                   backgroundColor: Colors.white,
                   resizeToAvoidBottomInset:
@@ -49,10 +48,10 @@ Future<Object?> customRegisterDialog(
                     children: [
                       Column(
                         children: [
-                          const Text(
+                          Text(
                             "Register",
-                            style:
-                                TextStyle(fontSize: 34, fontFamily: "Poppins"),
+                            style: TextStyle(
+                                fontSize: 34.sp, fontFamily: "Poppins"),
                           ),
                           SizedBox(
                             height: 18.h,
@@ -65,12 +64,12 @@ Future<Object?> customRegisterDialog(
                           ),
                         ],
                       ),
-                      const Positioned(
+                      Positioned(
                         left: 0,
                         right: 0,
                         bottom: -55,
                         child: CircleAvatar(
-                          radius: 25,
+                          radius: 25.r,
                           backgroundColor: Colors.white,
                           child: Icon(Icons.close, color: Colors.black),
                         ),

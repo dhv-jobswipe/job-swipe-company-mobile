@@ -268,4 +268,22 @@ abstract class ApiClient {
   @POST('/matched-pairs/interview-invitation')
   Future<ApiResponse> sendInterviewInvitationMail(
       @Body() Map<String, dynamic> body);
+
+  ///
+  ///
+  ///
+  ///
+  /// SEarch
+  ///
+  @GET('/search/users')
+  Future<ApiPageResponse<User>> searchUsers({
+    @Query('query') String query = '',
+    @Query('type') String type = 'name',
+    @Query('page') int page = 1,
+    @Query('paging') int paging = 25,
+  });
+
+  ///
+  ///
+  ///
 }

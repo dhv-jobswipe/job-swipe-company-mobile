@@ -37,13 +37,12 @@ Future<Object?> customSigninDialog(
             padding: EdgeInsets.only(bottom: bottomInset),
             child: Center(
               child: Container(
-                height: 620,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                height: 620.h,
+                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.symmetric(vertical: 32.h, horizontal: 16.w),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(40))),
+                    borderRadius: BorderRadius.all(Radius.circular(40.r))),
                 child: Scaffold(
                   backgroundColor: Colors.white,
                   resizeToAvoidBottomInset: false,
@@ -52,10 +51,10 @@ Future<Object?> customSigninDialog(
                     children: [
                       Column(
                         children: [
-                          const Text(
+                          Text(
                             "Sign In",
-                            style:
-                                TextStyle(fontSize: 34, fontFamily: "Poppins"),
+                            style: TextStyle(
+                                fontSize: 34.sp, fontFamily: "Poppins"),
                           ),
                           SizedBox(
                             height: 30.h,
@@ -66,13 +65,13 @@ Future<Object?> customSigninDialog(
                           SizedBox(
                             height: 20.h,
                           ),
-                          const Row(
+                          Row(
                             children: [
                               Expanded(
                                 child: Divider(),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
                                 child: Text(
                                   "OR",
                                   style: TextStyle(color: Colors.black26),
@@ -108,20 +107,20 @@ Future<Object?> customSigninDialog(
                                 },
                                 icon: SvgPicture.asset(
                                   "assets/icons/email_box.svg",
-                                  height: 64,
-                                  width: 64,
+                                  height: 64.h,
+                                  width: 64.w,
                                 ),
                               ),
                             ],
                           )
                         ],
                       ),
-                      const Positioned(
+                      Positioned(
                         left: 0,
                         right: 0,
                         bottom: -55,
                         child: CircleAvatar(
-                          radius: 25,
+                          radius: 25.r,
                           backgroundColor: Colors.white,
                           child: Icon(Icons.close, color: Colors.black),
                         ),

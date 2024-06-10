@@ -62,108 +62,103 @@ class _InterviewInvitationDialogState extends State<InterviewInvitationDialog> {
             fontWeight: FontWeight.w400,
           ),
           const SizedBox(height: 12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          Wrap(
+            spacing: 4,
+            runSpacing: 4,
             children: [
-              Expanded(
-                child: CustomFormField<String>(
-                  showLabelAndError: false,
-                  validations: [
-                    (data) => Validators.validateNotEmptyListOrString(data,
-                        fieldName: "Interview date"),
-                  ],
-                  initialValue: interviewDate,
-                  widgetBuilder: (p0) => GestureDetector(
-                    onTap: () async {
-                      DateTime? dateTime = await showDatePicker(
+              CustomFormField<String>(
+                showLabelAndError: false,
+                validations: [
+                  (data) => Validators.validateNotEmptyListOrString(data,
+                      fieldName: "Interview date"),
+                ],
+                initialValue: interviewDate,
+                widgetBuilder: (p0) => GestureDetector(
+                  onTap: () async {
+                    DateTime? dateTime = await showDatePicker(
+                        context: context,
+                        initialDate: interviewDate.toDateTime,
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(Duration(days: 10000)),
+                        helpText: "Select interview date",
+                        cancelText: tr(LocaleKeys.CommonAction_Cancel),
+                        confirmText: tr(LocaleKeys.CommonAction_Confirm),
+                        errorFormatText: tr(LocaleKeys
+                            .CommonValidation_DateTimeFormatIsInvalid),
+                        errorInvalidText: tr(LocaleKeys
+                            .CommonValidation_DateTimeFormatIsInvalid));
+                    if (dateTime != null) {
+                      TimeOfDay? timeOfDay = await showTimePicker(
                           context: context,
-                          initialDate: interviewDate.toDateTime,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(Duration(days: 10000)),
-                          helpText: "Select interview date",
-                          cancelText: tr(LocaleKeys.CommonAction_Cancel),
-                          confirmText: tr(LocaleKeys.CommonAction_Confirm),
-                          errorFormatText: tr(LocaleKeys
-                              .CommonValidation_DateTimeFormatIsInvalid),
-                          errorInvalidText: tr(LocaleKeys
-                              .CommonValidation_DateTimeFormatIsInvalid));
-                      if (dateTime != null) {
-                        TimeOfDay? timeOfDay = await showTimePicker(
-                            context: context,
-                            initialEntryMode: TimePickerEntryMode.inputOnly,
-                            initialTime: const TimeOfDay(hour: 7, minute: 0));
-                        if (timeOfDay != null) {
-                          dateTime = dateTime.add(Duration(
-                              hours: timeOfDay.hour,
-                              minutes: timeOfDay.minute));
-                        }
-                        setState(() {
-                          interviewDate =
-                              dateTime.toDayMonthYear(withHour: true);
-                          p0.didChange(interviewDate);
-                        });
+                          initialEntryMode: TimePickerEntryMode.inputOnly,
+                          initialTime: const TimeOfDay(hour: 7, minute: 0));
+                      if (timeOfDay != null) {
+                        dateTime = dateTime.add(Duration(
+                            hours: timeOfDay.hour, minutes: timeOfDay.minute));
                       }
-                    },
-                    child: CustomContainer(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 15),
-                      borderRadius: BorderRadius.circular(8),
-                      color: orangePink,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.calendar_month_rounded,
-                              color: Colors.white, size: 21),
-                          CustomText(
-                            interviewDate,
-                            style: AppTextStyle.bodyText,
-                            size: 15,
-                            color: Colors.white,
-                            padding: const EdgeInsets.only(left: 3),
-                          )
-                        ],
-                      ),
+                      setState(() {
+                        interviewDate = dateTime.toDayMonthYear(withHour: true);
+                        p0.didChange(interviewDate);
+                      });
+                    }
+                  },
+                  child: CustomContainer(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
+                    borderRadius: BorderRadius.circular(8),
+                    color: orangePink,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.calendar_month_rounded,
+                            color: Colors.white, size: 21),
+                        CustomText(
+                          interviewDate,
+                          style: AppTextStyle.bodyText,
+                          size: 15,
+                          color: Colors.white,
+                          padding: const EdgeInsets.only(left: 3),
+                        )
+                      ],
                     ),
                   ),
                 ),
               ),
               const SizedBox(width: 8),
-              Expanded(
-                child: CustomFormField<String>(
-                  showLabelAndError: false,
-                  validations: [
-                    (data) => Validators.validateNotEmptyListOrString(data,
-                        fieldName: "Interview position"),
-                  ],
-                  initialValue: interviewPositionId.value,
-                  widgetBuilder: (p0) {
-                    return ValueListenableBuilder(
-                      valueListenable: interviewPositionId,
-                      builder: (context, value, child) {
-                        return CustomDropdownButton<String>(
-                            placeholder: "Position",
-                            textColor: Colors.white,
-                            icon: EMPTY_WIDGET,
-                            borderColor: Colors.transparent,
-                            isShowDivider: false,
-                            onChanged: (value) {
-                              if (value.isEmptyOrNull) return;
-                              interviewPositionId.value = value!;
-                              p0.didChange(value);
-                            },
-                            backgroundColor: orangePink,
-                            value: value,
-                            items: widget.applicationPositions
-                                .map((e) => DropdownItemModel(
-                                    value: e.applyPosition!.constantId,
-                                    label: e.applyPosition!.constantName!))
-                                .toList(),
-                            selectedCondition: (item) =>
-                                item == interviewPositionId);
-                      },
-                    );
-                  },
-                ),
+              CustomFormField<String>(
+                showLabelAndError: false,
+                validations: [
+                  (data) => Validators.validateNotEmptyListOrString(data,
+                      fieldName: "Interview position"),
+                ],
+                initialValue: interviewPositionId.value,
+                widgetBuilder: (p0) {
+                  return ValueListenableBuilder(
+                    valueListenable: interviewPositionId,
+                    builder: (context, value, child) {
+                      return CustomDropdownButton<String>(
+                          placeholder: "Position",
+                          textColor: Colors.white,
+                          icon: EMPTY_WIDGET,
+                          borderColor: Colors.transparent,
+                          isShowDivider: false,
+                          onChanged: (value) {
+                            if (value.isEmptyOrNull) return;
+                            interviewPositionId.value = value!;
+                            p0.didChange(value);
+                          },
+                          backgroundColor: orangePink,
+                          value: value,
+                          items: widget.applicationPositions
+                              .map((e) => DropdownItemModel(
+                                  value: e.applyPosition!.constantId,
+                                  label: e.applyPosition!.constantName!))
+                              .toList(),
+                          selectedCondition: (item) =>
+                              item == interviewPositionId);
+                    },
+                  );
+                },
               ),
             ],
           ),
