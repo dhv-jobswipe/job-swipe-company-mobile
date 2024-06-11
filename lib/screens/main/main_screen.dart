@@ -13,6 +13,7 @@ import 'package:pbl5/screens/notification/notification_screen.dart';
 import 'package:pbl5/screens/profile/profile_screen.dart';
 import 'package:pbl5/screens/search/search_screen.dart';
 import 'package:pbl5/screens/swipe_selection/swipe_selection_screen.dart';
+import 'package:pbl5/services/service_repositories/company_repository.dart';
 import 'package:pbl5/shared_customization/widgets/custom_widgets/custom_dismiss_keyboard.dart';
 import 'package:pbl5/view_models/app_notification_view_model.dart';
 import 'package:pbl5/view_models/conversation_view_model.dart';
@@ -21,6 +22,8 @@ import 'package:pbl5/view_models/notification_view_model.dart';
 import 'package:pbl5/view_models/search_view_model.dart';
 import 'package:pbl5/view_models/swipe_selection_view_model.dart';
 import 'package:provider/provider.dart';
+
+import '../../locator_config.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -57,6 +60,12 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     viewModel = GetIt.instance.get<MainViewModel>();
+    getIt.get<CompanyRepository>().getCompanyProfile().then((value) {
+      if (value.data != null) {
+        getIt.get<AppData>().company = value.data;
+      }
+      ;
+    });
     // Get system constatnts if not already fetched
     Future.delayed(const Duration(seconds: 1), () {
       var appDataViewModel = GetIt.instance.get<AppData>();
